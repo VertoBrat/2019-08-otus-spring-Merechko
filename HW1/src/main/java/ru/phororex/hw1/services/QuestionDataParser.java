@@ -5,7 +5,7 @@ import ru.phororex.hw1.model.Question;
 
 import java.util.List;
 
-public interface CSVDataParser {
+public interface QuestionDataParser {
 
     List<Question> parseQuestions() throws NoCsvDataException;
 }

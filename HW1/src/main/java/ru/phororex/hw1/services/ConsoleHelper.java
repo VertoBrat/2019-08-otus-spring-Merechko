@@ -2,20 +2,25 @@ package ru.phororex.hw1.services;
 
 import ru.phororex.hw1.model.Question;
 
+import java.util.List;
 import java.util.Scanner;
 
 public class ConsoleHelper {
 
-    public static int print(Question q) {
-
-        System.out.println(q.getTheQuestion());
+    public void printQuestions(List<Question> questions) {
         Scanner sc = new Scanner(System.in);
-        if (sc.nextLine().toLowerCase().equals(q.getAnswer())) {
-            System.out.println("Верно");
-            return 1;
-        } else {
-            System.out.printf("Нет, правильный ответ \"%s\"\n", q.getAnswer());
-            return 0;
+        System.out.println("Введите имя и фамилию");
+        String name = sc.nextLine();
+        int result = 0;
+        for (Question q : questions) {
+            System.out.println(q.getTheQuestion());
+            if (sc.nextLine().toLowerCase().equals(q.getAnswer())) {
+                System.out.println("Верно");
+                result++;
+            } else {
+                System.out.printf("Нет, правильный ответ \"%s\"\n", q.getAnswer());
+            }
         }
+        System.out.printf("%s дал %d правильных ответа", name, result);
     }
 }
