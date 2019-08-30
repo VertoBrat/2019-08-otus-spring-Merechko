@@ -3,7 +3,7 @@ package ru.phororex.hw1.services;
 import org.supercsv.io.CsvBeanReader;
 import org.supercsv.io.ICsvBeanReader;
 import org.supercsv.prefs.CsvPreference;
-import ru.phororex.hw1.NoCsvDataException;
+import ru.phororex.hw1.exceptions.NoCsvDataException;
 import ru.phororex.hw1.model.Question;
 
 import java.io.BufferedReader;
