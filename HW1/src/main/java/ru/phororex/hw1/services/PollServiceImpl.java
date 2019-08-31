@@ -10,15 +10,18 @@ import java.util.List;
 public class PollServiceImpl implements PollService {
 
     private final QuestionDataParser parser;
-    private final ConsoleHelper consoleHelper;
+    private final ConsoleService consoleService;
 
     @Override
     public void startPollWithData() {
         try {
             List<Question> questions = parser.parseQuestions();
-            consoleHelper.printQuestions(questions);
+            consoleService.printString("Введите имя и фамилию");
+            String name = consoleService.readString();
+            int result = questions.stream().mapToInt(consoleService::printQuestions).sum();
+            consoleService.printString(name + " дал " + result + " правильных ответа");
         } catch (NoCsvDataException ex) {
-            System.out.println(ex.getLocalizedMessage());
+            consoleService.printString(ex.getLocalizedMessage());
         }
     }
 }

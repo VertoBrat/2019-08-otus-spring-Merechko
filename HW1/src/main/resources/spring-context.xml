@@ -5,10 +5,10 @@
         http://www.springframework.org/schema/beans/spring-beans.xsd">
 
     <bean id="parser" class="ru.phororex.hw1.services.QuestionDataParserImpl" />
-    <bean id="console" class="ru.phororex.hw1.services.ConsoleHelper"/>
+    <bean id="console" class="ru.phororex.hw1.services.ConsoleService"/>
     <bean id="poll" class="ru.phororex.hw1.services.PollServiceImpl">
         <constructor-arg name="parser" ref="parser"/>
-        <constructor-arg name="consoleHelper" ref="console"/>
+        <constructor-arg name="consoleService" ref="console"/>
     </bean>
 
 </beans>
