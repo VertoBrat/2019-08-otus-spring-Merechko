@@ -1,30 +1,25 @@
 package ru.phororex.hw1.services;
 
-import ru.phororex.hw1.model.Question;
+import lombok.RequiredArgsConstructor;
 
+import java.io.InputStream;
+import java.io.PrintStream;
 import java.util.Scanner;
 
+@RequiredArgsConstructor
 public class ConsoleService implements IOService {
 
-    public int printQuestions(Question question) {
-        printString(question.getTheQuestion());
-        if (readString().toLowerCase().equals(question.getAnswer())) {
-            printString("Верно");
-            return 1;
-        } else {
-            printString("Нет, правильный ответ " + question.getAnswer());
-            return 0;
-        }
-    }
+    private final InputStream in;
+    private final PrintStream out;
 
     @Override
     public String readString() {
-        Scanner sc = new Scanner(System.in);
+        Scanner sc = new Scanner(in);
         return sc.nextLine();
     }
 
     @Override
     public void printString(String s) {
-        System.out.println(s);
+        out.println(s);
     }
 }

@@ -1,11 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xmlns="http://www.springframework.org/schema/beans"
+       xmlns="http://www.springframework.org/schema/beans" xmlns:util="http://www.springframework.org/schema/util"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
-        http://www.springframework.org/schema/beans/spring-beans.xsd">
+        http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/util https://www.springframework.org/schema/util/spring-util.xsd">
 
     <bean id="parser" class="ru.phororex.hw1.services.QuestionDataParserImpl" />
-    <bean id="console" class="ru.phororex.hw1.services.ConsoleService"/>
+    <bean id="console" class="ru.phororex.hw1.services.ConsoleService">
+        <constructor-arg name="in">
+            <util:constant static-field="java.lang.System.in"/>
+        </constructor-arg>
+        <constructor-arg name="out">
+            <util:constant static-field="java.lang.System.out"/>
+        </constructor-arg>
+    </bean>
     <bean id="poll" class="ru.phororex.hw1.services.PollServiceImpl">
         <constructor-arg name="parser" ref="parser"/>
         <constructor-arg name="consoleService" ref="console"/>
