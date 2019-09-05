@@ -14,6 +14,11 @@ public class LocaleServiceImpl implements LocaleService {
     private Locale locale = Locale.ENGLISH;
 
     @Override
+    public String getMessage(String message, String[] args) {
+        return ms.getMessage(message, args, locale);
+    }
+
+    @Override
     public String getMessage(String message) {
         return ms.getMessage(message, null, locale);
     }

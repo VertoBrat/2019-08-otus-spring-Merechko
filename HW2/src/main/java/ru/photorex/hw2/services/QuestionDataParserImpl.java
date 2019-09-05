@@ -1,5 +1,6 @@
 package ru.photorex.hw2.services;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.supercsv.io.CsvBeanReader;
 import org.supercsv.io.ICsvBeanReader;
@@ -15,7 +16,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class QuestionDataParserImpl implements QuestionDataParser {
+
+    private final LocaleService ms;
 
     @Override
     public List<Question> parseQuestions(String filePath) throws NoCsvDataException {
@@ -29,12 +33,12 @@ public class QuestionDataParserImpl implements QuestionDataParser {
                 questions.add(question);
             }
         } catch (IOException ex) {
-            throw new NoCsvDataException("Проблемы с подключением к файлу");
+            throw new NoCsvDataException(ms.getMessage("connection.fail"));
         } catch (IllegalArgumentException ex) {
-            throw new NoCsvDataException("Невалидные данные в файле");
+            throw new NoCsvDataException(ms.getMessage("invalid.data"));
         }
 
-        if (questions.size() == 0) throw new NoCsvDataException("в файле нет информации");
+        if (questions.size() == 0) throw new NoCsvDataException(ms.getMessage("no.data"));
 
         return questions;
     }

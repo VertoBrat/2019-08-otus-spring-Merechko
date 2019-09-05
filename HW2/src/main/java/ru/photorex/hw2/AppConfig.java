@@ -32,7 +32,7 @@ public class AppConfig {
         ReloadableResourceBundleMessageSource ms =
                 new ReloadableResourceBundleMessageSource();
         ms.setBasename(bundlePath);
-       // ms.setDefaultEncoding(encoding);
+        ms.setDefaultEncoding(encoding);
         return ms;
     }
 }
