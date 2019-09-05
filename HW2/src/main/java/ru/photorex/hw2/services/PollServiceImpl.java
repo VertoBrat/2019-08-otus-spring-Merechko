@@ -34,7 +34,10 @@ public class PollServiceImpl implements PollService {
     @Override
     public void startPollWithData() {
         try {
-            selectUserLocaleAndFileForPoll();
+            Locale locale = ms.selectUserLocaleAndFileForPoll();
+            if (locale == Locale.ENGLISH)
+                setUsePath(enFilePath);
+            else setUsePath(ruFilePath);
             List<Question> questions = parser.parseQuestions(usePath);
             consoleService.printString(ms.getMessage("fio"));
             String name = consoleService.readString();
@@ -54,22 +57,6 @@ public class PollServiceImpl implements PollService {
             consoleService.printString(ms.getMessage("bad.answer", new String[]{question.getAnswer()}));
             return 0;
         }
-    }
-
-    private void selectUserLocaleAndFileForPoll() {
-        String locale = "";
-        consoleService.printString(ms.getMessage("choose.locale"));
-        while (true) {
-            locale = consoleService.readString();
-            if (locale.equals("en") || locale.equals("ru")) {
-                break;
-            }
-            consoleService.printString(ms.getMessage("bad.locale"));
-        }
-        ms.setLocale(new Locale(locale));
-        if (locale.equals("en"))
-            setUsePath(enFilePath);
-        else setUsePath(ruFilePath);
     }
 
     private void setUsePath(String path) {
