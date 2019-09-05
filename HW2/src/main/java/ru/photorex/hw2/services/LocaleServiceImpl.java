@@ -33,6 +33,10 @@ public class LocaleServiceImpl implements LocaleService {
             consoleService.printString(getMessage("bad.locale"));
         }
         Locale l = new Locale(locale);
+        if (locale.equals("en")) {
+            setLocale(Locale.ENGLISH);
+            return Locale.ENGLISH;
+        }
         setLocale(l);
         return l;
     }
