@@ -34,7 +34,7 @@ public class PollServiceImpl implements PollService {
     @Override
     public void startPollWithData() {
         try {
-            Locale locale = ms.selectUserLocaleAndFileForPoll();
+            Locale locale = ms.selectUserLocale();
             if (locale == Locale.ENGLISH)
                 setUsePath(enFilePath);
             else setUsePath(ruFilePath);

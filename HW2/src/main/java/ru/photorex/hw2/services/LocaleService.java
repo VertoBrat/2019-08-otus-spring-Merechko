@@ -4,7 +4,7 @@ import java.util.Locale;
 
 public interface LocaleService {
 
-    Locale selectUserLocaleAndFileForPoll();
+    Locale selectUserLocale();
 
     String getMessage(String message);
 

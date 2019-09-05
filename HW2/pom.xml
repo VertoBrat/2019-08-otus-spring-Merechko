@@ -13,6 +13,7 @@
         <maven.compiler.target>1.8</maven.compiler.target>
         <spring-context.version>5.1.9.RELEASE</spring-context.version>
         <lombok.version>1.18.8</lombok.version>
+        <junit-jupiter-engine>5.2.0</junit-jupiter-engine>
     </properties>
 
     <dependencies>
@@ -31,6 +32,18 @@
             <artifactId>lombok</artifactId>
             <version>${lombok.version}</version>
             <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-engine</artifactId>
+            <version>${junit-jupiter-engine}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.assertj</groupId>
+            <artifactId>assertj-core</artifactId>
+            <version>3.12.0</version>
+            <scope>test</scope>
         </dependency>
 
 

@@ -22,8 +22,8 @@ public class LocaleServiceImpl implements LocaleService {
     }
 
     @Override
-    public Locale selectUserLocaleAndFileForPoll() {
-        String locale = "";
+    public Locale selectUserLocale() {
+        String locale;
         consoleService.printString(getMessage("choose.locale"));
         while (true) {
             locale = consoleService.readString();
