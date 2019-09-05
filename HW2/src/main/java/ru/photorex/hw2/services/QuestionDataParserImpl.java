@@ -18,8 +18,8 @@ import java.util.List;
 public class QuestionDataParserImpl implements QuestionDataParser {
 
     @Override
-    public List<Question> parseQuestions() throws NoCsvDataException {
-        InputStream in = QuestionDataParserImpl.class.getClassLoader().getResourceAsStream("data.csv");
+    public List<Question> parseQuestions(String filePath) throws NoCsvDataException {
+        InputStream in = QuestionDataParserImpl.class.getClassLoader().getResourceAsStream(filePath);
         List<Question> questions = new ArrayList<>();
         String[] nameMapping = new String[]{"theQuestion", "answer"};
         try (ICsvBeanReader beanReader =

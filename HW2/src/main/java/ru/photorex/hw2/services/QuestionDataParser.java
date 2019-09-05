@@ -6,5 +6,5 @@ import java.util.List;
 
 public interface QuestionDataParser {
 
-    List<Question> parseQuestions() throws NoCsvDataException;
+    List<Question> parseQuestions(String filePath) throws NoCsvDataException;
 }
