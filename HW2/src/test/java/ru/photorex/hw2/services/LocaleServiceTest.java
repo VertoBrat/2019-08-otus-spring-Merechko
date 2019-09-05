@@ -2,8 +2,7 @@ package ru.photorex.hw2.services;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.context.support.ReloadableResourceBundleMessageSource;
-import ru.photorex.hw2.services.utils.ConsoleServiceHelper;
+import ru.photorex.hw2.services.utils.LocaleServiceHelper;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -11,8 +10,6 @@ import java.util.Locale;
 
 public class LocaleServiceTest {
 
-    private static final String BUNDLE_PATH = "/i18n/bundle";
-    private static final String ENCODING = "UTF-8";
     private static final String RU_LOCALE = "ru";
     private static final String RIGHT_ANSWER = "right.answer";
     private static final String EN_ANSWER = "Great right";
@@ -27,11 +24,7 @@ public class LocaleServiceTest {
 
     @BeforeEach
     void initLocaleService() {
-        ReloadableResourceBundleMessageSource ms = new ReloadableResourceBundleMessageSource();
-        ms.setBasename(BUNDLE_PATH);
-        ms.setDefaultEncoding(ENCODING);
-        ConsoleService cs = ConsoleServiceHelper.getInstance(RU_LOCALE);
-        localeService = new LocaleServiceImpl(ms, cs, Locale.ENGLISH);
+        localeService = LocaleServiceHelper.getInstance();
     }
 
     @Test
