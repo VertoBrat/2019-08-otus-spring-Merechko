@@ -26,7 +26,7 @@ public class LocaleServiceImpl implements LocaleService {
         String locale;
         consoleService.printString(getMessage("choose.locale"));
         while (true) {
-            locale = consoleService.readString();
+            locale = consoleService.readString().toLowerCase();
             if (locale.equals("en") || locale.equals("ru")) {
                 break;
             }
