@@ -1,12 +1,14 @@
 package ru.photorex.hw2.services;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 import ru.photorex.hw2.exceptions.NoCsvDataException;
 import ru.photorex.hw2.model.Question;
 
 import java.util.List;
 
 @RequiredArgsConstructor
+@Service
 public class PollServiceImpl implements PollService {
 
     private final QuestionDataParser parser;

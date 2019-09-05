@@ -1,5 +1,6 @@
 package ru.photorex.hw2.services;
 
+import org.springframework.stereotype.Service;
 import org.supercsv.io.CsvBeanReader;
 import org.supercsv.io.ICsvBeanReader;
 import org.supercsv.prefs.CsvPreference;
@@ -13,6 +14,7 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
+@Service
 public class QuestionDataParserImpl implements QuestionDataParser {
 
     @Override
