@@ -1,14 +1,11 @@
 package ru.photorex.hw2.services;
 
-import java.util.Locale;
 
 public interface LocaleService {
-
-    Locale selectUserLocale();
 
     String getMessage(String message);
 
     String getMessage(String message, String[] args);
 
-    void setLocale(Locale locale);
+    void setLocale(String locale);
 }

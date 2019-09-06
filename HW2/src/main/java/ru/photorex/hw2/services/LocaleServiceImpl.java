@@ -10,35 +10,12 @@ import java.util.Locale;
 public class LocaleServiceImpl implements LocaleService {
 
     private final MessageSource ms;
-    private final IOService consoleService;
     private Locale locale;
 
     public LocaleServiceImpl(MessageSource ms,
-                             IOService consoleService,
                              @Value("#{ systemProperties['user.region'] }") Locale locale) {
         this.ms = ms;
-        this.consoleService = consoleService;
         this.locale = locale;
-    }
-
-    @Override
-    public Locale selectUserLocale() {
-        String locale;
-        consoleService.printString(getMessage("choose.locale"));
-        while (true) {
-            locale = consoleService.readString().toLowerCase();
-            if (locale.equals("en") || locale.equals("ru")) {
-                break;
-            }
-            consoleService.printString(getMessage("bad.locale"));
-        }
-        Locale l = new Locale(locale);
-        if (locale.equals("en")) {
-            setLocale(Locale.ENGLISH);
-            return Locale.ENGLISH;
-        }
-        setLocale(l);
-        return l;
     }
 
     @Override
@@ -52,7 +29,7 @@ public class LocaleServiceImpl implements LocaleService {
     }
 
     @Override
-    public void setLocale(Locale locale) {
-        this.locale = locale;
+    public void setLocale(String locale) {
+        this.locale = new Locale.Builder().setLanguage(locale).build();
     }
 }

@@ -18,7 +18,6 @@ public class LocaleServiceHelper {
         ReloadableResourceBundleMessageSource ms = new ReloadableResourceBundleMessageSource();
         ms.setBasename(BUNDLE_PATH);
         ms.setDefaultEncoding(ENCODING);
-        ConsoleService cs = ConsoleServiceHelper.getInstance("ru");
-        return new LocaleServiceImpl(ms, cs, Locale.ENGLISH);
+        return new LocaleServiceImpl(ms, Locale.ENGLISH);
     }
 }
