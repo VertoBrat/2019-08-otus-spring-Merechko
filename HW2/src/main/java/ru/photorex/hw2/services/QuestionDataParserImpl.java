@@ -15,30 +15,37 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
+import static ru.photorex.hw2.utils.Messages.*;
+
 @Service
 @RequiredArgsConstructor
 public class QuestionDataParserImpl implements QuestionDataParser {
+
+    private static final String QUESTION = "theQuestion";
+    private static final String ANSWER = "answer";
 
     private final LocaleService ms;
 
     @Override
     public List<Question> parseQuestions(String filePath) throws NoCsvDataException {
-        InputStream in = QuestionDataParserImpl.class.getClassLoader().getResourceAsStream(filePath);
         List<Question> questions = new ArrayList<>();
-        String[] nameMapping = new String[]{"theQuestion", "answer"};
-        try (ICsvBeanReader beanReader =
+        String[] nameMapping = new String[]{QUESTION, ANSWER};
+        try (InputStream in = QuestionDataParserImpl.class.getClassLoader().getResourceAsStream(filePath);
+             ICsvBeanReader beanReader =
                      new CsvBeanReader(new BufferedReader(new InputStreamReader(in)), CsvPreference.STANDARD_PREFERENCE)) {
             Question question;
             while ((question = beanReader.read(Question.class, nameMapping)) != null) {
                 questions.add(question);
             }
         } catch (IOException ex) {
-            throw new NoCsvDataException(ms.getMessage("connection.fail"));
+            throw new NoCsvDataException(ms.getMessage(CONNECTION_FAIL));
         } catch (IllegalArgumentException ex) {
-            throw new NoCsvDataException(ms.getMessage("invalid.data"));
+            throw new NoCsvDataException(ms.getMessage(INVALID_DATA));
+        } catch (NullPointerException ex) {
+            throw new NoCsvDataException(ms.getMessage(NONEXISTENT_LOCALE));
         }
 
-        if (questions.size() == 0) throw new NoCsvDataException(ms.getMessage("no.data"));
+        if (questions.size() == 0) throw new NoCsvDataException(ms.getMessage(NO_DATA_IN_FILE));
 
         return questions;
     }

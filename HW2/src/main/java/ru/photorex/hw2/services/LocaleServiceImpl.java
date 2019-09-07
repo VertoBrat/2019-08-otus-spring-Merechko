@@ -3,6 +3,7 @@ package ru.photorex.hw2.services;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
+import ru.photorex.hw2.utils.Messages;
 
 import java.util.Locale;
 
@@ -19,13 +20,13 @@ public class LocaleServiceImpl implements LocaleService {
     }
 
     @Override
-    public String getMessage(String message, String[] args) {
-        return ms.getMessage(message, args, locale);
+    public String getMessage(Messages property, String[] args) {
+        return ms.getMessage(property.getMessage(), args, locale);
     }
 
     @Override
-    public String getMessage(String message) {
-        return ms.getMessage(message, null, locale);
+    public String getMessage(Messages property) {
+        return ms.getMessage(property.getMessage(), null, locale);
     }
 
     @Override

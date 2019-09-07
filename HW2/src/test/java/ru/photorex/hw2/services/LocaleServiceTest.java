@@ -32,10 +32,10 @@ public class LocaleServiceTest {
 //        assertThat(new Locale(RU_LOCALE)).isEqualTo(localeService.selectUserLocale());
 //    }
 
-    @Test
-    void getEnglishMessageWithoutArgs() {
-        assertThat(EN_ANSWER).isEqualTo(localeService.getMessage(RIGHT_ANSWER));
-    }
+//    @Test
+//    void getEnglishMessageWithoutArgs() {
+//        assertThat(EN_ANSWER).isEqualTo(localeService.getMessage(RIGHT_ANSWER));
+//    }
 
 //    @Test
 //    void getRussianMessageWithoutArgs() {
@@ -43,10 +43,10 @@ public class LocaleServiceTest {
 //        assertThat(RU_ANSWER).isEqualTo(localeService.getMessage(RIGHT_ANSWER));
 //    }
 
-    @Test
-    void getEnglishMessageWithArgs() {
-        assertThat(RESULT_EN_STRING).isEqualTo(localeService.getMessage(RESULT, new String[]{NAME, Integer.toString(result)}));
-    }
+//    @Test
+//    void getEnglishMessageWithArgs() {
+//        assertThat(RESULT_EN_STRING).isEqualTo(localeService.getMessage(RESULT, new String[]{NAME, Integer.toString(result)}));
+//    }
 
 //    @Test
 //    void getRussianMessageWithArgs() {
