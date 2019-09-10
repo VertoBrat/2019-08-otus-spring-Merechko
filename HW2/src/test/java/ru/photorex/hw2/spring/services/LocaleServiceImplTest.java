@@ -2,11 +2,8 @@ package ru.photorex.hw2.spring.services;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.MessageSource;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 import ru.photorex.hw2.AppConfig;
 import ru.photorex.hw2.services.LocaleService;
 
@@ -14,8 +11,7 @@ import static ru.photorex.hw2.utils.Messages.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DisplayName("Сервис для работы с локалью")
-@ExtendWith(SpringExtension.class)
-@ContextConfiguration(classes = {AppConfig.class})
+@SpringJUnitConfig(AppConfig.class)
 public class LocaleServiceImplTest {
 
     private static final String EN_LOCALE = "en";

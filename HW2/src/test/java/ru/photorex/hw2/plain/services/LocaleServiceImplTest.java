@@ -13,6 +13,10 @@ import ru.photorex.hw2.services.LocaleServiceImpl;
 
 import java.util.Locale;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.BDDMockito.given;
 import static ru.photorex.hw2.utils.Messages.*;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -21,6 +25,8 @@ import static org.mockito.Mockito.verify;
 @ExtendWith(MockitoExtension.class)
 public class LocaleServiceImplTest {
 
+    private static final String EN_INPUT_NAME = "Enter first and last name";
+
     @Mock
     private MessageSource ms;
 
@@ -28,6 +34,7 @@ public class LocaleServiceImplTest {
 
     @BeforeEach
     void setUp() {
+        given(ms.getMessage(eq(INPUT_NAME.getMessage()), any(), eq(Locale.ENGLISH))).willReturn(EN_INPUT_NAME);
         ls = new LocaleServiceImpl(ms, Locale.ENGLISH);
     }
 
@@ -36,6 +43,13 @@ public class LocaleServiceImplTest {
     void shouldExecuteServiceMethodWithOneArgument() {
         ls.getMessage(INPUT_NAME);
         verify(ms, times(1)).getMessage(INPUT_NAME.getMessage(), null, Locale.ENGLISH);
+    }
+
+    @Test
+    @DisplayName("должен возвращать строку")
+    void shouldReturnString() {
+        String message = ls.getMessage(INPUT_NAME);
+        assertThat(message).isEqualTo(EN_INPUT_NAME);
     }
 
     @Test

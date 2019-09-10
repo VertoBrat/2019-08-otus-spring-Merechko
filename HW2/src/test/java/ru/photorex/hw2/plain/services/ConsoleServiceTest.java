@@ -16,17 +16,14 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class ConsoleServiceTest {
     private static final String TEST_STRING = "test string";
 
-
-    private InputStream in;
-    private PrintStream out;
     private ByteArrayOutputStream outputStream;
     private ConsoleService cs;
 
     @BeforeEach
     void setUp() {
-        in = new ByteArrayInputStream(TEST_STRING.getBytes());
+        InputStream in = new ByteArrayInputStream(TEST_STRING.getBytes());
         outputStream = new ByteArrayOutputStream();
-        out = new PrintStream(outputStream);
+        PrintStream out = new PrintStream(outputStream);
         cs = new ConsoleService(in, out);
     }
 
@@ -40,6 +37,6 @@ public class ConsoleServiceTest {
     @DisplayName("должен записывать строку в OutputStream")
     void shouldSaveTestStringIntoOutputStream() {
         cs.printString(TEST_STRING);
-        assertThat(TEST_STRING  + "\r\n").isEqualTo(outputStream.toString());
+        assertThat(TEST_STRING + "\r\n").isEqualTo(outputStream.toString());
     }
 }
