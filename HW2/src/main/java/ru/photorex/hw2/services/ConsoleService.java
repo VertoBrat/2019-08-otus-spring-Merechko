@@ -1,17 +1,15 @@
 package ru.photorex.hw2.services;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.Scanner;
 
 @Service
+@RequiredArgsConstructor
 public class ConsoleService implements IOService {
 
     private final ConsoleContext consoleContext;
-
-    public ConsoleService(ConsoleContext consoleContext) {
-        this.consoleContext = consoleContext;
-    }
 
     @Override
     public String readString() {

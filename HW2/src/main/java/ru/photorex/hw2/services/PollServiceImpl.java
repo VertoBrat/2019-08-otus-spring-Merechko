@@ -1,5 +1,6 @@
 package ru.photorex.hw2.services;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.photorex.hw2.exceptions.NoCsvDataException;
 import ru.photorex.hw2.model.Question;
@@ -10,6 +11,7 @@ import java.util.List;
 import static ru.photorex.hw2.utils.Messages.*;
 
 @Service
+@RequiredArgsConstructor
 public class PollServiceImpl implements PollService {
 
     private static final String PATH = "data_";
@@ -20,14 +22,6 @@ public class PollServiceImpl implements PollService {
     private final QuestionDataParser parser;
     private final IOService consoleService;
     private final LocaleService ms;
-
-    public PollServiceImpl(QuestionDataParser parser,
-                           IOService consoleService,
-                           LocaleService ms) {
-        this.parser = parser;
-        this.consoleService = consoleService;
-        this.ms = ms;
-    }
 
     @Override
     public void startPollWithData() {
