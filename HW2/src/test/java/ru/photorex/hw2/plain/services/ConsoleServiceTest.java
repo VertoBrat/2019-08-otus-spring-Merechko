@@ -3,6 +3,7 @@ package ru.photorex.hw2.plain.services;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import ru.photorex.hw2.services.ConsoleContext;
 import ru.photorex.hw2.services.ConsoleService;
 
 import java.io.ByteArrayInputStream;
@@ -16,15 +17,19 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class ConsoleServiceTest {
     private static final String TEST_STRING = "test string";
 
-    private ByteArrayOutputStream outputStream;
     private ConsoleService cs;
+    private ConsoleContext cc;
 
     @BeforeEach
     void setUp() {
         InputStream in = new ByteArrayInputStream(TEST_STRING.getBytes());
-        outputStream = new ByteArrayOutputStream();
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         PrintStream out = new PrintStream(outputStream);
-        cs = new ConsoleService(in, out);
+        cc = new ConsoleContext();
+        cc.setPrintStream(out);
+        cc.setInputStream(in);
+        cc.setOutputStream(outputStream);
+        cs = new ConsoleService(cc);
     }
 
     @Test
@@ -37,6 +42,6 @@ public class ConsoleServiceTest {
     @DisplayName("должен записывать строку в OutputStream")
     void shouldSaveTestStringIntoOutputStream() {
         cs.printString(TEST_STRING);
-        assertThat(TEST_STRING + "\r\n").isEqualTo(outputStream.toString());
+        assertThat(TEST_STRING + "\r\n").isEqualTo(cc.getOutputStream().toString());
     }
 }

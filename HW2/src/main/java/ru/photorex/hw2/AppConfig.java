@@ -8,8 +8,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
-import ru.photorex.hw2.services.ConsoleService;
-import ru.photorex.hw2.services.IOService;
+import ru.photorex.hw2.services.ConsoleContext;
 
 @Configuration
 @ComponentScan
@@ -17,8 +16,11 @@ import ru.photorex.hw2.services.IOService;
 public class AppConfig {
 
     @Bean
-    public IOService consoleService() {
-        return new ConsoleService(System.in, System.out);
+    public ConsoleContext consoleContext() {
+        ConsoleContext cc = new ConsoleContext();
+        cc.setInputStream(System.in);
+        cc.setPrintStream(System.out);
+        return cc;
     }
 
     @Bean
