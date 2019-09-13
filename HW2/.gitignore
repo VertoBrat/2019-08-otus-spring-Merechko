@@ -1,0 +1,20 @@
+# Java class files
+*.class
+
+# Intellij project files
+*.iml
+*.ipr
+*.iws
+.idea/
+.mvn
+mvnw.cmd
+mvnw
+
+.DS_Store/
+/target
+
+/target
+/target/
+**/target/
+
+.DS_Store
