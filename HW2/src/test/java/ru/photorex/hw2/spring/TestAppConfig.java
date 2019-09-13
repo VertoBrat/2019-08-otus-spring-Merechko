@@ -2,6 +2,7 @@ package ru.photorex.hw2.spring;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 import ru.photorex.hw2.services.ConsoleContext;
 import ru.photorex.hw2.services.ConsoleService;
 import ru.photorex.hw2.services.IOService;
@@ -12,6 +13,7 @@ import java.io.InputStream;
 import java.io.PrintStream;
 
 @Configuration
+@Import(ConsoleService.class)
 public class TestAppConfig {
 
     public static final String TEST_STRING = "test string";
@@ -26,10 +28,5 @@ public class TestAppConfig {
         cc.setInputStream(in);
         cc.setOutputStream(outputStream);
         return cc;
-    }
-
-    @Bean
-    public IOService consoleService(ConsoleContext context) {
-        return new ConsoleService(context);
     }
 }

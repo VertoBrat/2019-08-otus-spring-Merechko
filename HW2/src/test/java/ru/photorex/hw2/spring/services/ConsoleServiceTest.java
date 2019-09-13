@@ -4,6 +4,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
+import ru.photorex.hw2.services.ConsoleContext;
 import ru.photorex.hw2.services.IOService;
 import ru.photorex.hw2.spring.TestAppConfig;
 
@@ -17,6 +18,9 @@ public class ConsoleServiceTest {
     @Autowired
     private IOService console;
 
+    @Autowired
+    private ConsoleContext consoleContext;
+
     @Test
     @DisplayName("должен читать строку из InputStream")
     void shouldReturnTestStringFromInputStream() {
@@ -28,6 +32,6 @@ public class ConsoleServiceTest {
     void shouldSaveTestStringIntoOutputStream() {
         console.printString(TEST_STRING);
         assertThat(TEST_STRING + "\r\n")
-                .isEqualTo(console.getConsoleContext().getOutputStream().toString());
+                .isEqualTo(consoleContext.getOutputStream().toString());
     }
 }
