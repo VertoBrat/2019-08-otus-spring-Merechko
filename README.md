@@ -11,3 +11,6 @@ Each task is located in a separate folder called "HW N", where N - number of tas
 ### HW2
 >Refactoring of HW1. Now we use Annotation+Java Config Spring Context, so xml was removed.
 >Next step: we added i18n to this app with language selection logic.
+
+### HW3
+>Refactoring of HW2. Move application to Spring Boot. Use some features Boot magic. 
