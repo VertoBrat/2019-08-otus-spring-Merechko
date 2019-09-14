@@ -9,12 +9,19 @@ import java.util.List;
 @Service
 public class PollMaxResultServiceImpl implements PollMaxResultService {
 
+    public static final String USER1 = "Dima";
+    public static final String USER2 = "Goga";
+    public static final String USER3 = "Igor";
+    public static final int MAX_RESULT_USER1 = 3;
+    public static final int MAX_RESULT_USER2 = 0;
+    public static final int MAX_RESULT_USER3 = 5;
+
     private List<Result> results = new ArrayList<>();
 
     public PollMaxResultServiceImpl() {
-        results.add(new Result("Dima", 3));
-        results.add(new Result("Goga", 0));
-        results.add(new Result("Igor", 5));
+        results.add(new Result(USER1, MAX_RESULT_USER1));
+        results.add(new Result(USER2, MAX_RESULT_USER2));
+        results.add(new Result(USER3, MAX_RESULT_USER3));
     }
 
     @Override
