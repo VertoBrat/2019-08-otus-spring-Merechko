@@ -22,6 +22,8 @@ public class PollServiceImpl implements PollService {
     private final QuestionDataParser parser;
     private final IOService consoleService;
     private final LocaleService ms;
+    private final UserDetailService userDetailService;
+    private final PollMaxResultService maxResultService;
 
     @Override
     public void startPollWithData() {
@@ -29,10 +31,9 @@ public class PollServiceImpl implements PollService {
             String localePath = selectUserLocale();
             String usePath = PATH + localePath + TYPE;
             List<Question> questions = parser.parseQuestions(usePath);
-            consoleService.printString(ms.getMessage(INPUT_NAME));
-            String name = consoleService.readString();
             int result = questions.stream().mapToInt(this::printQuestions).sum();
-            consoleService.printString(ms.getMessage(RESULT, new String[]{name, Integer.toString(result)}));
+            maxResultService.addResult(userDetailService.getUserName(), result);
+            consoleService.printString(ms.getMessage(RESULT, new String[]{userDetailService.getUserName(), Integer.toString(result)}));
         } catch (NoCsvDataException ex) {
             consoleService.printString(ex.getLocalizedMessage());
         } catch (IllformedLocaleException ex) {

@@ -9,8 +9,7 @@ import ru.photorex.hw4.services.PollService;
 public class PollApplication {
 
     public static void main(String[] args) {
-        ApplicationContext context = SpringApplication.run(PollApplication.class, args);
-        context.getBean(PollService.class).startPollWithData();
+        SpringApplication.run(PollApplication.class, args);
     }
 
 }

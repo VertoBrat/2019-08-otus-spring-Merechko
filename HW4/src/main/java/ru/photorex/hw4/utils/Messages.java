@@ -11,7 +11,9 @@ public enum Messages {
     CONNECTION_FAIL("connection.fail"),
     INVALID_DATA("invalid.data"),
     NO_DATA_IN_FILE("no.data"),
-    INVALID_LANG("invalid.lang");
+    INVALID_LANG("invalid.lang"),
+    HIGHSCORES("highscores"),
+    NORESULTS("no.results");
 
     private final String message;
 

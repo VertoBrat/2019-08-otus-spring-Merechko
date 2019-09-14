@@ -21,4 +21,9 @@ public class ConsoleService implements IOService {
     public void printString(String s) {
         consoleContext.getPrintStream().println(s);
     }
+
+    @Override
+    public void printFormattedString(String s, String name, int result) {
+        consoleContext.getPrintStream().printf(s + System.lineSeparator(), name, result);
+    }
 }
