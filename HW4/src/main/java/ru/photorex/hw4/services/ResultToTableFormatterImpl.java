@@ -27,7 +27,7 @@ public class ResultToTableFormatterImpl implements ResultToTableFormatter {
         console.printString(LINE);
         console.printString("  " + ms.getMessage(HIGHSCORES) + " ");
         console.printString(LINE);
-        results.stream().sorted().forEach(r->console.printFormattedString("| %6s |  %1d", r.getUserName(), r.getMaxResult()));
+        results.stream().sorted().forEach(r -> console.printFormattedString("| %6s |  %1d", r.getUserName(), r.getMaxResult()));
         console.printString(LINE);
     }
 }

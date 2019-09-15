@@ -6,13 +6,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static ru.photorex.hw4.services.PollMaxResultServiceImpl.MAX_RESULT_USER1;
-import static ru.photorex.hw4.services.PollMaxResultServiceImpl.USER1;
 
 @DisplayName("Сервис для работы с результатами")
 @SpringBootTest
 public class PollMaxResultServiceImplTest {
 
+    private static final String USER1 = "Dima";
+    private static final int MAX_RESULT_USER1 = 3;
     private static final int COUNT_OF_RECORDS = 3;
     private static final String NEW_USER = "User";
     private static final int COUNT_OF_RIGHT_ANSWERS_FOR_NEW_USER = 3;
