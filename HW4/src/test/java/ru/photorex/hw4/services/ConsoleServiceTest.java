@@ -38,7 +38,7 @@ public class ConsoleServiceTest {
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         given(consoleContext.getPrintStream()).willReturn(new PrintStream(out));
         console.printString(TEST_STRING);
-        assertThat(TEST_STRING + "\r\n")
+        assertThat(TEST_STRING + System.lineSeparator())
                 .isEqualTo(out.toString());
     }
 }
