@@ -13,4 +13,7 @@ Each task is located in a separate folder called "HW N", where N - number of tas
 >Next step: we added i18n to this app with language selection logic.
 
 ### HW3
->Refactoring of HW2. Move application to Spring Boot. Use some features Boot magic. 
+>Refactoring of HW2. Move application to Spring Boot. Use some features Boot magic.
+
+### HW4
+>Refactoring of HW3. Spring Shell (CLI) does all the work  
