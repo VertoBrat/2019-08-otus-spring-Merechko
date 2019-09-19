@@ -1,6 +1,7 @@
 package ru.photorex.hw5.repository.jdbc;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
 import org.springframework.stereotype.Repository;
 import ru.photorex.hw5.model.Author;
@@ -31,12 +32,28 @@ public class AuthorRepositoryJdbcImpl implements AuthorRepository {
 
     @Override
     public Author save(Author author) {
-        return null;
+        MapSqlParameterSource map = new MapSqlParameterSource()
+                .addValue("id", author.getId())
+                .addValue("firstName", author.getFirstName())
+                .addValue("lastName", author.getLastName());
+        if (author.getId() == null) {
+            namedParameterJdbcOperations.update("insert into authors (first_name, last_name) values (:firstName, :lastName)", map);
+        } else {
+            if (namedParameterJdbcOperations.update("update authors set first_name=:firstName, last_name=:lastName " +
+                    "where id=:id", map) == 0)
+                return null;
+        }
+        return author;
     }
 
     @Override
     public boolean delete(Long id) {
         Map<String, Object> params = Collections.singletonMap("id", id);
+        deleteFromRelationship(id, params);
         return namedParameterJdbcOperations.update("delete from authors where id= :id", params) != 0;
+    }
+
+    private void deleteFromRelationship(Long id, Map<String, Object> params) {
+        namedParameterJdbcOperations.update("delete from books_authors where author_id= :id", params);
     }
 }

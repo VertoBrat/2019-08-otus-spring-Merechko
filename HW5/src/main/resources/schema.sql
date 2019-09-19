@@ -1,6 +1,7 @@
+drop table if exists BOOKS_AUTHORS;
+drop table if exists BOOKS_GENRES;
 drop table if exists books;
 drop table if exists authors;
-drop table if exists GENRES;
 
 create table AUTHORS
 (
@@ -10,26 +11,27 @@ create table AUTHORS
     constraint AUTHORS_PK
         primary key (ID)
 );
-create table GENRES
-(
-    ID BIGINT auto_increment,
-    NAME VARCHAR(255) not null
-        constraint GENRES_NAME_UINDEX
-        unique,
-    constraint GENRES_PK
-        primary key (ID)
-);
 create table BOOKS
 (
     ID        BIGINT auto_increment,
     TITLE     VARCHAR(255) not null,
-    AUTHOR_ID BIGINT       not null,
-    GENRE_ID  BIGINT       not null,
     constraint BOOKS_PK
-        primary key (ID),
-    constraint BOOKS_AUTHORS_ID_FK
-        foreign key (AUTHOR_ID) references AUTHORS,
-    constraint BOOKS_GENRES_ID_FK
-        foreign key (GENRE_ID) references GENRES
+        primary key (ID)
+);
+create table BOOKS_GENRES
+(
+    BOOK_ID BIGINT not null,
+    NAME VARCHAR(255) not null,
+    CONSTRAINT BOOKS_GENRES_BOOK_ID_fk
+        foreign key (BOOK_ID) references BOOKS
 );
 
+create table BOOKS_AUTHORS
+(
+    BOOK_ID long not null,
+    AUTHOR_ID long not null,
+    constraint books_authors_AUTHORS_ID_fk
+        foreign key (author_id) references AUTHORS,
+    constraint books_authors_BOOKS_ID_fk
+        foreign key (book_id) references BOOKS
+);

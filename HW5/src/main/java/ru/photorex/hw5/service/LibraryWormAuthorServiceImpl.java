@@ -9,7 +9,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class LibraryWormAuthorServiceImpl implements LibraryWormAuthorService{
+public class LibraryWormAuthorServiceImpl implements LibraryWormAuthorService {
 
     private final AuthorRepository authorRepository;
 
