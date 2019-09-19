@@ -21,7 +21,7 @@ create table BOOKS
 create table BOOKS_GENRES
 (
     BOOK_ID BIGINT not null,
-    NAME VARCHAR(255) not null,
+    GENRE VARCHAR(255) not null,
     CONSTRAINT BOOKS_GENRES_BOOK_ID_fk
         foreign key (BOOK_ID) references BOOKS
 );

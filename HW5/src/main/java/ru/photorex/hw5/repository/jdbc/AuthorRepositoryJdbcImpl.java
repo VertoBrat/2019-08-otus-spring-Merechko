@@ -49,11 +49,7 @@ public class AuthorRepositoryJdbcImpl implements AuthorRepository {
     @Override
     public boolean delete(Long id) {
         Map<String, Object> params = Collections.singletonMap("id", id);
-        deleteFromRelationship(id, params);
-        return namedParameterJdbcOperations.update("delete from authors where id= :id", params) != 0;
-    }
-
-    private void deleteFromRelationship(Long id, Map<String, Object> params) {
         namedParameterJdbcOperations.update("delete from books_authors where author_id= :id", params);
+        return namedParameterJdbcOperations.update("delete from authors where id= :id", params) != 0;
     }
 }

@@ -28,4 +28,14 @@ public class LibraryWormBookServiceImpl implements LibraryWormBookService {
     public List<Book> getBooksByAuthor(Author author) {
         return bookRepository.getByAuthor(author);
     }
+
+    @Override
+    public Book saveBook(Book book) {
+        return bookRepository.save(book);
+    }
+
+    @Override
+    public boolean deleteBook(Long id) {
+        return bookRepository.delete(id);
+    }
 }

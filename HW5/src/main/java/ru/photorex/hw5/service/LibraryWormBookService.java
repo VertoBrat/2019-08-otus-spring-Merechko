@@ -12,4 +12,8 @@ public interface LibraryWormBookService {
     List<Book> getAllBooks();
 
     List<Book> getBooksByAuthor(Author author);
+
+    boolean deleteBook(Long id);
+
+    Book saveBook(Book book);
 }

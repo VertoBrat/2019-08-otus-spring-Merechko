@@ -5,5 +5,5 @@ insert into BOOKS (ID, TITLE) values
      (3, 'Effective_Java_3rd');
 insert into books_authors (book_id, author_id)
 values (1, 3), (2, 1), (3, 2);
-insert into BOOKS_GENRES (BOOK_ID, NAME) values
+insert into BOOKS_GENRES (BOOK_ID, GENRE) values
 (3, 'Novel'),(2, 'Story'),(1, 'Comedy');

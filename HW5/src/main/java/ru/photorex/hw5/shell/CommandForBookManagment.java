@@ -6,11 +6,14 @@ import org.springframework.shell.standard.ShellMethod;
 import org.springframework.shell.standard.ShellOption;
 import ru.photorex.hw5.model.Author;
 import ru.photorex.hw5.model.Book;
+import ru.photorex.hw5.model.Genre;
 import ru.photorex.hw5.service.LibraryWormBookService;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @ShellComponent
 @RequiredArgsConstructor
@@ -37,6 +40,24 @@ public class CommandForBookManagment {
     public void displayBookById(@ShellOption({"-i"}) Long id) {
         Book book = wormBookService.getBookById(id);
         printTable(Collections.singletonList(book));
+    }
+
+    @ShellMethod(value = "Insert into books table new book", key = {"ib", "i book"})
+    public String insertAuthor(@ShellOption({"-t"}) String title,
+                               @ShellOption({"-g"}) String genre,
+                               @ShellOption(value = {"-a"}, arity = 1) long[] authors) {
+        Book book = new Book();
+        book.setTitle(title);
+        book.setGenre(new Genre(genre));
+        book.setAuthor(Arrays.stream(authors).mapToObj(Author::new).collect(Collectors.toSet()));
+        return wormBookService.saveBook(book).toString();
+    }
+
+    @ShellMethod(value = "Delete book from table using id", key = {"db", "d book"})
+    public String deleteBook(@ShellOption({"-i"}) Long id) {
+        if (wormBookService.deleteBook(id))
+            return "Successful";
+        return "Some problem";
     }
 
     private void printTable(List<Book> books) {
