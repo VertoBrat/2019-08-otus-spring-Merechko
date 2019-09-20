@@ -11,21 +11,25 @@ create table AUTHORS
     constraint AUTHORS_PK
         primary key (ID)
 );
+create table genre (
+    id bigint auto_increment,
+    name varchar(100) not null,
+    constraint genre_pk
+    primary key (id)
+);
+create unique index genre_name_uindex
+    on genre (name);
+
 create table BOOKS
 (
     ID        BIGINT auto_increment,
     TITLE     VARCHAR(255) not null,
+    GENRE_ID bigint not null,
     constraint BOOKS_PK
-        primary key (ID)
+        primary key (ID),
+        constraint genre_fk
+        foreign key (GENRE_ID) references genre
 );
-create table BOOKS_GENRES
-(
-    BOOK_ID BIGINT not null,
-    GENRE VARCHAR(255) not null,
-    CONSTRAINT BOOKS_GENRES_BOOK_ID_fk
-        foreign key (BOOK_ID) references BOOKS
-);
-
 create table BOOKS_AUTHORS
 (
     BOOK_ID long not null,

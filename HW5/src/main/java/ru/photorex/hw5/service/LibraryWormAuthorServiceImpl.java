@@ -2,6 +2,7 @@ package ru.photorex.hw5.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.photorex.hw5.model.Author;
 import ru.photorex.hw5.repository.AuthorRepository;
 
@@ -9,6 +10,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class LibraryWormAuthorServiceImpl implements LibraryWormAuthorService {
 
     private final AuthorRepository authorRepository;
@@ -24,11 +26,13 @@ public class LibraryWormAuthorServiceImpl implements LibraryWormAuthorService {
     }
 
     @Override
+    @Transactional
     public Author saveAuthor(Author author) {
         return authorRepository.save(author);
     }
 
     @Override
+    @Transactional
     public boolean deleteAuthor(Long id) {
         return authorRepository.delete(id);
     }
