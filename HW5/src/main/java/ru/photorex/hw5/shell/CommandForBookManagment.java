@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataAccessException;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
+import org.springframework.shell.standard.ShellMethodAvailability;
 import org.springframework.shell.standard.ShellOption;
 import ru.photorex.hw5.model.Author;
 import ru.photorex.hw5.model.Book;
@@ -16,19 +17,23 @@ import java.util.stream.Collectors;
 
 @ShellComponent
 @RequiredArgsConstructor
-public class CommandForBookManagment {
+public class CommandForBookManagment implements Blocked {
 
     private final LibraryWormBookService wormBookService;
     private final ShellTableBuilder tableBuilder;
     private final IOService console;
 
+    private boolean isLogged = false;
+
     @ShellMethod(value = "Display all books into library.", key = {"tb", "t books"})
+    @ShellMethodAvailability("availabilityCheck")
     public void displayBooks() {
         List<Book> books = wormBookService.getAllBooks();
         printTable(books);
     }
 
     @ShellMethod(value = "Display all books some author.", key = {"tba", "tb author"})
+    @ShellMethodAvailability("availabilityCheck")
     public void displayBooksByAuthor(@ShellOption({"-i"}) Long authorId) {
         Author author = new Author();
         author.setId(authorId);
@@ -38,7 +43,8 @@ public class CommandForBookManagment {
         } else console.printString("No books of this author");
     }
 
-    @ShellMethod(value = "Display book by id.", key = {"tbi", "tb id"})
+    @ShellMethod(value = "Display book by id.", key = {"tbi", "tb book by id"})
+    @ShellMethodAvailability("availabilityCheck")
     public void displayBookById(@ShellOption({"-i"}) Long id) {
         Book book = null;
         try {
@@ -51,17 +57,19 @@ public class CommandForBookManagment {
     }
 
     @ShellMethod(value = "Insert into books table new book.", key = {"ib", "i book"})
+    @ShellMethodAvailability("availabilityCheck")
     public String insertBook(@ShellOption({"-t"}) String title,
-                               @ShellOption({"-g"}) Long genreId,
-                               @ShellOption(value = {"-a"}, arity = 1, defaultValue = "1") long[] authors) {
+                             @ShellOption({"-g"}) Long genreId,
+                             @ShellOption(value = {"-a"}, arity = 1, defaultValue = "1") long[] authors) {
         Book book = new Book();
         book.setTitle(title);
         book.setGenre(new Genre(genreId));
         book.setAuthor(Arrays.stream(authors).mapToObj(Author::new).collect(Collectors.toSet()));
-        return wormBookService.saveBook(book)!=null?"Added" : "Some Problem";
+        return wormBookService.saveBook(book) != null ? "Added" : "Some Problem";
     }
 
     @ShellMethod(value = "Update book into books table.", key = {"ub", "u book"})
+    @ShellMethodAvailability("availabilityCheck")
     public String updateBook(@ShellOption({"-i"}) Long id,
                              @ShellOption({"-t"}) String title,
                              @ShellOption({"-g"}) Long genreId,
@@ -76,6 +84,7 @@ public class CommandForBookManagment {
     }
 
     @ShellMethod(value = "Delete book from table using id.", key = {"db", "d book"})
+    @ShellMethodAvailability("availabilityCheck")
     public String deleteBook(@ShellOption({"-i"}) Long id) {
         if (wormBookService.deleteBook(id))
             return "Successful";
@@ -88,5 +97,15 @@ public class CommandForBookManagment {
         headers.put("title", "Title");
         headers.put("genre", "Genre");
         tableBuilder.build(books, headers);
+    }
+
+    @Override
+    public void unBlock() {
+        this.isLogged = true;
+    }
+
+    @Override
+    public boolean isLogged() {
+        return isLogged;
     }
 }
