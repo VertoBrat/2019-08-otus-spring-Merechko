@@ -84,8 +84,8 @@ public class CommandsForAuthorManagment implements Blocked {
     }
 
     @Override
-    public void unBlock() {
-        this.isLogged = true;
+    public void changeAccess() {
+        this.isLogged = !isLogged;
     }
 
     @Override

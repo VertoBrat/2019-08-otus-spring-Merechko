@@ -4,7 +4,7 @@ import org.springframework.shell.Availability;
 
 public interface Blocked {
 
-    void unBlock();
+    void changeAccess();
 
     boolean isLogged();
 

@@ -18,4 +18,15 @@ public class Author {
     public Author(Long id) {
         this.id = id;
     }
+
+    public Author(Long id, String firstName, String lastName) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+    }
+
+    @Override
+    public String toString() {
+        return lastName + " " + firstName;
+    }
 }

@@ -24,16 +24,4 @@ public class LibraryWormGenreServiceImpl implements LibraryWormGenreService {
     public List<Genre> getAllGenres() {
         return genreRepository.getAll();
     }
-
-    @Override
-    @Transactional
-    public Genre saveGenre(Genre genre) {
-        return genreRepository.save(genre);
-    }
-
-    @Override
-    @Transactional
-    public boolean deleteGenre(Long id) {
-        return genreRepository.delete(id);
-    }
 }

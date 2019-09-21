@@ -29,7 +29,7 @@ public class CommandForBookManagment implements Blocked {
     @ShellMethodAvailability("availabilityCheck")
     public void displayBooks() {
         List<Book> books = wormBookService.getAllBooks();
-        printTable(books);
+        printTable(books, false);
     }
 
     @ShellMethod(value = "Display all books some author.", key = {"tba", "tb author"})
@@ -39,7 +39,7 @@ public class CommandForBookManagment implements Blocked {
         author.setId(authorId);
         List<Book> books = wormBookService.getBooksByAuthor(author);
         if (!books.isEmpty()) {
-            printTable(books);
+            printTable(books, false);
         } else console.printString("No books of this author");
     }
 
@@ -49,7 +49,7 @@ public class CommandForBookManagment implements Blocked {
         Book book = null;
         try {
             book = wormBookService.getBookById(id);
-            printTable(Collections.singletonList(book));
+            printTable(Collections.singletonList(book), true);
         } catch (DataAccessException e) {
             console.printString("No book with id = " + id);
         }
@@ -59,12 +59,12 @@ public class CommandForBookManagment implements Blocked {
     @ShellMethod(value = "Insert into books table new book.", key = {"ib", "i book"})
     @ShellMethodAvailability("availabilityCheck")
     public String insertBook(@ShellOption({"-t"}) String title,
-                             @ShellOption({"-g"}) Long genreId,
+                             @ShellOption({"-g"}) String genreName,
                              @ShellOption(value = {"-a"}, arity = 1, defaultValue = "1") long[] authors) {
         Book book = new Book();
         book.setTitle(title);
-        book.setGenre(new Genre(genreId));
-        book.setAuthor(Arrays.stream(authors).mapToObj(Author::new).collect(Collectors.toSet()));
+        book.setGenre(new Genre(genreName));
+        book.setAuthor(Arrays.stream(authors).mapToObj(Author::new).collect(Collectors.toList()));
         return wormBookService.saveBook(book) != null ? "Added" : "Some Problem";
     }
 
@@ -72,15 +72,15 @@ public class CommandForBookManagment implements Blocked {
     @ShellMethodAvailability("availabilityCheck")
     public String updateBook(@ShellOption({"-i"}) Long id,
                              @ShellOption({"-t"}) String title,
-                             @ShellOption({"-g"}) Long genreId,
+                             @ShellOption({"-g"}) String genreName,
                              @ShellOption(value = {"-a"}, arity = 1, defaultValue = "0") long[] authors) {
         Book book = new Book();
         book.setId(id);
         book.setTitle(title);
-        book.setGenre(new Genre(genreId));
-        if (authors.length == 1 && authors[0] == 0) book.setAuthor(Collections.EMPTY_SET);
-        else book.setAuthor(Arrays.stream(authors).mapToObj(Author::new).collect(Collectors.toSet()));
-        return wormBookService.saveBook(book).toString();
+        book.setGenre(new Genre(genreName));
+        if (authors.length == 1 && authors[0] == 0) book.setAuthor(Collections.EMPTY_LIST);
+        else book.setAuthor(Arrays.stream(authors).mapToObj(Author::new).collect(Collectors.toList()));
+        return wormBookService.saveBook(book) != null ? "Updated" : "Some Problem";
     }
 
     @ShellMethod(value = "Delete book from table using id.", key = {"db", "d book"})
@@ -91,17 +91,19 @@ public class CommandForBookManagment implements Blocked {
         return "Some problem";
     }
 
-    private void printTable(List<Book> books) {
+    private void printTable(List<Book> books, boolean withAuthors) {
         LinkedHashMap<String, Object> headers = new LinkedHashMap<>();
         headers.put("id", "Id");
         headers.put("title", "Title");
         headers.put("genre", "Genre");
+        if (withAuthors)
+            headers.put("author", "Authors");
         tableBuilder.build(books, headers);
     }
 
     @Override
-    public void unBlock() {
-        this.isLogged = true;
+    public void changeAccess() {
+        this.isLogged = !isLogged;
     }
 
     @Override

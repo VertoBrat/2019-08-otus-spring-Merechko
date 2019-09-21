@@ -33,32 +33,41 @@ public class BookRepositoryJdbcImpl implements BookRepository {
     @Override
     public Book getById(Long id) {
         Map<String, Object> params = Collections.singletonMap("id", id);
-        return namedParameterJdbcOperations.queryForObject("select b.id as id, b.title as title, g.name as genre from books b " +
-                "inner join genre g on b.genre_id= g.id where b.id= :id", params, mapper);
+        Book book = namedParameterJdbcOperations.queryForObject("select b.id as id, b.title as title, g.id as genre_id, g.name as genre " +
+                "from books b left join genres g on b.id= g.book_id where b.id= :id", params, mapper);
+        if (book != null) {
+            List<Author> authors = namedParameterJdbcOperations.query("select * from authors a left join books_authors ba on ba.author_id=a.id where ba.book_id= :id", params,
+                    (r, i) -> new Author(r.getLong("id"), r.getString("first_name"), r.getString("last_name")));
+            book.setAuthor(authors);
+        }
+        return book;
     }
 
     @Override
     public List<Book> getByAuthor(Author author) {
         Map<String, Object> paramsForIds = Collections.singletonMap("id", author.getId());
-        return namedParameterJdbcOperations.query("select b.id as id, b.title as title, g.name as genre from books b " +
-                "left join genre g on b.genre_id=g.id left join books_authors ba on b.id=ba.book_id where ba.author_id= :id", paramsForIds, mapper);
+        return namedParameterJdbcOperations.query("select b.id as id, b.title as title, g.id as genre_id, g.name as genre from books b " +
+                "left join genres g on b.id=g.book_id left join books_authors ba on b.id=ba.book_id where ba.author_id= :id", paramsForIds, mapper);
     }
 
     @Override
     public List<Book> getAll() {
-        return namedParameterJdbcOperations.query("select b.id as id, b.title as title, g.name as genre from books b " +
-                "inner join genre g on b.genre_id=g.id order by b.id", mapper);
+        return namedParameterJdbcOperations.query("select b.id as id, b.title as title,g.id as genre_id, g.name as genre from books b " +
+                "left join genres g on b.id=g.book_id order by b.id", mapper);
     }
 
     @Override
     public Book save(Book book) {
         MapSqlParameterSource map = new MapSqlParameterSource()
                 .addValue("id", book.getId())
-                .addValue("title", book.getTitle())
-                .addValue("genre_id", book.getGenre().getId());
+                .addValue("title", book.getTitle());
         if (book.getId() == null) {
             Number key = insert.executeAndReturnKey(map);
             book.setId(key.longValue());
+            MapSqlParameterSource mapGenres = new MapSqlParameterSource()
+                    .addValue("book_id", book.getId())
+                    .addValue("name", book.getGenre().getName());
+            namedParameterJdbcOperations.update("insert into genres (book_id, name) values (:book_id, :name)", mapGenres);
             jdbcTemplate.batchUpdate("insert into books_authors (book_id, author_id) values(?, ?)",
                     book.getAuthor(), book.getAuthor().size(),
                     (ps, author) -> {
@@ -66,7 +75,13 @@ public class BookRepositoryJdbcImpl implements BookRepository {
                         ps.setLong(2, author.getId());
                     });
         } else {
-            if (namedParameterJdbcOperations.update("update books set title=:title, genre_id=:genre_id where id=:id", map) != 0) {
+            if (namedParameterJdbcOperations.update("update books set title=:title where id=:id", map) != 0) {
+                if (book.getGenre() != null) {
+                    MapSqlParameterSource mapGenres = new MapSqlParameterSource()
+                            .addValue("id", book.getId())
+                            .addValue("name", book.getGenre().getName());
+                    namedParameterJdbcOperations.update("update genres set name=:name where book_id=:id", mapGenres);
+                }
                 if (!book.getAuthor().isEmpty()) {
                     jdbcTemplate.batchUpdate("insert into books_authors (book_id, author_id) values(?, ?)",
                             book.getAuthor(), book.getAuthor().size(),
@@ -85,6 +100,7 @@ public class BookRepositoryJdbcImpl implements BookRepository {
     public boolean delete(Long id) {
         Map<String, Object> params = Collections.singletonMap("id", id);
         namedParameterJdbcOperations.update("delete from books_authors where book_id= :id", params);
+        namedParameterJdbcOperations.update("delete from genres where book_id= :id", params);
         return namedParameterJdbcOperations.update("delete from books where id= :id", params) != 0;
     }
 }

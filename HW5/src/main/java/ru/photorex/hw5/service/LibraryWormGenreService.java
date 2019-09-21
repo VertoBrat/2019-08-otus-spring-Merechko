@@ -9,8 +9,4 @@ public interface LibraryWormGenreService {
    Genre getGenreById(Long id);
 
     List<Genre> getAllGenres();
-
-    Genre saveGenre(Genre genre);
-
-    boolean deleteGenre(Long id);
 }

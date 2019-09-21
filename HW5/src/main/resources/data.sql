@@ -1,10 +1,12 @@
 insert into AUTHORS (ID, FIRST_NAME, LAST_NAME) values
      (1, 'NoFirstName', 'NoLastName'),(2, 'Robert', 'Shekli'), (3, 'Joshua', 'Bloh'),(4, 'Nikolay', 'Gogol');
-insert into genre(id, name) values
-(1, 'Story'), (2, 'Novel'), (3, 'Comedy');
-insert into BOOKS (ID, TITLE, GENRE_ID) values
-     (1, 'Missing Certificate', 3), (2, 'Civilization of status', 1),
-     (3, 'Effective_Java_3rd', 2);
+
+insert into BOOKS (ID, TITLE) values
+(1, 'Missing Certificate'), (2, 'Civilization of status'),
+(3, 'Effective_Java_3rd');
+
+insert into genres(id, book_id, name) values
+(1, 2, 'Story'), (2, 3, 'Novel'), (3, 1, 'Comedy');
 
 insert into books_authors (book_id, author_id)
-values (1, 4), (2, 2), (3, 3);
+values (1, 4),(1, 1), (2, 2), (3, 3);

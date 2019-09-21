@@ -27,7 +27,7 @@ public class CommandsForLibrary {
     @ShellMethodAvailability("availabilityCheckLogout")
     public String login(@ShellOption({"-N", "--name"}) @Size(min = 1, max = 5) String name) {
         userDetailService.setUserName(name);
-        shellComponents.forEach(Blocked::unBlock);
+        shellComponents.forEach(Blocked::changeAccess);
         isLogged = true;
         return SUCCESS_LOGIN;
     }
@@ -36,6 +36,7 @@ public class CommandsForLibrary {
     @ShellMethodAvailability("availabilityCheckLogin")
     public String logout() {
         userDetailService.setUserName("");
+        shellComponents.forEach(Blocked::changeAccess);
         isLogged = false;
         return LOGOUT;
     }

@@ -12,10 +12,15 @@ public class Genre {
     }
 
     public Genre(Long id) {
-        this.id = id;
+        this(id, null);
     }
 
     public Genre(String name) {
+        this(null, name);
+    }
+
+    public Genre(Long id, String name) {
+        this.id = id;
         this.name = name;
     }
 
