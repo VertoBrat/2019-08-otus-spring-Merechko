@@ -1,9 +1,6 @@
 package ru.photorex.hw5.repository.jdbc;
 
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
-import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
-import org.springframework.jdbc.core.simple.SimpleJdbcInsertOperations;
 import org.springframework.stereotype.Repository;
 import ru.photorex.hw5.model.Genre;
 import ru.photorex.hw5.repository.GenreRepository;
@@ -12,20 +9,17 @@ import ru.photorex.hw5.repository.mapper.GenreRowMapper;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Repository
 public class GenreRepositoryJdbcImpl implements GenreRepository {
 
     private final NamedParameterJdbcOperations namedParameterJdbcOperations;
-
-    private final JdbcTemplate jdbcTemplate;
-    private final SimpleJdbcInsertOperations insert;
     private final GenreRowMapper mapper;
 
-    public GenreRepositoryJdbcImpl(NamedParameterJdbcOperations namedParameterJdbcOperations, JdbcTemplate jdbcTemplate, GenreRowMapper mapper) {
+    public GenreRepositoryJdbcImpl(NamedParameterJdbcOperations namedParameterJdbcOperations, GenreRowMapper mapper) {
         this.namedParameterJdbcOperations = namedParameterJdbcOperations;
-        this.jdbcTemplate = jdbcTemplate;
-        this.insert = new SimpleJdbcInsert(jdbcTemplate).withTableName("genre").usingGeneratedKeyColumns("id");
         this.mapper = mapper;
     }
 
@@ -37,6 +31,8 @@ public class GenreRepositoryJdbcImpl implements GenreRepository {
 
     @Override
     public List<Genre> getAll() {
-        return namedParameterJdbcOperations.query("select id, name from genres", mapper);
+        List<Genre> genres = namedParameterJdbcOperations.query("select id, name from genres", mapper);
+        return genres.stream().distinct().collect(Collectors.toList());
+
     }
 }

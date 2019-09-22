@@ -18,8 +18,6 @@ create table GENRES (
     constraint genre_pk
     primary key (id)
 );
-create unique index genre_name_uindex
-    on GENRES (name);
 
 create table BOOKS
 (

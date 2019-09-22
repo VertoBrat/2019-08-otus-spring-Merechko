@@ -1,8 +1,10 @@
 package ru.photorex.hw5.model;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 @Data
+@EqualsAndHashCode(exclude = {"id"})
 public class Genre {
 
     private Long id;
@@ -23,6 +25,8 @@ public class Genre {
         this.id = id;
         this.name = name;
     }
+
+
 
     @Override
     public String toString() {
