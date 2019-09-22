@@ -11,19 +11,19 @@
 
 * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
-You started Library Application!!!
-In order to start using library you need to log in. So this command is available after log in :
+  You started Library Application!!!
+  In order to start using library you need to log in. So this command is available after log in :
 
-  l, login             - Login in application.            ||   ia, i author        - Insert into authors table new author.
-  lo, logout           - Logout from application.         ||   ib, i book          - Insert into books table new book.
-                                                          ||
-  ta, t authors        - Display all authors into library.||
-  tb, t books          - Display all books into library.  ||   ua, u authors       - Update author in table.
-  tg, t genre          - Display all genres from table.   ||   ub, u book          - Update book in table
-                                                          ||
-  tai, t authors by id - Display author by id.            ||   da, d author        - Delete author from table using id.
-  tbi, tb book by id   - Display book by id.              ||   db, d book          - Delete book from table using id.
-  tba, tb author       - Display all books some author.   ||
+    l, login             - Login in application.            ||   ia, i author        - Insert into authors table new author.
+    lo, logout           - Logout from application.         ||   ib, i book          - Insert into books table new book.
+                                                            ||   ig, i genre         - Insert genre into table.
+    ta, t authors        - Display all authors into library.||
+    tb, t books          - Display all books into library.  ||   ua, u authors       - Update author in table.
+    tg, t genre          - Display all genres from table.   ||   ub, u book          - Update book in table
+                                                            ||   ug, u genre         - Update genre in table
+    tai, t authors by id - Display author by id.            ||   da, d author        - Delete author from table using id.
+    tbi, tb book by id   - Display book by id.              ||   db, d book          - Delete book from table using id.
+    tba, tb author       - Display all books some author.   ||   dg, d genre         - Delete genre from table.
 
 
 ${AnsiColor.RED}If you forgot some commands, you can use 'help' and 'help <command>' commands.

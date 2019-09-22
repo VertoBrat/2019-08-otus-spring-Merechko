@@ -43,6 +43,31 @@ public class CommandsForGenreManagment implements Blocked {
         printTable(genres);
     }
 
+    @ShellMethod(value = "Insert genre into table.", key = {"ig", "i genre"})
+    @ShellMethodAvailability("availabilityCheck")
+    public String insertGenre(@ShellOption({"-n"}) String name) {
+        Genre genre = new Genre(null, name);
+        return wormGenreService.saveGenre(genre) != null ? "Added" : "SomeProblem";
+    }
+
+    @ShellMethod(value = "Update genre into table.", key = {"ug", "u genre"})
+    @ShellMethodAvailability("availabilityCheck")
+    public String updateGenre(@ShellOption({"-i"}) Long id,
+                              @ShellOption({"-n"}) String name) {
+        Genre genre = new Genre(id, name);
+        Genre dbGenre = wormGenreService.saveGenre(genre);
+        if (dbGenre == null) return "There is no Genre with id = " + id;
+        return "Successful";
+    }
+
+    @ShellMethod(value = "Delete genre from table.", key = {"dg", "d genre"})
+    @ShellMethodAvailability("availabilityCheck")
+    public String deleteGenre(@ShellOption({"-i"}) Long id) {
+        if (wormGenreService.deleteGenreById(id))
+            return "Successful";
+        return "There is no genre with id = " + id;
+    }
+
     private void printTable(List<Genre> genres) {
         LinkedHashMap<String, Object> headers = new LinkedHashMap<>();
         headers.put("id", "Id");

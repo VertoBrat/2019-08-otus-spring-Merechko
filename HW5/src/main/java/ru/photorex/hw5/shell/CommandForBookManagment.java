@@ -11,6 +11,7 @@ import ru.photorex.hw5.model.Book;
 import ru.photorex.hw5.model.Genre;
 import ru.photorex.hw5.service.IOService;
 import ru.photorex.hw5.service.LibraryWormBookService;
+import ru.photorex.hw5.service.LibraryWormGenreService;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -20,6 +21,7 @@ import java.util.stream.Collectors;
 public class CommandForBookManagment implements Blocked {
 
     private final LibraryWormBookService wormBookService;
+    private final LibraryWormGenreService wormGenreService;
     private final ShellTableBuilder tableBuilder;
     private final IOService console;
 
@@ -35,8 +37,7 @@ public class CommandForBookManagment implements Blocked {
     @ShellMethod(value = "Display all books some author.", key = {"tba", "tb author"})
     @ShellMethodAvailability("availabilityCheck")
     public void displayBooksByAuthor(@ShellOption({"-i"}) Long authorId) {
-        Author author = new Author();
-        author.setId(authorId);
+        Author author = new Author(authorId);
         List<Book> books = wormBookService.getBooksByAuthor(author);
         if (!books.isEmpty()) {
             printTable(books, false);
@@ -59,11 +60,14 @@ public class CommandForBookManagment implements Blocked {
     @ShellMethod(value = "Insert into books table new book.", key = {"ib", "i book"})
     @ShellMethodAvailability("availabilityCheck")
     public String insertBook(@ShellOption({"-t"}) String title,
-                             @ShellOption({"-g"}) String genreName,
+                             @ShellOption({"-g"}) Long genreId,
                              @ShellOption(value = {"-a"}, arity = 1, defaultValue = "1") long[] authors) {
-        Book book = new Book();
-        book.setTitle(title);
-        book.setGenre(new Genre(genreName));
+        try {
+            wormGenreService.getGenreById(genreId);
+        } catch (DataAccessException ex) {
+            return "No Genre with id = " + genreId;
+        }
+        Book book = new Book(null, title, new Genre(genreId, null));
         book.setAuthor(Arrays.stream(authors).mapToObj(Author::new).collect(Collectors.toList()));
         return wormBookService.saveBook(book) != null ? "Added" : "Some Problem";
     }
@@ -72,12 +76,11 @@ public class CommandForBookManagment implements Blocked {
     @ShellMethodAvailability("availabilityCheck")
     public String updateBook(@ShellOption({"-i"}) Long id,
                              @ShellOption({"-t"}) String title,
-                             @ShellOption({"-g"}) String genreName,
+                             @ShellOption({"-g"}) Long genreId,
                              @ShellOption(value = {"-a"}, arity = 1, defaultValue = "0") long[] authors) {
-        Book book = new Book();
-        book.setId(id);
-        book.setTitle(title);
-        book.setGenre(new Genre(genreName));
+        if (wormGenreService.getGenreById(genreId)==null)
+            return "No Genre with id = " + genreId;
+        Book book = new Book(id, title, new Genre(genreId, null));
         if (authors.length == 1 && authors[0] == 0) book.setAuthor(Collections.EMPTY_LIST);
         else book.setAuthor(Arrays.stream(authors).mapToObj(Author::new).collect(Collectors.toList()));
         return wormBookService.saveBook(book) != null ? "Updated" : "Some Problem";

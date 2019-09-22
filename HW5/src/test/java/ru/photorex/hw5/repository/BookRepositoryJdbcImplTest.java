@@ -23,15 +23,23 @@ import static org.assertj.core.api.Assertions.assertThat;
 @Sql(scripts = {"classpath:data-test.sql"})
 public class BookRepositoryJdbcImplTest {
 
+    private static final Long ID_1 = 1L;
+    private static final Long ID_3 = 3L;
+    private static final int LIST_SIZE = 2;
+    private static final String TITLE = "title";
+    private static final String TITLE_1 = "title_1";
+    private static final String GENRE_1 = "genre_1";
+    private static final String NAME = "name";
+
     @Autowired
     BookRepositoryJdbcImpl repository;
 
     @DisplayName("должен возвращать книгу по идентификатору вместе с жанрами и авторами")
     @Test
     void shouldReturnBookByIdWithGenres() {
-        Book book = repository.getById(1L);
-        assertThat(book).isNotNull().hasFieldOrPropertyWithValue("title", "title_1");
-        assertThat(book.getGenre()).hasFieldOrPropertyWithValue("name", "genre_1");
+        Book book = repository.getById(ID_1);
+        assertThat(book).isNotNull().hasFieldOrPropertyWithValue(TITLE, TITLE_1);
+        assertThat(book.getGenre()).hasFieldOrPropertyWithValue(NAME, GENRE_1);
         assertThat(book.getAuthor()).hasSize(3);
     }
 
@@ -39,23 +47,21 @@ public class BookRepositoryJdbcImplTest {
     @Test
     void shouldReturnAllGenres() {
         val books = repository.getAll();
-        assertThat(books).hasSize(3).allMatch(b -> b.getTitle().contains("title"));
+        assertThat(books).hasSize(3).allMatch(b -> b.getTitle().contains(TITLE));
     }
 
     @DisplayName("должен вернуть все книги одного автора")
     @Test
     void shouldReturnBooksOfAuthor() {
-        List<Book> book = repository.getByAuthor(new Author(3L));
-        assertThat(book).hasSize(2);
+        List<Book> book = repository.getByAuthor(new Author(ID_3));
+        assertThat(book).hasSize(LIST_SIZE);
     }
 
     @DisplayName("должен сохранить книгу с жанром и автором")
     @Test
     void shouldSaveBook() {
-        Book book = new Book();
-        book.setTitle("newTitle");
-        book.setGenre(new Genre("newGenre"));
-        book.setAuthor(List.of(new Author(1L)));
+        Book book = new Book(null, "newTitle", new Genre(ID_1, null));
+        book.setAuthor(List.of(new Author(ID_1)));
         Book dbBook = repository.save(book);
         assertThat(dbBook.getId()).isNotNull();
     }
@@ -63,7 +69,7 @@ public class BookRepositoryJdbcImplTest {
     @DisplayName("должен удалить книгу из базы")
     @Test
     void shouldDeleteBook() {
-        repository.delete(1L);
-        assertThat(repository.getAll()).hasSize(2);
+        repository.delete(ID_1);
+        assertThat(repository.getAll()).hasSize(LIST_SIZE);
     }
 }

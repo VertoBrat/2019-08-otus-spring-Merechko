@@ -9,4 +9,8 @@ public interface GenreRepository {
     Genre getById(Long id);
 
     List<Genre> getAll();
+
+    Genre save(Genre genre);
+
+    boolean delete(Long id);
 }

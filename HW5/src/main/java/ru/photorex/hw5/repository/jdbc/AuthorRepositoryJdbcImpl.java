@@ -17,6 +17,11 @@ import java.util.Map;
 @Repository
 public class AuthorRepositoryJdbcImpl implements AuthorRepository {
 
+    private static final String ID = "id";
+    private static final String TABLE_AUTHORS = "authors";
+    static final String AUTHOR_FIRST_NAME = "firstName";
+    static final String AUTHOR_LAST_NAME = "lastName";
+
     private final NamedParameterJdbcOperations namedParameterJdbcOperations;
     private final JdbcTemplate jdbcTemplate;
     private final SimpleJdbcInsertOperations insert;
@@ -25,13 +30,13 @@ public class AuthorRepositoryJdbcImpl implements AuthorRepository {
     public AuthorRepositoryJdbcImpl(NamedParameterJdbcOperations namedParameterJdbcOperations, JdbcTemplate jdbcTemplate, AuthorRowMapper mapper) {
         this.namedParameterJdbcOperations = namedParameterJdbcOperations;
         this.jdbcTemplate = jdbcTemplate;
-        this.insert = new SimpleJdbcInsert(jdbcTemplate).withTableName("authors").usingGeneratedKeyColumns("id");
+        this.insert = new SimpleJdbcInsert(jdbcTemplate).withTableName(TABLE_AUTHORS).usingGeneratedKeyColumns(ID);
         this.mapper = mapper;
     }
 
     @Override
     public Author getById(Long id) {
-        Map<String, Object> params = Collections.singletonMap("id", id);
+        Map<String, Object> params = Collections.singletonMap(ID, id);
         return namedParameterJdbcOperations.queryForObject("select * from authors where id= :id", params, mapper);
     }
 
@@ -43,9 +48,9 @@ public class AuthorRepositoryJdbcImpl implements AuthorRepository {
     @Override
     public Author save(Author author) {
         MapSqlParameterSource map = new MapSqlParameterSource()
-                .addValue("id", author.getId())
-                .addValue("firstName", author.getFirstName())
-                .addValue("lastName", author.getLastName());
+                .addValue(ID, author.getId())
+                .addValue(AUTHOR_FIRST_NAME, author.getFirstName())
+                .addValue(AUTHOR_LAST_NAME, author.getLastName());
         if (author.getId() == null) {
             Number key = insert.executeAndReturnKey(map);
             author.setId(key.longValue());
@@ -59,7 +64,7 @@ public class AuthorRepositoryJdbcImpl implements AuthorRepository {
 
     @Override
     public boolean delete(Long id) {
-        Map<String, Object> params = Collections.singletonMap("id", id);
+        Map<String, Object> params = Collections.singletonMap(ID, id);
         namedParameterJdbcOperations.update("delete from books_authors where author_id= :id", params);
         return namedParameterJdbcOperations.update("delete from authors where id= :id", params) != 0;
     }
