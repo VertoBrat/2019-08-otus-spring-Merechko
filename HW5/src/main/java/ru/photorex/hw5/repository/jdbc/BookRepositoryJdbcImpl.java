@@ -87,7 +87,6 @@ public class BookRepositoryJdbcImpl implements BookRepository {
     @Override
     public boolean delete(Long id) {
         Map<String, Object> params = Collections.singletonMap(ID, id);
-        namedParameterJdbcOperations.update("delete from books_authors where book_id= :id", params);
         return namedParameterJdbcOperations.update("delete from books where id= :id", params) != 0;
     }
 

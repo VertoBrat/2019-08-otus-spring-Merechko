@@ -62,11 +62,6 @@ public class GenreRepositoryJdbcImpl implements GenreRepository {
     @Override
     public boolean delete(Long id) {
         Map<String, Object> params = Collections.singletonMap(ID, id);
-        List<Long> ids = namedParameterJdbcOperations.query("select b.id as id from books b where b.genre_id=:id", params,
-                (r, i) -> r.getLong("id"));
-        jdbcTemplate.batchUpdate("delete from books_authors where book_id=?",
-                ids, ids.size(), (r, i) -> r.setLong(1, i));
-        namedParameterJdbcOperations.update("delete from books where genre_id=:id", params);
         return namedParameterJdbcOperations.update("delete from genres where id=:id", params) !=0;
     }
 }

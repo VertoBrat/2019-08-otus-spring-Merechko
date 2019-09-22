@@ -6,12 +6,14 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.data.jdbc.DataJdbcTest;
 import org.springframework.context.annotation.Import;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.test.context.jdbc.Sql;
 import ru.photorex.hw5.model.Genre;
 import ru.photorex.hw5.repository.jdbc.GenreRepositoryJdbcImpl;
 import ru.photorex.hw5.repository.mapper.GenreRowMapper;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @DisplayName("Репозиторий на основе Jdbc для работы с жанрами ")
 @DataJdbcTest
@@ -21,8 +23,9 @@ public class GenreRepositoryJdbcImplTest {
 
     private static final Long ID_1 = 1L;
     private static final Long ID_3 = 3L;
-    private static final int LIST_SIZE_2 = 2;
+    private static final Long ID_4 = 4L;
     private static final int LIST_SIZE_3 = 3;
+    private static final int LIST_SIZE_4 = 4;
     private static final String ID = "id";
     private static final String NAME = "name";
     private static final String GENRE = "genre";
@@ -35,7 +38,7 @@ public class GenreRepositoryJdbcImplTest {
     @Test
     void shouldLoadAllGenres() {
         val genres = repository.getAll();
-        assertThat(genres).isNotNull().hasSize(LIST_SIZE_3)
+        assertThat(genres).isNotNull().hasSize(LIST_SIZE_4)
                 .allMatch(a -> a.getName().contains(GENRE));
     }
 
@@ -52,13 +55,19 @@ public class GenreRepositoryJdbcImplTest {
     void shouldSaveGenre() {
         Genre genre = new Genre(null, "newGenre");
         Genre dbGenre = repository.save(genre);
-        assertThat(dbGenre.getId()).isNotNull().isGreaterThan(ID_3);
+        assertThat(dbGenre.getId()).isNotNull().isGreaterThan(ID_4);
     }
 
-    @DisplayName("должен удалять жанр из базы")
+    @DisplayName("должен удалять жанр из базы, если на него не ссылаются книги")
     @Test
     void shouldDeleteGenre() {
-        repository.delete(ID_1);
-        assertThat(repository.getAll()).hasSize(LIST_SIZE_2);
+        repository.delete(ID_4);
+        assertThat(repository.getAll()).hasSize(LIST_SIZE_3);
+    }
+
+    @DisplayName("должен бросать исключение при попытке удалить жанр, на который ссылаются книги")
+    @Test
+    void shouldThrowExceptionIfBooksLinksGenre() {
+        assertThrows(DataIntegrityViolationException.class, () -> repository.delete(ID_1));
     }
 }

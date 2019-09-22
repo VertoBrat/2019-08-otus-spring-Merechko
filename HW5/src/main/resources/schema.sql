@@ -28,7 +28,9 @@ create table BOOKS
     GENRE_ID long         not null,
     TITLE    VARCHAR(255) not null,
     constraint BOOKS_PK
-        primary key (ID)
+        primary key (ID),
+    constraint books_genres_genre_id_fk
+        foreign key (GENRE_ID) references GENRES
 );
 
 create table BOOKS_AUTHORS
@@ -38,5 +40,5 @@ create table BOOKS_AUTHORS
     constraint books_authors_AUTHORS_ID_fk
         foreign key (author_id) references AUTHORS,
     constraint books_authors_BOOKS_ID_fk
-        foreign key (book_id) references BOOKS
+        foreign key (book_id) references BOOKS on delete cascade
 );

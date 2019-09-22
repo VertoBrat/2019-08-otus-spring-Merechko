@@ -70,8 +70,12 @@ public class CommandsForAuthorManagment implements Blocked {
     @ShellMethod(value = "Delete author from table using id.", key = {"da", "d author"})
     @ShellMethodAvailability("availabilityCheck")
     public String deleteAuthor(@ShellOption({"-i"}) Long id) {
-        if (wormAuthorService.deleteAuthor(id))
-            return "Successful";
+        try {
+            if (wormAuthorService.deleteAuthor(id))
+                return "Successful";
+        } catch (DataAccessException ex) {
+            return "This Author have books, you cant remove him";
+        }
         return "No author with id = " + id;
     }
 

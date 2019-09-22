@@ -63,8 +63,12 @@ public class CommandsForGenreManagment implements Blocked {
     @ShellMethod(value = "Delete genre from table.", key = {"dg", "d genre"})
     @ShellMethodAvailability("availabilityCheck")
     public String deleteGenre(@ShellOption({"-i"}) Long id) {
-        if (wormGenreService.deleteGenreById(id))
-            return "Successful";
+        try {
+            if (wormGenreService.deleteGenreById(id))
+                return "Successful";
+        } catch (DataAccessException ex) {
+            return  "There are few book of this genre, you cant remove it";
+        }
         return "There is no genre with id = " + id;
     }
 

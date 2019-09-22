@@ -28,7 +28,9 @@ create table BOOKS
     GENRE_ID long         not null,
     TITLE    VARCHAR(255) not null,
     constraint BOOKS_PK
-        primary key (ID)
+        primary key (ID),
+    constraint books_genres_genre_id_fk
+        foreign key (GENRE_ID) references GENRES
 );
 
 create table BOOKS_AUTHORS
@@ -38,16 +40,16 @@ create table BOOKS_AUTHORS
     constraint books_authors_AUTHORS_ID_fk
         foreign key (author_id) references AUTHORS,
     constraint books_authors_BOOKS_ID_fk
-        foreign key (book_id) references BOOKS
+        foreign key (book_id) references BOOKS on delete cascade
 );
 
 
 insert into AUTHORS (FIRST_NAME, LAST_NAME) values
 ('author_1_first_name', 'author_1_last_name'),('author_2_first_name', 'author_2_last_name'),
-('author_3_first_name', 'author_3_last_name');
+('author_3_first_name', 'author_3_last_name'), ('author_4_first_name', 'author_4_last_name');
 
 insert into GENRES (NAME)values
-('genre_1'), ('genre_2'), ('genre_3');
+('genre_1'), ('genre_2'), ('genre_3'), ('genre_4');
 
 insert into BOOKS (GENRE_ID, TITLE) values
 (1, 'title_1'), (2, 'title_2'),
