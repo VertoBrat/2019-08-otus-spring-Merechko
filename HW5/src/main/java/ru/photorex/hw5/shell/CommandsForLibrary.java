@@ -26,19 +26,13 @@ public class CommandsForLibrary {
     @ShellMethod(value = "Login in application.", key = {"l", "login"})
     @ShellMethodAvailability("availabilityCheckLogout")
     public String login(@ShellOption({"-N", "--name"}) @Size(min = 1, max = 5) String name) {
-        userDetailService.setUserName(name);
-        shellComponents.forEach(Blocked::changeAccess);
-        isLogged = true;
-        return SUCCESS_LOGIN;
+        return manageAccess(name, true);
     }
 
     @ShellMethod(value = "Logout from application.", key = {"lo", "logout"})
     @ShellMethodAvailability("availabilityCheckLogin")
     public String logout() {
-        userDetailService.setUserName("");
-        shellComponents.forEach(Blocked::changeAccess);
-        isLogged = false;
-        return LOGOUT;
+        return manageAccess(null, false);
     }
 
     public Availability availabilityCheckLogin() {
@@ -46,6 +40,13 @@ public class CommandsForLibrary {
     }
 
     public Availability availabilityCheckLogout() {
-        return !isLogged ? Availability.available() : Availability.unavailable("you are not log in");
+        return !isLogged ? Availability.available() : Availability.unavailable("you are not log out");
+    }
+
+    private String manageAccess(String name, boolean isLogged) {
+        userDetailService.setUserName(name);
+        shellComponents.forEach(Blocked::changeAccess);
+        this.isLogged = isLogged;
+        return isLogged?SUCCESS_LOGIN:LOGOUT;
     }
 }
