@@ -8,16 +8,15 @@ import org.springframework.boot.test.autoconfigure.data.jdbc.DataJdbcTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.test.context.jdbc.Sql;
+import ru.photorex.hw5.config.Appconfig;
 import ru.photorex.hw5.model.Author;
-import ru.photorex.hw5.repository.jdbc.AuthorRepositoryJdbcImpl;
-import ru.photorex.hw5.repository.mapper.AuthorRowMapper;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @DisplayName("Репозиторий на основе Jdbc для работы с авторами ")
 @DataJdbcTest
-@Import({AuthorRepositoryJdbcImpl.class, AuthorRowMapper.class})
+@Import({Appconfig.class, TestConfig.class})
 @Sql(scripts = {"classpath:data-test.sql"})
 public class AuthorRepositoryJdbcImplTest {
 
@@ -36,7 +35,7 @@ public class AuthorRepositoryJdbcImplTest {
     private static final int LIST_SIZE_4 = 4;
 
     @Autowired
-    AuthorRepositoryJdbcImpl repository;
+    AuthorRepository repository;
 
     @DisplayName("должен загружать всех авторов без их книг")
     @Test

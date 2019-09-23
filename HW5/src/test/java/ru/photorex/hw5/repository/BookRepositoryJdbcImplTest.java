@@ -7,11 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.data.jdbc.DataJdbcTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.jdbc.Sql;
+import ru.photorex.hw5.config.Appconfig;
 import ru.photorex.hw5.model.Author;
 import ru.photorex.hw5.model.Book;
 import ru.photorex.hw5.model.Genre;
-import ru.photorex.hw5.repository.jdbc.BookRepositoryJdbcImpl;
-import ru.photorex.hw5.repository.mapper.BookRowMapper;
 
 import java.util.List;
 
@@ -19,7 +18,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @DisplayName("Репозиторий на основе Jdbc для работы с книгами ")
 @DataJdbcTest
-@Import({BookRepositoryJdbcImpl.class, BookRowMapper.class})
+@Import({Appconfig.class, TestConfig.class})
 @Sql(scripts = {"classpath:data-test.sql"})
 public class BookRepositoryJdbcImplTest {
 
@@ -32,7 +31,7 @@ public class BookRepositoryJdbcImplTest {
     private static final String NAME = "name";
 
     @Autowired
-    BookRepositoryJdbcImpl repository;
+    BookRepository repository;
 
     @DisplayName("должен возвращать книгу по идентификатору вместе с жанрами и авторами")
     @Test

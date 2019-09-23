@@ -8,16 +8,15 @@ import org.springframework.boot.test.autoconfigure.data.jdbc.DataJdbcTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.test.context.jdbc.Sql;
+import ru.photorex.hw5.config.Appconfig;
 import ru.photorex.hw5.model.Genre;
-import ru.photorex.hw5.repository.jdbc.GenreRepositoryJdbcImpl;
-import ru.photorex.hw5.repository.mapper.GenreRowMapper;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @DisplayName("Репозиторий на основе Jdbc для работы с жанрами ")
 @DataJdbcTest
-@Import({GenreRepositoryJdbcImpl.class, GenreRowMapper.class})
+@Import({Appconfig.class, TestConfig.class})
 @Sql(scripts = {"classpath:data-test.sql"})
 public class GenreRepositoryJdbcImplTest {
 
@@ -32,7 +31,7 @@ public class GenreRepositoryJdbcImplTest {
     private static final String GENRE_1 = "genre_1";
 
     @Autowired
-    GenreRepositoryJdbcImpl repository;
+    GenreRepository repository;
 
     @DisplayName("должен загружать все жанры")
     @Test

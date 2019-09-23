@@ -1,5 +1,6 @@
 package ru.photorex.hw5.repository.jdbc;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
@@ -14,25 +15,16 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-@Repository
+@RequiredArgsConstructor
 public class AuthorRepositoryJdbcImpl implements AuthorRepository {
 
     private static final String ID = "id";
-    private static final String TABLE_AUTHORS = "authors";
     static final String AUTHOR_FIRST_NAME = "firstName";
     static final String AUTHOR_LAST_NAME = "lastName";
 
     private final NamedParameterJdbcOperations namedParameterJdbcOperations;
-    private final JdbcTemplate jdbcTemplate;
     private final SimpleJdbcInsertOperations insert;
     private final AuthorRowMapper mapper;
-
-    public AuthorRepositoryJdbcImpl(NamedParameterJdbcOperations namedParameterJdbcOperations, JdbcTemplate jdbcTemplate, AuthorRowMapper mapper) {
-        this.namedParameterJdbcOperations = namedParameterJdbcOperations;
-        this.jdbcTemplate = jdbcTemplate;
-        this.insert = new SimpleJdbcInsert(jdbcTemplate).withTableName(TABLE_AUTHORS).usingGeneratedKeyColumns(ID);
-        this.mapper = mapper;
-    }
 
     @Override
     public Author getById(Long id) {

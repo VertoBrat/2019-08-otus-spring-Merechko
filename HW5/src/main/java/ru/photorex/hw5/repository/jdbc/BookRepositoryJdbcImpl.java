@@ -1,5 +1,6 @@
 package ru.photorex.hw5.repository.jdbc;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
@@ -18,25 +19,16 @@ import java.util.Map;
 import static ru.photorex.hw5.repository.jdbc.AuthorRepositoryJdbcImpl.AUTHOR_FIRST_NAME;
 import static ru.photorex.hw5.repository.jdbc.AuthorRepositoryJdbcImpl.AUTHOR_LAST_NAME;
 
-@Repository
+@RequiredArgsConstructor
 public class BookRepositoryJdbcImpl implements BookRepository {
 
-    private static final String TABLE_BOOKS = "books";
     private static final String BOOK_TITLE = "title";
     private static final String BOOK_GENRE_ID = "genre_id";
     private static final String ID = "id";
 
     private final NamedParameterJdbcOperations namedParameterJdbcOperations;
-    private final JdbcTemplate jdbcTemplate;
     private final SimpleJdbcInsertOperations insert;
     private final BookRowMapper mapper;
-
-    public BookRepositoryJdbcImpl(NamedParameterJdbcOperations namedParameterJdbcOperations, JdbcTemplate jdbcTemplate, BookRowMapper mapper) {
-        this.namedParameterJdbcOperations = namedParameterJdbcOperations;
-        this.jdbcTemplate = jdbcTemplate;
-        this.insert = new SimpleJdbcInsert(jdbcTemplate).withTableName(TABLE_BOOKS).usingGeneratedKeyColumns(ID);
-        this.mapper = mapper;
-    }
 
     @Override
     public Book getById(Long id) {
@@ -91,7 +83,7 @@ public class BookRepositoryJdbcImpl implements BookRepository {
     }
 
     private void insertAuthorsOfBook(Book book) {
-        jdbcTemplate.batchUpdate("insert into books_authors (book_id, author_id) values(?, ?)",
+        namedParameterJdbcOperations.getJdbcOperations().batchUpdate("insert into books_authors (book_id, author_id) values(?, ?)",
                 book.getAuthor(), book.getAuthor().size(),
                 (ps, author) -> {
                     ps.setLong(1, book.getId());
