@@ -13,10 +13,12 @@ import java.util.List;
 
 @ShellComponent
 @RequiredArgsConstructor
-public class CommandsForLibrary {
+public class CommandsForAccess {
 
     private static final String SUCCESS_LOGIN = System.lineSeparator() + "You logged in successfully!!!";
     private static final String LOGOUT = System.lineSeparator() + "You log out from application";
+    private static final String NEGATIVE_LOGIN_REASON = "you are not log in";
+    private static final String NEGATIVE_LOGOUT_REASON = "you are not log out";
 
     private final UserDetailService userDetailService;
     private final List<Blocked> shellComponents;
@@ -36,17 +38,17 @@ public class CommandsForLibrary {
     }
 
     public Availability availabilityCheckLogin() {
-        return isLogged ? Availability.available() : Availability.unavailable("you are not log in");
+        return isLogged ? Availability.available() : Availability.unavailable(NEGATIVE_LOGIN_REASON);
     }
 
     public Availability availabilityCheckLogout() {
-        return !isLogged ? Availability.available() : Availability.unavailable("you are not log out");
+        return !isLogged ? Availability.available() : Availability.unavailable(NEGATIVE_LOGOUT_REASON);
     }
 
     private String manageAccess(String name, boolean isLogged) {
         userDetailService.setUserName(name);
         shellComponents.forEach(Blocked::changeAccess);
         this.isLogged = isLogged;
-        return isLogged?SUCCESS_LOGIN:LOGOUT;
+        return this.isLogged ? SUCCESS_LOGIN : LOGOUT;
     }
 }

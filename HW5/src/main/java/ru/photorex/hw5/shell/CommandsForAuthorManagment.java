@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataAccessException;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
-import org.springframework.shell.standard.ShellMethodAvailability;
 import org.springframework.shell.standard.ShellOption;
 import ru.photorex.hw5.model.Author;
 import ru.photorex.hw5.service.IOService;
@@ -16,23 +15,19 @@ import java.util.List;
 
 @ShellComponent
 @RequiredArgsConstructor
-public class CommandsForAuthorManagment implements Blocked {
+public class CommandsForAuthorManagment extends LibraryCommands {
 
     private final LibraryWormAuthorService wormAuthorService;
     private final ShellTableBuilder tableBuilder;
     private final IOService console;
 
-    private boolean isLogged = false;
-
     @ShellMethod(value = "Display all authors into library.", key = {"ta", "t authors"})
-    @ShellMethodAvailability("availabilityCheck")
     public void displayAuthors() {
         List<Author> authors = wormAuthorService.getAllAuthors();
         printTable(authors);
     }
 
     @ShellMethod(value = "Display author by id.", key = {"tai", "t authors by id"})
-    @ShellMethodAvailability("availabilityCheck")
     public void displayAuthorById(@ShellOption({"-i"}) Long id) {
         Author author;
         try {
@@ -44,7 +39,6 @@ public class CommandsForAuthorManagment implements Blocked {
     }
 
     @ShellMethod(value = "Insert into authors table new author.", key = {"ia", "i author"})
-    @ShellMethodAvailability("availabilityCheck")
     public String insertAuthor(@ShellOption({"-fn"}) String firstName, @ShellOption({"-ln"}) String lastName) {
         Author author = new Author();
         author.setFirstName(firstName);
@@ -53,7 +47,6 @@ public class CommandsForAuthorManagment implements Blocked {
     }
 
     @ShellMethod(value = "Update into authors table.", key = {"ua", "u authors"})
-    @ShellMethodAvailability("availabilityCheck")
     public String updateAuthor(@ShellOption(value = {"-i"}) Long id,
                                @ShellOption({"-fn"}) String firstName,
                                @ShellOption({"-ln"}) String lastName) {
@@ -68,7 +61,6 @@ public class CommandsForAuthorManagment implements Blocked {
     }
 
     @ShellMethod(value = "Delete author from table using id.", key = {"da", "d author"})
-    @ShellMethodAvailability("availabilityCheck")
     public String deleteAuthor(@ShellOption({"-i"}) Long id) {
         try {
             if (wormAuthorService.deleteAuthor(id))
@@ -85,15 +77,5 @@ public class CommandsForAuthorManagment implements Blocked {
         headers.put("firstName", "FirstName");
         headers.put("lastName", "LastName");
         tableBuilder.build(authors, headers);
-    }
-
-    @Override
-    public void changeAccess() {
-        this.isLogged = !isLogged;
-    }
-
-    @Override
-    public boolean isLogged() {
-        return isLogged;
     }
 }

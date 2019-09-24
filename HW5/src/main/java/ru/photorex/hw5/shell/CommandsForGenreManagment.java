@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataAccessException;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
-import org.springframework.shell.standard.ShellMethodAvailability;
 import org.springframework.shell.standard.ShellOption;
 import ru.photorex.hw5.model.Genre;
 import ru.photorex.hw5.service.IOService;
@@ -16,16 +15,13 @@ import java.util.List;
 
 @ShellComponent
 @RequiredArgsConstructor
-public class CommandsForGenreManagment implements Blocked {
+public class CommandsForGenreManagment extends LibraryCommands {
 
     private final LibraryWormGenreService wormGenreService;
     private final ShellTableBuilder tableBuilder;
     private final IOService console;
 
-    private boolean isLogged;
-
     @ShellMethod(value = "Display genre by id.", key = {"tgi", "t genre by id"})
-    @ShellMethodAvailability("availabilityCheck")
     public void displayGenreById(@ShellOption({"-i"}) Long id) {
         Genre genre;
         try {
@@ -37,21 +33,18 @@ public class CommandsForGenreManagment implements Blocked {
     }
 
     @ShellMethod(value = "Display all genres from table.", key = {"tg", "t genre"})
-    @ShellMethodAvailability("availabilityCheck")
     public void displayAllGenres() {
         List<Genre> genres = wormGenreService.getAllGenres();
         printTable(genres);
     }
 
     @ShellMethod(value = "Insert genre into table.", key = {"ig", "i genre"})
-    @ShellMethodAvailability("availabilityCheck")
     public String insertGenre(@ShellOption({"-n"}) String name) {
         Genre genre = new Genre(null, name);
         return wormGenreService.saveGenre(genre) != null ? "Added" : "SomeProblem";
     }
 
     @ShellMethod(value = "Update genre into table.", key = {"ug", "u genre"})
-    @ShellMethodAvailability("availabilityCheck")
     public String updateGenre(@ShellOption({"-i"}) Long id,
                               @ShellOption({"-n"}) String name) {
         Genre genre = new Genre(id, name);
@@ -61,7 +54,6 @@ public class CommandsForGenreManagment implements Blocked {
     }
 
     @ShellMethod(value = "Delete genre from table.", key = {"dg", "d genre"})
-    @ShellMethodAvailability("availabilityCheck")
     public String deleteGenre(@ShellOption({"-i"}) Long id) {
         try {
             if (wormGenreService.deleteGenreById(id))
@@ -78,15 +70,4 @@ public class CommandsForGenreManagment implements Blocked {
         headers.put("name", "Name");
         tableBuilder.build(genres, headers);
     }
-
-    @Override
-    public void changeAccess() {
-        this.isLogged = !isLogged;
-    }
-
-    @Override
-    public boolean isLogged() {
-        return isLogged;
-    }
-
 }
