@@ -1,6 +1,5 @@
 package ru.photorex.hw5.shell;
 
-import lombok.RequiredArgsConstructor;
 import org.springframework.shell.Availability;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
@@ -12,43 +11,39 @@ import javax.validation.constraints.Size;
 import java.util.List;
 
 @ShellComponent
-@RequiredArgsConstructor
-public class CommandsForAccess {
+public class CommandsForAccess extends LibraryCommands {
 
     private static final String SUCCESS_LOGIN = System.lineSeparator() + "You logged in successfully!!!";
     private static final String LOGOUT = System.lineSeparator() + "You log out from application";
-    private static final String NEGATIVE_LOGIN_REASON = "you are not log in";
     private static final String NEGATIVE_LOGOUT_REASON = "you are not log out";
 
     private final UserDetailService userDetailService;
     private final List<Blocked> shellComponents;
 
-    private boolean isLogged = false;
+    public CommandsForAccess(UserDetailService userDetailService, List<Blocked> shellComponents) {
+        this.userDetailService = userDetailService;
+        this.shellComponents = shellComponents;
+        this.shellComponents.add(this);
+    }
 
     @ShellMethod(value = "Login in application.", key = {"l", "login"})
     @ShellMethodAvailability("availabilityCheckLogout")
     public String login(@ShellOption({"-N", "--name"}) @Size(min = 1, max = 5) String name) {
-        return manageAccess(name, true);
+        return manageAccess(name);
     }
 
     @ShellMethod(value = "Logout from application.", key = {"lo", "logout"})
-    @ShellMethodAvailability("availabilityCheckLogin")
     public String logout() {
-        return manageAccess(null, false);
-    }
-
-    public Availability availabilityCheckLogin() {
-        return isLogged ? Availability.available() : Availability.unavailable(NEGATIVE_LOGIN_REASON);
+        return manageAccess(null);
     }
 
     public Availability availabilityCheckLogout() {
-        return !isLogged ? Availability.available() : Availability.unavailable(NEGATIVE_LOGOUT_REASON);
+        return !isLogged() ? Availability.available() : Availability.unavailable(NEGATIVE_LOGOUT_REASON);
     }
 
-    private String manageAccess(String name, boolean isLogged) {
+    private String manageAccess(String name) {
         userDetailService.setUserName(name);
         shellComponents.forEach(Blocked::changeAccess);
-        this.isLogged = isLogged;
-        return this.isLogged ? SUCCESS_LOGIN : LOGOUT;
+        return isLogged() ? SUCCESS_LOGIN : LOGOUT;
     }
 }
