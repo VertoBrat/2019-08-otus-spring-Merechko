@@ -25,6 +25,9 @@ public class Appconfig {
     private static final String TABLE_BOOKS = "books";
     private static final String TABLE_AUTHORS = "authors";
     private static final String TABLE_GENRE = "genres";
+    private static final String SIMPLE_JDBC_INSERT_FOR_BOOK_TABLE = "simpleJdbcInsertOperationsForBookTable";
+    private static final String SIMPLE_JDBC_INSERT_FOR_AUTHOR_TABLE = "simpleJdbcInsertOperationsForAuthorTable";
+    private static final String SIMPLE_JDBC_INSERT_FOR_GENRE_TABLE = "simpleJdbcInsertOperationsForGenreTable";
 
     @Bean
     public ConsoleContext consoleContext() {
@@ -34,37 +37,37 @@ public class Appconfig {
         return cc;
     }
 
-    @Bean(TABLE_BOOKS)
+    @Bean(SIMPLE_JDBC_INSERT_FOR_BOOK_TABLE)
     public SimpleJdbcInsertOperations jdbcInsertOperationsForBook(JdbcTemplate jdbcTemplate) {
         return new SimpleJdbcInsert(jdbcTemplate).withTableName(TABLE_BOOKS).usingGeneratedKeyColumns(ID);
     }
 
     @Bean
-    public BookRepository bookRepository(@Qualifier(TABLE_BOOKS) SimpleJdbcInsertOperations sip,
+    public BookRepository bookRepository(@Qualifier(SIMPLE_JDBC_INSERT_FOR_BOOK_TABLE) SimpleJdbcInsertOperations sip,
                                          NamedParameterJdbcOperations npo,
                                          BookRowMapper rm) {
         return new BookRepositoryJdbcImpl(npo, sip, rm);
     }
 
-    @Bean(TABLE_AUTHORS)
+    @Bean(SIMPLE_JDBC_INSERT_FOR_AUTHOR_TABLE)
     public SimpleJdbcInsertOperations jdbcInsertOperationsForAuthor(JdbcTemplate jdbcTemplate) {
         return new SimpleJdbcInsert(jdbcTemplate).withTableName(TABLE_AUTHORS).usingGeneratedKeyColumns(ID);
     }
 
     @Bean
-    public AuthorRepository authorRepository(@Qualifier(TABLE_AUTHORS) SimpleJdbcInsertOperations sip,
+    public AuthorRepository authorRepository(@Qualifier(SIMPLE_JDBC_INSERT_FOR_AUTHOR_TABLE) SimpleJdbcInsertOperations sip,
                                            NamedParameterJdbcOperations npo,
                                            AuthorRowMapper rm) {
         return new AuthorRepositoryJdbcImpl(npo, sip, rm);
     }
 
-    @Bean(TABLE_GENRE)
+    @Bean(SIMPLE_JDBC_INSERT_FOR_GENRE_TABLE)
     public SimpleJdbcInsertOperations jdbcInsertOperationsForGenre(JdbcTemplate jdbcTemplate) {
         return new SimpleJdbcInsert(jdbcTemplate).withTableName(TABLE_GENRE).usingGeneratedKeyColumns(ID);
     }
 
     @Bean
-    public GenreRepository genreRepository(@Qualifier(TABLE_GENRE) SimpleJdbcInsertOperations sip,
+    public GenreRepository genreRepository(@Qualifier(SIMPLE_JDBC_INSERT_FOR_GENRE_TABLE) SimpleJdbcInsertOperations sip,
                                             NamedParameterJdbcOperations npo,
                                             GenreRowMapper rm) {
         return new GenreRepositoryJdbcImpl(npo, sip, rm);
