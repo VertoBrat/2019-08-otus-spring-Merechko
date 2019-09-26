@@ -17,3 +17,6 @@ Each task is located in a separate folder called "HW N", where N - number of tas
 
 ### HW4
 >Refactoring of HW3. Spring Shell (CLI) does all the work  
+
+### HW5
+>CRUD application, using Spring JDBC, Spring Shell
