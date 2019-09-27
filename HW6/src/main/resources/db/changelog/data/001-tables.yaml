@@ -1,0 +1,55 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1
+      author: photorex
+      runAlways: true
+      loadUpdateData:
+        primaryKey: id
+        file: data/authors.csv
+        relativeToChangelogFile: true
+        separator: ;
+        quotChar: '"'
+        seperator: ';'
+        encoding: UTF-8
+        tableName: authors
+
+  - changeSet:
+      id: 2
+      author: photorex
+      runAlways: true
+      loadUpdateData:
+        primaryKey: id
+        file: data/genres.csv
+        relativeToChangelogFile: true
+        separator: ;
+        quotChar: '"'
+        seperator: ';'
+        encoding: UTF-8
+        tableName: genres
+
+  - changeSet:
+      id: 3
+      author: photorex
+      runAlways: true
+      loadUpdateData:
+        primaryKey: id
+        file: data/books.csv
+        relativeToChangelogFile: true
+        separator: ;
+        quotChar: '"'
+        seperator: ';'
+        encoding: UTF-8
+        tableName: books
+
+  - changeSet:
+      id: 4
+      author: photorex
+      runAlways: true
+      loadData:
+        file: data/books_authors.csv
+        relativeToChangelogFile: true
+        separator: ;
+        quotChar: '"'
+        seperator: ';'
+        encoding: UTF-8
+        tableName: books_authors

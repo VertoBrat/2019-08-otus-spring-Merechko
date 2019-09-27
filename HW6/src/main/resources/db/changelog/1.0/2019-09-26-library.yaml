@@ -2,6 +2,7 @@ databaseChangeLog:
  - changeSet:
     id: 1
     author: photorex
+    runAlways: true
     sql:
       splitStatements: true
       sql: drop table if exists "books_authors"
@@ -9,6 +10,7 @@ databaseChangeLog:
  - changeSet:
      id: 2
      author: photorex
+     runAlways: true
      sql:
        splitStatements: true
        sql: drop table if exists "books"
@@ -16,6 +18,7 @@ databaseChangeLog:
  - changeSet:
      id: 3
      author: photorex
+     runAlways: true
      sql:
        splitStatements: true
        sql: drop table if exists "genres"
@@ -23,6 +26,7 @@ databaseChangeLog:
  - changeSet:
      id: 4
      author: photorex
+     runAlways: true
      sql:
        splitStatements: true
        sql: drop table if exists "authors"
@@ -30,6 +34,7 @@ databaseChangeLog:
  - changeSet:
      id: 5
      author: photorex
+     runAlways: true
      createTable:
         tableName: authors
         columns:
@@ -55,6 +60,7 @@ databaseChangeLog:
  - changeSet:
      id: 6
      author: photorex
+     runAlways: true
      createTable:
        tableName: genres
        columns:
@@ -73,6 +79,7 @@ databaseChangeLog:
  - changeSet:
      id: 7
      author: photorex
+     runAlways: true
      createTable:
        tableName: books
        columns:
@@ -100,6 +107,7 @@ databaseChangeLog:
  - changeSet:
      id: 8
      author: photorex
+     runAlways: true
      createTable:
        tableName: books_authors
        columns:
