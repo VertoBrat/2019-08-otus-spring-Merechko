@@ -1,4 +1,5 @@
 drop table if exists BOOKS_AUTHORS;
+drop table if exists comments;
 drop table if exists BOOKS;
 drop table if exists GENRES;
 drop table if exists AUTHORS;
@@ -33,6 +34,18 @@ create table BOOKS
         foreign key (GENRE_ID) references GENRES
 );
 
+create table comments
+(
+    ID long auto_increment,
+    TEXT varchar(255) not null,
+    BOOK_ID long not null,
+    date_time timestamp not null,
+    constraint comments_pk
+        primary key (ID),
+    constraint books_comments_fk
+        foreign key (BOOK_ID) references BOOKS
+);
+
 create table BOOKS_AUTHORS
 (
     BOOK_ID   long not null,
@@ -54,6 +67,11 @@ insert into GENRES (NAME)values
 insert into BOOKS (GENRE_ID, TITLE) values
 (1, 'title_1'), (2, 'title_2'),
 (3, 'title_3');
+
+insert into comments(text, book_id, date_time) values
+('comment_1', 1, current_timestamp()),
+('comment_2', 1, current_timestamp()),
+('comment_3', 2, current_timestamp());
 
 insert into BOOKS_AUTHORS (BOOK_ID, AUTHOR_ID)
 values (1, 1),(1, 2), (1, 3), (2, 1), (3, 3);
