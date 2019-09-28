@@ -53,3 +53,27 @@ databaseChangeLog:
         seperator: ';'
         encoding: UTF-8
         tableName: books_authors
+
+  - changeSet:
+      id: 5
+      author: photorex
+      runAlways: true
+      sql:
+        splitStatements: true
+        sql: SELECT setval('authors_id_seq', (SELECT max(id) FROM authors));
+
+  - changeSet:
+      id: 6
+      author: photorex
+      runAlways: true
+      sql:
+        splitStatements: true
+        sql: SELECT setval('books_id_seq', (SELECT max(id) FROM books));
+
+  - changeSet:
+      id: 7
+      author: photorex
+      runAlways: true
+      sql:
+        splitStatements: true
+        sql: SELECT setval('genres_id_seq', (SELECT max(id) FROM genres));

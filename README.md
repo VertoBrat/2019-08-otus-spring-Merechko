@@ -20,3 +20,6 @@ Each task is located in a separate folder called "HW N", where N - number of tas
 
 ### HW5
 >CRUD application, using Spring JDBC, Spring Shell
+
+### HW6
+>Recreate application from HW5, using Spring JPA, Shell

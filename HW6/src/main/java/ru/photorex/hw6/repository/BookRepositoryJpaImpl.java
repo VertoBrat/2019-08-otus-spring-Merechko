@@ -18,19 +18,19 @@ public class BookRepositoryJpaImpl implements BookRepository {
 
     @Override
     public Book getById(Long id) {
-        return em.createQuery("select b from Book b left join Genre g on b.genre.id=g.id where b.id=:id", Book.class)
+        return em.createQuery("select b from Book b join fetch b.genre left join fetch b.author ba where b.id=:id", Book.class)
                 .setParameter("id", id).getSingleResult();
     }
 
     @Override
     public List<Book> getByAuthor(Author author) {
-        return em.createQuery("select distinct b from Book b left join fetch b.author ba where ba.id=:id", Book.class)
+        return em.createQuery("select distinct b from Book b join fetch b.genre left join fetch b.author ba where ba.id=:id order by b.id", Book.class)
                 .setParameter("id", author.getId()).getResultList();
     }
 
     @Override
     public List<Book> getAll() {
-        return em.createQuery("select b from Book b", Book.class).getResultList();
+        return em.createQuery("select distinct b from Book b join fetch b.genre order by b.id", Book.class).getResultList();
     }
 
     @Override
@@ -39,8 +39,10 @@ public class BookRepositoryJpaImpl implements BookRepository {
             em.persist(book);
             return book;
         } else {
+            if (em.find(Book.class, book.getId()) != null)
             return em.merge(book);
         }
+        return null;
     }
 
     @Override

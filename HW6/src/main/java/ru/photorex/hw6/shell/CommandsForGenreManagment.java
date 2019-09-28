@@ -23,19 +23,18 @@ public class CommandsForGenreManagment extends LibraryCommands {
 
     @ShellMethod(value = "Display genre by id.", key = {"tgi", "t genre by id"})
     public void displayGenreById(@ShellOption({"-i"}) Long id) {
-        Genre genre;
-        try {
-            genre = wormGenreService.getGenreById(id);
+        Genre genre = wormGenreService.getGenreById(id);
+        if (genre != null)
             printTable(Collections.singletonList(genre));
-        } catch (DataAccessException ex) {
-            console.printString("No genre with id = " + id);
-        }
+        else console.printString("No genre with id = " + id);
     }
 
     @ShellMethod(value = "Display all genres from table.", key = {"tg", "t genre"})
     public void displayAllGenres() {
         List<Genre> genres = wormGenreService.getAllGenres();
+        if (!genres.isEmpty())
         printTable(genres);
+        else console.printString("No genres");
     }
 
     @ShellMethod(value = "Insert genre into table.", key = {"ig", "i genre"})

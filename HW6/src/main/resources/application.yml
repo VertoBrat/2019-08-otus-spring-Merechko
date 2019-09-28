@@ -11,3 +11,6 @@ spring:
         jdbc:
           lob:
             non_contextual_creation: true
+    show-sql: true
+count:
+  authors: 2

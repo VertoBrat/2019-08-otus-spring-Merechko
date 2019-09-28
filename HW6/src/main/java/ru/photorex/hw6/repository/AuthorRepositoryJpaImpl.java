@@ -31,8 +31,10 @@ public class AuthorRepositoryJpaImpl implements AuthorRepository {
             em.persist(author);
             return author;
         } else {
-           return em.merge(author);
+            if (em.find(Author.class, author.getId()) != null)
+                return em.merge(author);
         }
+        return null;
     }
 
     @Override

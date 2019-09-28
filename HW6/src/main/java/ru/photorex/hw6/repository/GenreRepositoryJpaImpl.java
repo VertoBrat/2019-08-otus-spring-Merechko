@@ -22,7 +22,7 @@ public class GenreRepositoryJpaImpl implements GenreRepository {
 
     @Override
     public List<Genre> getAll() {
-        return em.createQuery("select g from Genre g", Genre.class).getResultList();
+        return em.createQuery("select g from Genre g order by g.id", Genre.class).getResultList();
     }
 
     @Override
@@ -31,8 +31,10 @@ public class GenreRepositoryJpaImpl implements GenreRepository {
             em.persist(genre);
             return genre;
         } else {
+            if (em.find(Genre.class, genre.getId()) != null)
             return em.merge(genre);
         }
+        return null;
     }
 
     @Override
