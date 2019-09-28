@@ -22,6 +22,11 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @Sql(scripts = {"classpath:data-test.sql"})
 public class CommentRepositoryJpaImplTest {
 
+    private static final Long ID_1 = 1L;
+    private static final Long ID_4 = 4L;
+    private static final int LIST_SIZE = 2;
+    private static final String COMMENT_TEXT = "comment";
+
     @Autowired
     CommentRepositoryJpaImpl repository;
 
@@ -31,25 +36,25 @@ public class CommentRepositoryJpaImplTest {
     @DisplayName(" должен возвращать все комменты одной книги")
     @Test
     void shouldReturnAllCommentsByBook() {
-        val comments = repository.getAllByBook(1L);
-        assertThat(comments).hasSize(2)
-                .allMatch(c -> c.getText().contains("comment"));
+        val comments = repository.getAllByBook(ID_1);
+        assertThat(comments).hasSize(LIST_SIZE)
+                .allMatch(c -> c.getText().contains(COMMENT_TEXT));
     }
 
-    @DisplayName(" должен сохранять новый коммент в безе данных")
+    @DisplayName(" должен сохранять новый коммент в базе данных")
     @Test
     void shouldSaveNewComment() {
-        Comment comment = new Comment(null, "comment", new Book(1L), LocalDateTime.now());
+        Comment comment = new Comment(null, COMMENT_TEXT, new Book(ID_1), LocalDateTime.now());
         Comment dbComment = repository.save(comment);
-        assertThat(dbComment.getId()).isNotNull().isEqualTo(4L);
+        assertThat(dbComment.getId()).isNotNull().isEqualTo(ID_4);
     }
 
     @DisplayName(" должен удалять коммент из базы данных")
     @Test
     void shouldDeleteComment() {
-        boolean deleted = repository.delete(1L);
+        boolean deleted = repository.delete(ID_1);
         assertTrue(deleted);
         em.clear();
-        assertThat(em.find(Comment.class, 1L)).isNull();
+        assertThat(em.find(Comment.class, ID_1)).isNull();
     }
 }

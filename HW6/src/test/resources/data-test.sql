@@ -43,7 +43,7 @@ create table comments
     constraint comments_pk
         primary key (ID),
     constraint books_comments_fk
-        foreign key (BOOK_ID) references BOOKS
+        foreign key (BOOK_ID) references BOOKS on delete cascade
 );
 
 create table BOOKS_AUTHORS
