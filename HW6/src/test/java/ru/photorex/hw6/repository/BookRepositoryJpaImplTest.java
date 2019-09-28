@@ -40,7 +40,8 @@ public class BookRepositoryJpaImplTest {
     void shouldReturnBookById() {
         val actualBook = repository.getById(BOOK_1_ID);
         val expectedBook = em.find(Book.class, BOOK_1_ID);
-        assertThat(actualBook).isEqualTo(expectedBook);
+        assertThat(actualBook.getId()).isEqualTo(expectedBook.getId());
+        assertThat(actualBook.getTitle()).isEqualTo(expectedBook.getTitle());
     }
 
     @DisplayName(" должен вернуть список книг одного автора")
@@ -64,7 +65,8 @@ public class BookRepositoryJpaImplTest {
     void shouldSaveNewBook() {
         val actualBook = repository.save(new Book(null, "title", new Genre(1L, null)));
         val expectedBook = em.find(Book.class, NEW_BOOK_ID);
-        assertThat(actualBook).isNotNull().isEqualTo(expectedBook);
+        assertThat(actualBook.getId()).isEqualTo(expectedBook.getId());
+        assertThat(actualBook.getTitle()).isEqualTo(expectedBook.getTitle());
     }
 
     @DisplayName(" должен удалять книгу из базы данных")

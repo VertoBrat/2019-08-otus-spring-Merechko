@@ -10,7 +10,10 @@ import org.springframework.context.annotation.Import;
 import org.springframework.test.context.jdbc.Sql;
 import ru.photorex.hw6.model.Genre;
 
+import javax.persistence.PersistenceException;
+
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @DisplayName("Репозиторий на основе JPA для работы с жанрами ")
@@ -59,6 +62,7 @@ public class GenreRepositoryJpaImplTest {
     void shouldDeleteGenreIfItDontHaveAnyBooks() {
         em.persist(new Genre(null, GENRE_NAME));
         boolean deleted = repository.delete(NEW_GENRE_ID);
+        em.clear();
         assertTrue(deleted);
         assertThat(em.find(Genre.class, NEW_GENRE_ID)).isNull();
     }
@@ -66,6 +70,6 @@ public class GenreRepositoryJpaImplTest {
     @DisplayName(" не должен удалять жанр, у которого есть книги")
     @Test
     void shouldNotDeleteGenreWithBooks() {
-
+        assertThrows(PersistenceException.class, () -> repository.delete(GENRE_1_ID));
     }
 }

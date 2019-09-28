@@ -10,7 +10,10 @@ import org.springframework.context.annotation.Import;
 import org.springframework.test.context.jdbc.Sql;
 import ru.photorex.hw6.model.Author;
 
+import javax.persistence.PersistenceException;
+
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
@@ -62,12 +65,13 @@ public class AuthorRepositoryJpaImplTest {
         em.persist(new Author(null, NEW_AUTHOR_NAME + ENDING_AUTHOR_FIRST_NAME, NEW_AUTHOR_NAME + ENDING_AUTHOR_LAST_NAME));
         boolean deleted = repository.delete(5L);
         assertTrue(deleted);
+        em.clear();
         assertThat(em.find(Author.class, 5L)).isNull();
     }
 
     @DisplayName(" не должен удалять автора, у которого есть книги")
     @Test
     void shouldNotDeleteAuthorWithBooks() {
-
+        assertThrows(PersistenceException.class, () -> repository.delete(1L));
     }
 }
