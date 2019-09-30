@@ -41,11 +41,11 @@ public class CommandsForCommentManagment extends LibraryCommands {
         return wormCommentService.deleteComment(id)? "Deleted" : "Some Problem";
     }
 
-    private void printTable(List<Comment> authors) {
+    private void printTable(List<Comment> comments) {
         LinkedHashMap<String, Object> headers = new LinkedHashMap<>();
         headers.put("id", "Id");
         headers.put("text", "Text");
         headers.put("dateTime", "Date");
-        tableBuilder.build(authors, headers);
+        tableBuilder.build(comments, headers);
     }
 }

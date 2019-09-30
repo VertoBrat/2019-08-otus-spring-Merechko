@@ -1,10 +1,8 @@
 package ru.photorex.hw6.service;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.photorex.hw6.model.Book;
 import ru.photorex.hw6.model.Comment;
 import ru.photorex.hw6.repository.CommentRepository;
 
