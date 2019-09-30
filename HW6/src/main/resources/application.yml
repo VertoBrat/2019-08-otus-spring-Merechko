@@ -11,4 +11,7 @@ spring:
         jdbc:
           lob:
             non_contextual_creation: true
-    show-sql: true
+    #show-sql: true
+logging:
+  level:
+    root: ERROR
