@@ -3,6 +3,7 @@ package ru.photorex.hw6.model;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
@@ -31,6 +32,7 @@ public class Book {
     @JoinTable(name = "books_authors",
     joinColumns = @JoinColumn(name = "book_id"),
     inverseJoinColumns = @JoinColumn(name = "author_id"))
+    @BatchSize(size = 3)
     private List<Author> author;
 
     public Book(Long id) {

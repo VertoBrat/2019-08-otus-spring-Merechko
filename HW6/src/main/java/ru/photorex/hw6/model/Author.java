@@ -12,7 +12,6 @@ import javax.persistence.*;
 @AllArgsConstructor
 @Entity
 @Table(name = "authors")
-@BatchSize(size = 3)
 public class Author {
 
     @Id
