@@ -5,6 +5,7 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 import org.springframework.shell.standard.ShellOption;
+import ru.photorex.hw6.exception.NoDataWithThisIdException;
 import ru.photorex.hw6.model.Genre;
 import ru.photorex.hw6.service.IOService;
 import ru.photorex.hw6.service.LibraryWormGenreService;
@@ -47,8 +48,11 @@ public class CommandsForGenreManagment extends LibraryCommands {
     public String updateGenre(@ShellOption({"-i"}) Long id,
                               @ShellOption({"-n"}) String name) {
         Genre genre = new Genre(id, name);
-        Genre dbGenre = wormGenreService.saveGenre(genre);
-        if (dbGenre == null) return "There is no Genre with id = " + id;
+        try {
+            wormGenreService.saveGenre(genre);
+        } catch (NoDataWithThisIdException e) {
+            return e.getLocalizedMessage();
+        }
         return "Successful";
     }
 

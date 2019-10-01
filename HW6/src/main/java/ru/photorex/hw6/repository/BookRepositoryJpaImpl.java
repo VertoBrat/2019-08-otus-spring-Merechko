@@ -2,6 +2,7 @@ package ru.photorex.hw6.repository;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
+import ru.photorex.hw6.exception.NoDataWithThisIdException;
 import ru.photorex.hw6.model.Author;
 import ru.photorex.hw6.model.Book;
 
@@ -40,9 +41,9 @@ public class BookRepositoryJpaImpl implements BookRepository {
             return book;
         } else {
             if (em.find(Book.class, book.getId()) != null)
-            return em.merge(book);
+                return em.merge(book);
+            else throw new NoDataWithThisIdException(book.getId());
         }
-        return null;
     }
 
     @Override

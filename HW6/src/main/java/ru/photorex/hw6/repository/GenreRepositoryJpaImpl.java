@@ -2,6 +2,7 @@ package ru.photorex.hw6.repository;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
+import ru.photorex.hw6.exception.NoDataWithThisIdException;
 import ru.photorex.hw6.model.Genre;
 
 import javax.persistence.EntityManager;
@@ -32,9 +33,9 @@ public class GenreRepositoryJpaImpl implements GenreRepository {
             return genre;
         } else {
             if (em.find(Genre.class, genre.getId()) != null)
-            return em.merge(genre);
+                return em.merge(genre);
+            else throw new NoDataWithThisIdException(genre.getId());
         }
-        return null;
     }
 
     @Override

@@ -2,6 +2,7 @@ package ru.photorex.hw6.repository;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
+import ru.photorex.hw6.exception.NoDataWithThisIdException;
 import ru.photorex.hw6.model.Author;
 
 import javax.persistence.EntityManager;
@@ -33,8 +34,8 @@ public class AuthorRepositoryJpaImpl implements AuthorRepository {
         } else {
             if (em.find(Author.class, author.getId()) != null)
                 return em.merge(author);
+            else throw new NoDataWithThisIdException(author.getId());
         }
-        return null;
     }
 
     @Override

@@ -5,6 +5,7 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 import org.springframework.shell.standard.ShellOption;
+import ru.photorex.hw6.exception.NoDataWithThisIdException;
 import ru.photorex.hw6.model.Author;
 import ru.photorex.hw6.service.IOService;
 import ru.photorex.hw6.service.LibraryWormAuthorService;
@@ -49,9 +50,11 @@ public class CommandsForAuthorManagment extends LibraryCommands {
                                @ShellOption({"-fn"}) String firstName,
                                @ShellOption({"-ln"}) String lastName) {
         Author author = new Author(id, firstName, lastName);
-        Author dbAuthor = wormAuthorService.saveAuthor(author);
-        if (dbAuthor == null)
-            return "There is no author with id =" + id;
+        try {
+            wormAuthorService.saveAuthor(author);
+        } catch (NoDataWithThisIdException e) {
+            return e.getLocalizedMessage();
+        }
         return "Successful";
     }
 

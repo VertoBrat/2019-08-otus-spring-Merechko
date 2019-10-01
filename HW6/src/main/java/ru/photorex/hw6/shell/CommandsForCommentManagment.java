@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 import org.springframework.shell.standard.ShellOption;
+import ru.photorex.hw6.exception.NoDataWithThisIdException;
 import ru.photorex.hw6.model.Book;
 import ru.photorex.hw6.model.Comment;
 import ru.photorex.hw6.service.IOService;
@@ -34,6 +35,18 @@ public class CommandsForCommentManagment extends LibraryCommands {
                                 @ShellOption({"-t"}) String text) {
         Comment comment = new Comment(null, text, new Book(bookId), LocalDateTime.now());
         return wormCommentService.saveComment(comment)!=null ? "Added": "SomeProblem";
+    }
+
+    @ShellMethod(value = "Update some comment by id.", key = {"uc", "u comment"})
+    public String updateComment(@ShellOption({"-i"}) Long commentId,
+                                @ShellOption({"-t"}) String newText) {
+        Comment comment = new Comment(commentId, newText, null, LocalDateTime.now());
+        try {
+            wormCommentService.saveComment(comment);
+        } catch (NoDataWithThisIdException e) {
+            return e.getLocalizedMessage();
+        }
+        return "Updated";
     }
 
     @ShellMethod(value = "Delete comment.", key = {"dc", "d comment"})

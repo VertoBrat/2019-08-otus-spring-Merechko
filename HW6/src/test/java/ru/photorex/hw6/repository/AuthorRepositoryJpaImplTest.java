@@ -24,6 +24,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class AuthorRepositoryJpaImplTest {
 
     private static final Long AUTHOR_1_ID = 1L;
+    private static final Long AUTHOR_5_ID = 5L;
     private static final String ENDING_AUTHOR_FIRST_NAME = "_first_name";
     private static final String ENDING_AUTHOR_LAST_NAME = "_last_name";
     private static final String NEW_AUTHOR_NAME = "author_5";
@@ -56,17 +57,17 @@ public class AuthorRepositoryJpaImplTest {
     void shouldSaveAuthorInDb() {
         Author author = new Author(null, NEW_AUTHOR_NAME + ENDING_AUTHOR_FIRST_NAME, NEW_AUTHOR_NAME + ENDING_AUTHOR_LAST_NAME);
         val newDbAuthor = repository.save(author);
-        assertThat(newDbAuthor.getId()).isNotNull().isEqualTo(5L);
+        assertThat(newDbAuthor.getId()).isNotNull().isEqualTo(AUTHOR_5_ID);
     }
 
     @DisplayName(" должен удалять автора, у которого нет книг, из базы данных по id")
     @Test
     void shouldDeleteAuthorFromDbByIdIfHeDontHaveAnyBooks() {
         em.persist(new Author(null, NEW_AUTHOR_NAME + ENDING_AUTHOR_FIRST_NAME, NEW_AUTHOR_NAME + ENDING_AUTHOR_LAST_NAME));
-        boolean deleted = repository.delete(5L);
+        boolean deleted = repository.delete(AUTHOR_5_ID);
         assertTrue(deleted);
         em.clear();
-        assertThat(em.find(Author.class, 5L)).isNull();
+        assertThat(em.find(Author.class, AUTHOR_5_ID)).isNull();
     }
 
     @DisplayName(" не должен удалять автора, у которого есть книги")

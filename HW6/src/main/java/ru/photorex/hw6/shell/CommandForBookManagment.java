@@ -6,6 +6,7 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 import org.springframework.shell.standard.ShellOption;
+import ru.photorex.hw6.exception.NoDataWithThisIdException;
 import ru.photorex.hw6.model.Author;
 import ru.photorex.hw6.model.Book;
 import ru.photorex.hw6.model.Genre;
@@ -74,12 +75,18 @@ public class CommandForBookManagment extends LibraryCommands {
                              @ShellOption({"-t"}) String title,
                              @ShellOption({"-g"}) Long genreId,
                              @ShellOption(value = {"-a"}, arity = 1, defaultValue = "0") long[] authors) {
-        if (wormGenreService.getGenreById(genreId)==null)
+        Genre genre = wormGenreService.getGenreById(genreId);
+        if (genre == null)
             return "No Genre with id = " + genreId;
-        Book book = new Book(id, title, new Genre(genreId, null));
+        Book book = new Book(id, title, genre);
         if (authors.length == 1 && authors[0] == 0) book.setAuthor(Collections.EMPTY_LIST);
         else book.setAuthor(Arrays.stream(authors).mapToObj(Author::new).collect(Collectors.toList()));
-        return wormBookService.saveBook(book) != null ? "Updated" : "Some Problem";
+        try {
+            wormBookService.saveBook(book);
+        } catch (NoDataWithThisIdException e) {
+            return e.getLocalizedMessage();
+        }
+        return "Updated";
     }
 
     @ShellMethod(value = "Delete book from table using id.", key = {"db", "d book"})

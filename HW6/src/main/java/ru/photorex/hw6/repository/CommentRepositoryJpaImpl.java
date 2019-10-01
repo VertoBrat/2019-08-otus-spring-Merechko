@@ -2,6 +2,7 @@ package ru.photorex.hw6.repository;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
+import ru.photorex.hw6.exception.NoDataWithThisIdException;
 import ru.photorex.hw6.model.Book;
 import ru.photorex.hw6.model.Comment;
 
@@ -27,8 +28,14 @@ public class CommentRepositoryJpaImpl implements CommentRepository {
         if (comment.getId() == null) {
             em.persist(comment);
             return comment;
+        } else {
+            Comment dbComment = em.find(Comment.class, comment.getId());
+            if (dbComment != null) {
+                dbComment.setText(comment.getText());
+                dbComment.setDateTime(comment.getDateTime());
+                return dbComment;
+            } else throw new NoDataWithThisIdException(comment.getId());
         }
-        return null;
     }
 
     @Override
