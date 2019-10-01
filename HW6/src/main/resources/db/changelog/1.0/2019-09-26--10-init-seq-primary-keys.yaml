@@ -1,0 +1,24 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1
+      author: photorex
+      runAlways: true
+      sql:
+        splitStatements: true
+        sql: SELECT setval('authors_id_seq', (SELECT max(id) FROM authors));
+
+  - changeSet:
+      id: 2
+      author: photorex
+      runAlways: true
+      sql:
+        splitStatements: true
+        sql: SELECT setval('books_id_seq', (SELECT max(id) FROM books));
+
+  - changeSet:
+      id: 3
+      author: photorex
+      runAlways: true
+      sql:
+        splitStatements: true
+        sql: SELECT setval('genres_id_seq', (SELECT max(id) FROM genres));

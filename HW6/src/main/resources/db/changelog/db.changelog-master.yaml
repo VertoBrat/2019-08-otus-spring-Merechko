@@ -1,9 +1,6 @@
 databaseChangeLog:
-  - includeAll:
-      path: db/changelog/1.0/
+  - include:
+      file: db/changelog/1.0/changelog-v.1.0-cumulative.yaml
 
-  - includeAll:
-      path: db/changelog/1.1/
-
-  - includeAll:
-      path: db/changelog/data/
+  - include:
+      file: db/changelog/1.1/changelog-v.1.1-cumulative.yaml
