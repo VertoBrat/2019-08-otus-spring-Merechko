@@ -34,7 +34,8 @@ public class CommandsForCommentManagment extends LibraryCommands {
     public String insertComment(@ShellOption({"-b"}) Long bookId,
                                 @ShellOption({"-t"}) String text) {
         Comment comment = new Comment(null, text, new Book(bookId), LocalDateTime.now());
-        return wormCommentService.saveComment(comment)!=null ? "Added": "SomeProblem";
+        wormCommentService.saveComment(comment);
+        return "Added";
     }
 
     @ShellMethod(value = "Update some comment by id.", key = {"uc", "u comment"})
@@ -51,7 +52,8 @@ public class CommandsForCommentManagment extends LibraryCommands {
 
     @ShellMethod(value = "Delete comment.", key = {"dc", "d comment"})
     public String deleteComment(@ShellOption({"-i"}) Long id) {
-        return wormCommentService.deleteComment(id)? "Deleted" : "Some Problem";
+        wormCommentService.deleteComment(id);
+        return "Deleted";
     }
 
     private void printTable(List<Comment> comments) {

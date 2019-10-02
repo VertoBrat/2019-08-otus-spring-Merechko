@@ -10,5 +10,5 @@ public interface LibraryWormCommentService {
 
     Comment saveComment(Comment comment);
 
-    boolean deleteComment(Long id);
+    void deleteComment(Long id);
 }

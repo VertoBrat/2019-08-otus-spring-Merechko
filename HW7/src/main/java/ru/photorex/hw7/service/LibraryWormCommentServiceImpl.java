@@ -3,6 +3,7 @@ package ru.photorex.hw7.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.photorex.hw7.model.Book;
 import ru.photorex.hw7.model.Comment;
 import ru.photorex.hw7.repository.CommentRepository;
 
@@ -17,7 +18,7 @@ public class LibraryWormCommentServiceImpl implements LibraryWormCommentService 
 
     @Override
     public List<Comment> getAllCommentsByBook(Long bookId) {
-        return repository.getAllByBook(bookId);
+        return repository.findCommentsByBook(new Book(bookId));
     }
 
     @Override
@@ -28,7 +29,7 @@ public class LibraryWormCommentServiceImpl implements LibraryWormCommentService 
 
     @Override
     @Transactional
-    public boolean deleteComment(Long id) {
-        return repository.delete(id);
+    public void deleteComment(Long id) {
+        repository.deleteById(id);
     }
 }
