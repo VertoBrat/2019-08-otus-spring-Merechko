@@ -12,5 +12,5 @@ public interface LibraryWormAuthorService {
 
     Author saveAuthor(Author author);
 
-    boolean deleteAuthor(Long id);
+    void deleteAuthor(Long id);
 }

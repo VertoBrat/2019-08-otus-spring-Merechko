@@ -3,6 +3,7 @@ package ru.photorex.hw7.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.photorex.hw7.exception.NoDataWithThisIdException;
 import ru.photorex.hw7.model.Author;
 import ru.photorex.hw7.repository.AuthorRepository;
 
@@ -17,12 +18,12 @@ public class LibraryWormAuthorServiceImpl implements LibraryWormAuthorService {
 
     @Override
     public Author getAuthorById(Long id) {
-        return authorRepository.getById(id);
+        return authorRepository.findById(id).orElseThrow(() -> new NoDataWithThisIdException(id));
     }
 
     @Override
     public List<Author> getAllAuthors() {
-        return authorRepository.getAll();
+        return authorRepository.findAll();
     }
 
     @Override
@@ -33,7 +34,7 @@ public class LibraryWormAuthorServiceImpl implements LibraryWormAuthorService {
 
     @Override
     @Transactional
-    public boolean deleteAuthor(Long id) {
-        return authorRepository.delete(id);
+    public void deleteAuthor(Long id) {;
+        authorRepository.deleteById(id);
     }
 }
