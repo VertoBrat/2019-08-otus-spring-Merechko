@@ -1,0 +1,8 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1
+      author: photorex
+      runAlways: true
+      sql:
+        splitStatements: true
+        sql: SELECT setval('comments_id_seq', (SELECT max(id) FROM comments));
