@@ -45,14 +45,13 @@ public class CommandForBookManagment extends LibraryCommands {
 
     @ShellMethod(value = "Display book by id.", key = {"tbi", "tb book by id"})
     public void displayBookById(@ShellOption({"-i"}) Long id) {
-        Book book = null;
+        Book book;
         try {
             book = wormBookService.getBookById(id);
             printTable(Collections.singletonList(book), true);
-        } catch (DataAccessException e) {
-            console.printString("No book with id = " + id);
+        } catch (NoDataWithThisIdException e) {
+            console.printString(e.getLocalizedMessage());
         }
-
     }
 
     @ShellMethod(value = "Insert into books table new book.", key = {"ib", "i book"})
@@ -61,8 +60,8 @@ public class CommandForBookManagment extends LibraryCommands {
                              @ShellOption(value = {"-a"}, arity = 1, defaultValue = "1") long[] authors) {
         try {
             wormGenreService.getGenreById(genreId);
-        } catch (DataAccessException ex) {
-            return "No Genre with id = " + genreId;
+        } catch (NoDataWithThisIdException ex) {
+            return ex.getLocalizedMessage();
         }
         Book book = new Book(null, title, new Genre(genreId, null));
         book.setAuthor(Arrays.stream(authors).mapToObj(Author::new).collect(Collectors.toList()));
@@ -74,25 +73,23 @@ public class CommandForBookManagment extends LibraryCommands {
                              @ShellOption({"-t"}) String title,
                              @ShellOption({"-g"}) Long genreId,
                              @ShellOption(value = {"-a"}, arity = 1, defaultValue = "0") long[] authors) {
-        Genre genre = wormGenreService.getGenreById(genreId);
-        if (genre == null)
-            return "No Genre with id = " + genreId;
+        Genre genre;
+        try {
+            genre = wormGenreService.getGenreById(genreId);
+        } catch (NoDataWithThisIdException ex) {
+            return ex.getLocalizedMessage();
+        }
         Book book = new Book(id, title, genre);
         if (authors.length == 1 && authors[0] == 0) book.setAuthor(Collections.EMPTY_LIST);
         else book.setAuthor(Arrays.stream(authors).mapToObj(Author::new).collect(Collectors.toList()));
-        try {
-            wormBookService.saveBook(book);
-        } catch (NoDataWithThisIdException e) {
-            return e.getLocalizedMessage();
-        }
+        wormBookService.saveBook(book);
         return "Updated";
     }
 
     @ShellMethod(value = "Delete book from table using id.", key = {"db", "d book"})
     public String deleteBook(@ShellOption({"-i"}) Long id) {
-        if (wormBookService.deleteBook(id))
-            return "Successful";
-        return "Some problem";
+        wormBookService.deleteBook(id);
+        return "Deleted";
     }
 
     private void printTable(List<Book> books, boolean withAuthors) {
