@@ -12,5 +12,5 @@ public interface LibraryWormGenreService {
 
     Genre saveGenre(Genre genre);
 
-    boolean deleteGenreById(Long id);
+    void deleteGenreById(Long id);
 }

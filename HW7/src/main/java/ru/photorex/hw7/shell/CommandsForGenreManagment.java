@@ -24,10 +24,12 @@ public class CommandsForGenreManagment extends LibraryCommands {
 
     @ShellMethod(value = "Display genre by id.", key = {"tgi", "t genre by id"})
     public void displayGenreById(@ShellOption({"-i"}) Long id) {
-        Genre genre = wormGenreService.getGenreById(id);
-        if (genre != null)
+        try {
+            Genre genre = wormGenreService.getGenreById(id);
             printTable(Collections.singletonList(genre));
-        else console.printString("No genre with id = " + id);
+        } catch (NoDataWithThisIdException ex) {
+            console.printString(ex.getLocalizedMessage());
+        }
     }
 
     @ShellMethod(value = "Display all genres from table.", key = {"tg", "t genre"})
@@ -41,7 +43,8 @@ public class CommandsForGenreManagment extends LibraryCommands {
     @ShellMethod(value = "Insert genre into table.", key = {"ig", "i genre"})
     public String insertGenre(@ShellOption({"-n"}) String name) {
         Genre genre = new Genre(null, name);
-        return wormGenreService.saveGenre(genre) != null ? "Added" : "SomeProblem";
+        wormGenreService.saveGenre(genre);
+        return "Added";
     }
 
     @ShellMethod(value = "Update genre into table.", key = {"ug", "u genre"})
@@ -58,13 +61,8 @@ public class CommandsForGenreManagment extends LibraryCommands {
 
     @ShellMethod(value = "Delete genre from table.", key = {"dg", "d genre"})
     public String deleteGenre(@ShellOption({"-i"}) Long id) {
-        try {
-            if (wormGenreService.deleteGenreById(id))
-                return "Successful";
-        } catch (DataAccessException ex) {
-            return  "There are few book of this genre, you cant remove it";
-        }
-        return "There is no genre with id = " + id;
+        wormGenreService.deleteGenreById(id);
+        return "Deleted";
     }
 
     private void printTable(List<Genre> genres) {

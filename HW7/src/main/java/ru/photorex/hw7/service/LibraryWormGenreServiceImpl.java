@@ -3,6 +3,7 @@ package ru.photorex.hw7.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.photorex.hw7.exception.NoDataWithThisIdException;
 import ru.photorex.hw7.model.Genre;
 import ru.photorex.hw7.repository.GenreRepository;
 
@@ -17,12 +18,12 @@ public class LibraryWormGenreServiceImpl implements LibraryWormGenreService {
 
     @Override
     public Genre getGenreById(Long id) {
-        return genreRepository.getById(id);
+        return genreRepository.findById(id).orElseThrow(() -> new NoDataWithThisIdException(id));
     }
 
     @Override
     public List<Genre> getAllGenres() {
-        return genreRepository.getAll();
+        return genreRepository.findAll();
     }
 
     @Override
@@ -33,7 +34,7 @@ public class LibraryWormGenreServiceImpl implements LibraryWormGenreService {
 
     @Override
     @Transactional
-    public boolean deleteGenreById(Long id) {
-        return genreRepository.delete(id);
+    public void deleteGenreById(Long id) {
+        genreRepository.deleteById(id);
     }
 }
