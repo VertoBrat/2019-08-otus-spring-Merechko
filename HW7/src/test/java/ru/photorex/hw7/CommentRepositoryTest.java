@@ -16,7 +16,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 @Sql(scripts = {"classpath:data-test.sql"})
 public class CommentRepositoryTest {
 
-    private static final Long BOOK_1_ID = 1L;
+    private static final Long ENTITY_1_ID = 1L;
+    private static final Long ENTITY_2_ID = 2L;
+    private static final int LIST_SIZE_2 = 2;
+    private static final String ENTITY_ID = "id";
 
     @Autowired
     CommentRepository repository;
@@ -24,7 +27,9 @@ public class CommentRepositoryTest {
     @DisplayName(" должен получать лист с комментариями одной книги")
     @Test
     void shouldReturnListOfCommentsByBook() {
-        val comments = repository.findCommentsByBookOrderById(new Book(BOOK_1_ID));
-        assertThat(comments).hasSize(2);
+        val comments = repository.findCommentsByBookOrderById(new Book(ENTITY_1_ID));
+        assertThat(comments).hasSize(LIST_SIZE_2);
+        assertThat(comments.get(0)).hasFieldOrPropertyWithValue(ENTITY_ID, ENTITY_1_ID);
+        assertThat(comments.get(1)).hasFieldOrPropertyWithValue(ENTITY_ID, ENTITY_2_ID);
     }
 }

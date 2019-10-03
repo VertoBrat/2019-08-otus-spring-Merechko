@@ -74,4 +74,4 @@ insert into comments(text, book_id, date_time) values
 ('comment_3', 2, current_timestamp());
 
 insert into BOOKS_AUTHORS (BOOK_ID, AUTHOR_ID)
-values (1, 1),(1, 2), (1, 3), (2, 1), (3, 3);
+values (1, 1),(1, 2), (3, 3), (2, 1), (3, 3);
