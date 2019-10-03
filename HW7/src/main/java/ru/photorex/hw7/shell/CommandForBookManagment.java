@@ -1,7 +1,7 @@
 package ru.photorex.hw7.shell;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.dao.DataAccessException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 import org.springframework.shell.standard.ShellOption;
@@ -115,7 +115,11 @@ public class CommandForBookManagment extends LibraryCommands {
 
     @ShellMethod(value = "Delete book from table using id.", key = {"db", "d book"})
     public String deleteBook(@ShellOption({"-i"}) Long id) {
-        wormBookService.deleteBook(id);
+        try {
+            wormBookService.deleteBook(id);
+        } catch (EmptyResultDataAccessException ex) {
+            return "There is no book with id = " + id;
+        }
         return "Deleted";
     }
 

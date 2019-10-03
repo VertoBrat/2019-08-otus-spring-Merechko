@@ -28,7 +28,7 @@ public class BookRepositoryTest {
     @DisplayName(" должен получать лист с книгами одного автора")
     @Test
     void shouldReturnListOfBooksOneAuthor() {
-        val books = repository.findBooksByAuthor(new Author(AUTHOR_1_ID));
+        val books = repository.findBooksByAuthorOrderById(new Author(AUTHOR_1_ID));
         assertThat(books).hasSize(2);
     }
 }

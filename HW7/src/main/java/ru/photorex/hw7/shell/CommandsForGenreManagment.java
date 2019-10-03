@@ -1,7 +1,6 @@
 package ru.photorex.hw7.shell;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.dao.DataAccessException;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 import org.springframework.shell.standard.ShellOption;
@@ -52,7 +51,7 @@ public class CommandsForGenreManagment extends LibraryCommands {
                               @ShellOption({"-n"}) String name) {
         Genre genre = new Genre(id, name);
         try {
-            wormGenreService.saveGenre(genre);
+            wormGenreService.updateGenre(genre);
         } catch (NoDataWithThisIdException e) {
             return e.getLocalizedMessage();
         }

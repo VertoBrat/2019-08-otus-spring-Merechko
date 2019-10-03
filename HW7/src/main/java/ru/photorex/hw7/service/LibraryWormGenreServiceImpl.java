@@ -34,6 +34,14 @@ public class LibraryWormGenreServiceImpl implements LibraryWormGenreService {
 
     @Override
     @Transactional
+    public Genre updateGenre(Genre genre) {
+        Genre genreDb = genreRepository.findById(genre.getId()).orElseThrow(() -> new NoDataWithThisIdException(genre.getId()));
+        genreDb.setName(genre.getName());
+        return genreDb;
+    }
+
+    @Override
+    @Transactional
     public void deleteGenreById(Long id) {
         genreRepository.deleteById(id);
     }

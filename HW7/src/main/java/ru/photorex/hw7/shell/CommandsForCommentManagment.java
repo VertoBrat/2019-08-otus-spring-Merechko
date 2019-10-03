@@ -43,7 +43,7 @@ public class CommandsForCommentManagment extends LibraryCommands {
                                 @ShellOption({"-t"}) String newText) {
         Comment comment = new Comment(commentId, newText, null, LocalDateTime.now());
         try {
-            wormCommentService.saveComment(comment);
+            wormCommentService.updateComment(comment);
         } catch (NoDataWithThisIdException e) {
             return e.getLocalizedMessage();
         }

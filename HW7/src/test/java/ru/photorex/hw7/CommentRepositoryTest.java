@@ -24,7 +24,7 @@ public class CommentRepositoryTest {
     @DisplayName(" должен получать лист с комментариями одной книги")
     @Test
     void shouldReturnListOfCommentsByBook() {
-        val comments = repository.findCommentsByBook(new Book(BOOK_1_ID));
+        val comments = repository.findCommentsByBookOrderById(new Book(BOOK_1_ID));
         assertThat(comments).hasSize(2);
     }
 }

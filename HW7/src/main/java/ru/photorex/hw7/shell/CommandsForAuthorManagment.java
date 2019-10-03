@@ -1,7 +1,8 @@
 package ru.photorex.hw7.shell;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.dao.DataAccessException;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 import org.springframework.shell.standard.ShellOption;
@@ -10,7 +11,6 @@ import ru.photorex.hw7.model.Author;
 import ru.photorex.hw7.service.IOService;
 import ru.photorex.hw7.service.LibraryWormAuthorService;
 
-import javax.persistence.EntityNotFoundException;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -49,11 +49,17 @@ public class CommandsForAuthorManagment extends LibraryCommands {
 
     @ShellMethod(value = "Update into authors table.", key = {"ua", "u authors"})
     public String updateAuthor(@ShellOption(value = {"-i"}) Long id,
-                               @ShellOption({"-fn"}) String firstName,
-                               @ShellOption({"-ln"}) String lastName) {
+                               @ShellOption(value = {"-fn"}, defaultValue = "first_name") String fName,
+                               @ShellOption(value = {"-ln"}, defaultValue = "last_name") String lName) {
+        String firstName = null;
+        String lastName = null;
+        if (!fName.equals("first_name"))
+            firstName = fName;
+        if (!lName.equals("last_name"))
+            lastName = lName;
         Author author = new Author(id, firstName, lastName);
         try {
-            wormAuthorService.saveAuthor(author);
+            wormAuthorService.updateAuthor(author);
         } catch (NoDataWithThisIdException e) {
             return e.getLocalizedMessage();
         }
@@ -64,8 +70,10 @@ public class CommandsForAuthorManagment extends LibraryCommands {
     public String deleteAuthor(@ShellOption({"-i"}) Long id) {
         try {
             wormAuthorService.deleteAuthor(id);
-        } catch (EntityNotFoundException ex) {
+        } catch (EmptyResultDataAccessException ex) {
             return "This Author have books, you cant remove him";
+        } catch (DataIntegrityViolationException ex) {
+            return "This author have books";
         }
         return "Deleted";
     }

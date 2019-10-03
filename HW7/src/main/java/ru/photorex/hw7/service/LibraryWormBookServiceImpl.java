@@ -1,20 +1,16 @@
 package ru.photorex.hw7.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.photorex.hw7.exception.NoDataWithThisIdException;
 import ru.photorex.hw7.model.Author;
 import ru.photorex.hw7.model.Book;
-import ru.photorex.hw7.model.Genre;
 import ru.photorex.hw7.repository.AuthorRepository;
 import ru.photorex.hw7.repository.BookRepository;
-import ru.photorex.hw7.repository.GenreRepository;
 
-import javax.persistence.EntityNotFoundException;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -23,7 +19,6 @@ public class LibraryWormBookServiceImpl implements LibraryWormBookService {
 
     private final BookRepository bookRepository;
     private final AuthorRepository authorRepository;
-    private final GenreRepository genreRepository;
 
     @Override
     public Book getBookById(Long id) {
@@ -32,12 +27,12 @@ public class LibraryWormBookServiceImpl implements LibraryWormBookService {
 
     @Override
     public List<Book> getAllBooks() {
-        return bookRepository.findAll();
+        return bookRepository.findAll(Sort.by("id"));
     }
 
     @Override
     public List<Book> getBooksByAuthor(Author author) {
-        return bookRepository.findBooksByAuthor(author);
+        return bookRepository.findBooksByAuthorOrderById(author);
     }
 
     @Override
