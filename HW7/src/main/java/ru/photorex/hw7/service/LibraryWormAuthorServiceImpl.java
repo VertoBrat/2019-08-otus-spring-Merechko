@@ -45,7 +45,7 @@ public class LibraryWormAuthorServiceImpl implements LibraryWormAuthorService {
 
     @Override
     @Transactional
-    public void deleteAuthor(Long id) {;
+    public void deleteAuthor(Long id) {
         authorRepository.deleteById(id);
     }
 }
