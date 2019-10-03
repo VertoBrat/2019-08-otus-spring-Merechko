@@ -37,53 +37,80 @@ public class CommandForBookManagment extends LibraryCommands {
     @ShellMethod(value = "Display all books some author.", key = {"tba", "tb author"})
     public void displayBooksByAuthor(@ShellOption({"-i"}) Long authorId) {
         Author author = new Author(authorId);
-        List<Book> books = wormBookService.getBooksByAuthor(author);
-        if (!books.isEmpty()) {
-            printTable(books, false);
-        } else console.printString("No books of this author");
+        try {
+            List<Book> books = wormBookService.getBooksByAuthor(author);
+            if (!books.isEmpty())
+                printTable(books, false);
+            else
+                console.printString("No books this author");
+        } catch (NoDataWithThisIdException ex) {
+            console.printString(ex.getLocalizedMessage());
+        }
     }
 
     @ShellMethod(value = "Display book by id.", key = {"tbi", "tb book by id"})
     public void displayBookById(@ShellOption({"-i"}) Long id) {
-        Book book;
-        try {
-            book = wormBookService.getBookById(id);
+        Book book = wormBookService.getBookById(id);
+        if (book == null)
+            console.printString("There is no book with id = " + id);
+        else
             printTable(Collections.singletonList(book), true);
-        } catch (NoDataWithThisIdException e) {
-            console.printString(e.getLocalizedMessage());
-        }
     }
 
+    /**
+     * You can add two authors maximum!
+     * If you want add only one author, use "0" for second author
+     */
     @ShellMethod(value = "Insert into books table new book.", key = {"ib", "i book"})
     public String insertBook(@ShellOption({"-t"}) String title,
                              @ShellOption({"-g"}) Long genreId,
-                             @ShellOption(value = {"-a"}, arity = 1, defaultValue = "1") long[] authors) {
-        try {
-            wormGenreService.getGenreById(genreId);
-        } catch (NoDataWithThisIdException ex) {
-            return ex.getLocalizedMessage();
-        }
+                             @ShellOption(value = {"-a"}, arity = 2, defaultValue = "1") long[] authors) {
         Book book = new Book(null, title, new Genre(genreId, null));
-        book.setAuthor(Arrays.stream(authors).mapToObj(Author::new).collect(Collectors.toList()));
-        return wormBookService.saveBook(book) != null ? "Added" : "Some Problem";
+        book.setAuthor(Arrays.stream(authors).mapToObj(Author::new)
+                .filter(a -> a.getId() != 0)
+                .collect(Collectors.toList()));
+        try {
+            wormBookService.saveBook(book);
+        } catch (RuntimeException ex) {
+            return "Some problems";
+        }
+        return "Added";
     }
 
     @ShellMethod(value = "Update book into books table.", key = {"ub", "u book"})
     public String updateBook(@ShellOption({"-i"}) Long id,
-                             @ShellOption({"-t"}) String title,
-                             @ShellOption({"-g"}) Long genreId,
+                             @ShellOption(value = {"-t"}, defaultValue = "title") String title,
+                             @ShellOption(value = {"-g"}, defaultValue = "0") Long genreId,
                              @ShellOption(value = {"-a"}, arity = 1, defaultValue = "0") long[] authors) {
+        String titleOfBook;
         Genre genre;
+        if (title.equals("title"))
+            titleOfBook = null;
+        else titleOfBook = title;
+        if (genreId == 0)
+            genre = new Genre();
+        else genre = new Genre(genreId, null);
+
+        Book book = new Book(id, titleOfBook, genre);
+        if (authors.length == 1 && authors[0] == 0) book.setAuthor(Collections.EMPTY_LIST);
+        else book.setAuthor(Arrays.stream(authors).mapToObj(Author::new).collect(Collectors.toList()));
         try {
-            genre = wormGenreService.getGenreById(genreId);
+            wormBookService.updateBook(book);
         } catch (NoDataWithThisIdException ex) {
             return ex.getLocalizedMessage();
         }
-        Book book = new Book(id, title, genre);
-        if (authors.length == 1 && authors[0] == 0) book.setAuthor(Collections.EMPTY_LIST);
-        else book.setAuthor(Arrays.stream(authors).mapToObj(Author::new).collect(Collectors.toList()));
-        wormBookService.saveBook(book);
         return "Updated";
+    }
+
+    @ShellMethod(value = "Delete Author from book using author id and book id.", key = {"dba", "db author"})
+    public String deleteAuthor(@ShellOption({"-a"}) Long authorId,
+                               @ShellOption({"-b"}) Long bookId) {
+        try {
+            wormBookService.deleteAuthorFromBook(authorId, bookId);
+            return "Deleted";
+        } catch (NoDataWithThisIdException ex) {
+            return ex.getLocalizedMessage();
+        }
     }
 
     @ShellMethod(value = "Delete book from table using id.", key = {"db", "d book"})

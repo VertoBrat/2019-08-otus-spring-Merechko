@@ -8,6 +8,10 @@ import org.hibernate.annotations.BatchSize;
 import javax.persistence.*;
 import java.util.List;
 
+@NamedEntityGraphs({
+        @NamedEntityGraph(name = "BookAuthors",
+        attributeNodes = {@NamedAttributeNode("author")})
+})
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

@@ -3,6 +3,7 @@ package ru.photorex.hw7.model;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.BatchSize;
 
 import javax.persistence.*;
 
@@ -11,6 +12,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Entity
 @Table(name = "genres")
+@BatchSize(size = 5)
 public class Genre {
 
     @Id

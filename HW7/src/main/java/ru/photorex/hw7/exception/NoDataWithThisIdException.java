@@ -3,6 +3,10 @@ package ru.photorex.hw7.exception;
 public class NoDataWithThisIdException extends RuntimeException {
 
     public NoDataWithThisIdException(Long id) {
-        super("There are no data with id=" + id);
+        super("There are no data for id=" + id);
+    }
+
+    public NoDataWithThisIdException(Iterable list) {
+        super("There are no data for some ids " + list.toString());
     }
 }

@@ -12,6 +12,8 @@ spring:
           lob:
             non_contextual_creation: true
     show-sql: true
-#logging:
+    open-in-view: false
+
+  #logging:
  # level:
   #  root: ERROR

@@ -16,4 +16,8 @@ public interface LibraryWormBookService {
     void deleteBook(Long id);
 
     Book saveBook(Book book);
+
+    Book updateBook(Book book);
+
+    void deleteAuthorFromBook(Long authorId, Long bookId);
 }
