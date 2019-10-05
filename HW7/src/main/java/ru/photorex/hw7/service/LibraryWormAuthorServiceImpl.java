@@ -36,10 +36,7 @@ public class LibraryWormAuthorServiceImpl implements LibraryWormAuthorService {
     @Transactional
     public Author updateAuthor(Author author) {
         Author authorDb = authorRepository.findById(author.getId()).orElseThrow(() -> new NoDataWithThisIdException(author.getId()));
-        if (author.getFirstName() != null)
-            authorDb.setFirstName(author.getFirstName());
-        if (author.getLastName() != null)
-            authorDb.setLastName(author.getLastName());
+        setMutableProperties(author, authorDb);
         return authorDb;
     }
 
@@ -47,5 +44,14 @@ public class LibraryWormAuthorServiceImpl implements LibraryWormAuthorService {
     @Transactional
     public void deleteAuthor(Long id) {
         authorRepository.deleteById(id);
+    }
+
+    private void setMutableProperties(Author newAuthor, Author updatableAuthor) {
+        if (newAuthor.getFirstName() != null) {
+            updatableAuthor.setFirstName(newAuthor.getFirstName());
+        }
+        if (newAuthor.getLastName() != null) {
+            updatableAuthor.setLastName(newAuthor.getLastName());
+        }
     }
 }
