@@ -6,11 +6,17 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.BatchSize;
 
 import javax.persistence.*;
-import java.util.List;
+import java.util.Set;
 
 @NamedEntityGraphs({
         @NamedEntityGraph(name = "BookAuthors",
-        attributeNodes = {@NamedAttributeNode("author")})
+        attributeNodes = {
+                @NamedAttributeNode("genre"),
+                @NamedAttributeNode("author")}),
+        @NamedEntityGraph(name = "BookGenre",
+        attributeNodes = {
+                @NamedAttributeNode("genre")
+        })
 })
 @Data
 @NoArgsConstructor
@@ -32,10 +38,10 @@ public class Book {
 
     @OneToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "books_authors",
-    joinColumns = @JoinColumn(name = "book_id"),
-    inverseJoinColumns = @JoinColumn(name = "author_id"))
+            joinColumns = @JoinColumn(name = "book_id"),
+            inverseJoinColumns = @JoinColumn(name = "author_id"))
     @BatchSize(size = 3)
-    private List<Author> author;
+    private Set<Author> author;
 
     public Book(Long id) {
         this.id = id;

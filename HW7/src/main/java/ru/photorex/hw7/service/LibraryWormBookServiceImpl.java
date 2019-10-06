@@ -23,7 +23,7 @@ public class LibraryWormBookServiceImpl implements LibraryWormBookService {
 
     @Override
     public Book getBookById(Long id) {
-        return bookRepository.findWithAuthorsById(id);
+        return bookRepository.findWithAuthorsById(id).orElseThrow(() -> new NoDataWithThisIdException(id));
     }
 
     @Override
@@ -53,9 +53,9 @@ public class LibraryWormBookServiceImpl implements LibraryWormBookService {
     @Override
     @Transactional
     public void deleteAuthorFromBook(Long authorId, Long bookId) {
-        authorRepository.findById(authorId).orElseThrow(() -> new  NoDataWithThisIdException(authorId));
-        bookRepository.findById(bookId).orElseThrow(() -> new NoDataWithThisIdException(bookId));
-        bookRepository.deleteAuthor(authorId, bookId);
+        Author author = authorRepository.findById(authorId).orElseThrow(() -> new  NoDataWithThisIdException(authorId));
+        Book book = bookRepository.findById(bookId).orElseThrow(() -> new NoDataWithThisIdException(bookId));
+        book.getAuthor().remove(author);
     }
 
     @Override

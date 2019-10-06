@@ -11,7 +11,6 @@ import ru.photorex.hw7.model.Book;
 import ru.photorex.hw7.model.Genre;
 import ru.photorex.hw7.service.IOService;
 import ru.photorex.hw7.service.LibraryWormBookService;
-import ru.photorex.hw7.service.LibraryWormGenreService;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -24,7 +23,6 @@ import java.util.stream.Collectors;
 public class CommandForBookManagment extends LibraryCommands {
 
     private final LibraryWormBookService wormBookService;
-    private final LibraryWormGenreService wormGenreService;
     private final ShellTableBuilder tableBuilder;
     private final IOService console;
 
@@ -50,11 +48,12 @@ public class CommandForBookManagment extends LibraryCommands {
 
     @ShellMethod(value = "Display book by id.", key = {"tbi", "tb book by id"})
     public void displayBookById(@ShellOption({"-i"}) Long id) {
-        Book book = wormBookService.getBookById(id);
-        if (book == null)
-            console.printString("There is no book with id = " + id);
-        else
+        try {
+            Book book = wormBookService.getBookById(id);
             printTable(Collections.singletonList(book), true);
+        } catch (NoDataWithThisIdException ex) {
+            console.printString(ex.getLocalizedMessage());
+        }
     }
 
     /**
@@ -68,7 +67,7 @@ public class CommandForBookManagment extends LibraryCommands {
         Book book = new Book(null, title, new Genre(genreId, null));
         book.setAuthor(Arrays.stream(authors).mapToObj(Author::new)
                 .filter(a -> a.getId() != 0)
-                .collect(Collectors.toList()));
+                .collect(Collectors.toSet()));
         try {
             wormBookService.saveBook(book);
         } catch (RuntimeException ex) {
@@ -92,8 +91,8 @@ public class CommandForBookManagment extends LibraryCommands {
         else genre = new Genre(genreId, null);
 
         Book book = new Book(id, titleOfBook, genre);
-        if (authors.length == 1 && authors[0] == 0) book.setAuthor(Collections.EMPTY_LIST);
-        else book.setAuthor(Arrays.stream(authors).mapToObj(Author::new).collect(Collectors.toList()));
+        if (authors.length == 1 && authors[0] == 0) book.setAuthor(Collections.EMPTY_SET);
+        else book.setAuthor(Arrays.stream(authors).mapToObj(Author::new).collect(Collectors.toSet()));
         try {
             wormBookService.updateBook(book);
         } catch (NoDataWithThisIdException ex) {

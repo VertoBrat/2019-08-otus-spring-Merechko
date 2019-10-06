@@ -9,16 +9,13 @@ import ru.photorex.hw7.model.Author;
 import ru.photorex.hw7.model.Book;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface BookRepository extends JpaRepository<Book, Long> {
 
+    @EntityGraph("BookGenre")
     List<Book> findBooksByAuthorOrderById(Author author);
 
     @EntityGraph("BookAuthors")
-    Book findWithAuthorsById(Long id);
-
-    @Modifying
-    @Query(value = "delete from books_authors ba where ba.author_id=:authorId and ba.book_id=:bookId",
-            nativeQuery = true)
-    void deleteAuthor(@Param("authorId") Long authorId, @Param("bookId") Long bookId);
+    Optional<Book> findWithAuthorsById(Long id);
 }
