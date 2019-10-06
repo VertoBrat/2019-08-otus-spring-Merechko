@@ -1,10 +1,8 @@
 package ru.photorex.hw7.repository;
 
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Modifying;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 import ru.photorex.hw7.model.Author;
 import ru.photorex.hw7.model.Book;
 
@@ -18,4 +16,7 @@ public interface BookRepository extends JpaRepository<Book, Long> {
 
     @EntityGraph("BookAuthors")
     Optional<Book> findWithAuthorsById(Long id);
+
+    @EntityGraph("BookAuthors")
+    List<Book> findAll(Sort sorting);
 }

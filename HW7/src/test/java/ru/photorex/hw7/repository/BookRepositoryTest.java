@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
+import org.springframework.data.domain.Sort;
 import org.springframework.test.context.jdbc.Sql;
 import ru.photorex.hw7.model.Author;
 import ru.photorex.hw7.model.Book;
@@ -15,7 +16,6 @@ import java.util.Optional;
 import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @DisplayName("Репозиторий на основе Data Jpa для работы с книгами")
 @DataJpaTest
@@ -25,9 +25,9 @@ public class BookRepositoryTest {
     private static final Long ENTITY_1_ID = 1L;
     private static final Long ENTITY_2_ID = 2L;
     private static final Long ENTITY_4_ID = 4L;
-    private static final int FIRST_ELEMENT_LIST = 0;
-    private static final int SECOND_ELEMENT_LIST = 1;
-    private static final int SET_SIZE_1 = 1;
+    private static final int FIRST_ELEMENT_COLLECTION = 0;
+    private static final int SECOND_ELEMENT_COLLECTION = 1;
+    private static final int LIST_SIZE_3 = 3;
     private static final int SET_SIZE_2 = 2;
     private static final String ENTITY_ID = "id";
     private static final String BOOK_TITLE = "title";
@@ -55,8 +55,8 @@ public class BookRepositoryTest {
     void shouldReturnListOfBooksOneAuthor() {
         val books = repository.findBooksByAuthorOrderById(new Author(ENTITY_1_ID));
         assertThat(books).hasSize(SET_SIZE_2);
-        assertThat(books.get(FIRST_ELEMENT_LIST)).hasFieldOrPropertyWithValue(ENTITY_ID, ENTITY_1_ID);
-        assertThat(books.get(SECOND_ELEMENT_LIST)).hasFieldOrPropertyWithValue(ENTITY_ID, ENTITY_2_ID);
+        assertThat(books.get(FIRST_ELEMENT_COLLECTION)).hasFieldOrPropertyWithValue(ENTITY_ID, ENTITY_1_ID);
+        assertThat(books.get(SECOND_ELEMENT_COLLECTION)).hasFieldOrPropertyWithValue(ENTITY_ID, ENTITY_2_ID);
     }
 
     @DisplayName(" должен получать книгу по идентификатору с авторами")
@@ -64,17 +64,17 @@ public class BookRepositoryTest {
     void shouldReturnBookWithAuthorsById() {
         Optional<Book> book = repository.findWithAuthorsById(ENTITY_1_ID);
         assertThat(book).isPresent()
-                        .hasValueSatisfying( b -> {
-                            assertThat(b.getAuthor()).hasSize(SET_SIZE_2);
-                            assertThat(b.getAuthor()).containsExactly(AUTHOR_1, AUTHOR_2);
-                        });
+                .hasValueSatisfying(b -> {
+                    assertThat(b.getAuthor()).hasSize(SET_SIZE_2);
+                    assertThat(b.getAuthor()).containsExactly(AUTHOR_1, AUTHOR_2);
+                });
     }
 
-    @DisplayName(" должен удалять автора из таблицы books_author")
+    @DisplayName(" должен получать все книги с авторами")
     @Test
-    void shouldDeleteAuthorFromBook() {
-        repository.deleteAuthor(ENTITY_1_ID, ENTITY_1_ID);
-        Book book = em.find(Book.class, ENTITY_1_ID);
-        assertThat(book.getAuthor()).hasSize(SET_SIZE_1);
+    void shouldReturnListOfAllBooksWithAuthors() {
+        val books = repository.findAll(Sort.by(ENTITY_ID));
+        assertThat(books).hasSize(LIST_SIZE_3);
+        assertThat(books.get(FIRST_ELEMENT_COLLECTION).getAuthor()).containsExactly(AUTHOR_1, AUTHOR_2);
     }
 }

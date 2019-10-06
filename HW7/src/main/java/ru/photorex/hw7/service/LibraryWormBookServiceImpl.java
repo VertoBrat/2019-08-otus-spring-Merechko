@@ -53,9 +53,9 @@ public class LibraryWormBookServiceImpl implements LibraryWormBookService {
     @Override
     @Transactional
     public void deleteAuthorFromBook(Long authorId, Long bookId) {
-        Author author = authorRepository.findById(authorId).orElseThrow(() -> new  NoDataWithThisIdException(authorId));
-        Book book = bookRepository.findById(bookId).orElseThrow(() -> new NoDataWithThisIdException(bookId));
-        book.getAuthor().remove(author);
+        Book book = bookRepository.findWithAuthorsById(bookId).orElseThrow(() -> new NoDataWithThisIdException(bookId));
+        Author author = authorRepository.getOne(authorId);
+        book.removeAuthor(author);
     }
 
     @Override

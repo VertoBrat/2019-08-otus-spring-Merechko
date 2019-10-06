@@ -43,6 +43,10 @@ public class Book {
     @BatchSize(size = 3)
     private Set<Author> author;
 
+    public void removeAuthor(Author author) {
+        this.author.remove(author);
+    }
+
     public Book(Long id) {
         this.id = id;
     }

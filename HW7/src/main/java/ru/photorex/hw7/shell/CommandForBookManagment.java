@@ -12,6 +12,7 @@ import ru.photorex.hw7.model.Genre;
 import ru.photorex.hw7.service.IOService;
 import ru.photorex.hw7.service.LibraryWormBookService;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedHashMap;
@@ -29,7 +30,7 @@ public class CommandForBookManagment extends LibraryCommands {
     @ShellMethod(value = "Display all books into library.", key = {"tb", "t books"})
     public void displayBooks() {
         List<Book> books = wormBookService.getAllBooks();
-        printTable(books, false);
+        printTable(books, true);
     }
 
     @ShellMethod(value = "Display all books some author.", key = {"tba", "tb author"})
@@ -91,7 +92,7 @@ public class CommandForBookManagment extends LibraryCommands {
         else genre = new Genre(genreId, null);
 
         Book book = new Book(id, titleOfBook, genre);
-        if (authors.length == 1 && authors[0] == 0) book.setAuthor(Collections.EMPTY_SET);
+        if (authors.length == 1 && authors[0] == 0) book.setAuthor(Collections.emptySet());
         else book.setAuthor(Arrays.stream(authors).mapToObj(Author::new).collect(Collectors.toSet()));
         try {
             wormBookService.updateBook(book);
@@ -107,7 +108,7 @@ public class CommandForBookManagment extends LibraryCommands {
         try {
             wormBookService.deleteAuthorFromBook(authorId, bookId);
             return "Deleted";
-        } catch (NoDataWithThisIdException ex) {
+        } catch (NoDataWithThisIdException | EntityNotFoundException ex) {
             return ex.getLocalizedMessage();
         }
     }
