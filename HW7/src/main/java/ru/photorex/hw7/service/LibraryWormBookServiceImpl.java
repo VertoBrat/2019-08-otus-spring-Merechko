@@ -11,7 +11,6 @@ import ru.photorex.hw7.repository.AuthorRepository;
 import ru.photorex.hw7.repository.BookRepository;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -45,7 +44,7 @@ public class LibraryWormBookServiceImpl implements LibraryWormBookService {
     @Override
     @Transactional
     public Book updateBook(Book book) {
-        Book bookDb = bookRepository.findById(book.getId()).orElseThrow(() -> new NoDataWithThisIdException(book.getId()));
+        Book bookDb = bookRepository.findWithAuthorsById(book.getId()).orElseThrow(() -> new NoDataWithThisIdException(book.getId()));
         setMutableProperties(book, bookDb);
         return bookDb;
     }
@@ -70,10 +69,7 @@ public class LibraryWormBookServiceImpl implements LibraryWormBookService {
         if (newBook.getGenre().getId() != null)
             updatableBook.setGenre(newBook.getGenre());
         if (!newBook.getAuthor().isEmpty()) {
-            List<Author> actualAuthor = newBook.getAuthor().stream()
-                    .filter(a -> !updatableBook.getAuthor().contains(a))
-                    .collect(Collectors.toList());
-            updatableBook.getAuthor().addAll(actualAuthor);
+            updatableBook.getAuthor().addAll(newBook.getAuthor());
         }
     }
 }
