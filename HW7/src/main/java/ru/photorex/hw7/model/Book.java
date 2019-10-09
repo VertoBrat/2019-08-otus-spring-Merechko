@@ -8,16 +8,11 @@ import org.hibernate.annotations.BatchSize;
 import javax.persistence.*;
 import java.util.Set;
 
-@NamedEntityGraphs({
-        @NamedEntityGraph(name = "BookAuthors",
-        attributeNodes = {
-                @NamedAttributeNode("genre"),
-                @NamedAttributeNode("author")}),
-        @NamedEntityGraph(name = "BookGenre",
+
+@NamedEntityGraph(name = "BookGenre",
         attributeNodes = {
                 @NamedAttributeNode("genre")
         })
-})
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -36,7 +31,7 @@ public class Book {
     @JoinColumn(name = "genre_id")
     private Genre genre;
 
-    @OneToMany(fetch = FetchType.LAZY)
+    @OneToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "books_authors",
             joinColumns = @JoinColumn(name = "book_id"),
             inverseJoinColumns = @JoinColumn(name = "author_id"))

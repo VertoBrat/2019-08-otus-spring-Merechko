@@ -39,7 +39,7 @@ public class CommandForBookManagment extends LibraryCommands {
         try {
             List<Book> books = wormBookService.getBooksByAuthor(author);
             if (!books.isEmpty())
-                printTable(books, false);
+                printTable(books, true);
             else
                 console.printString("No books this author");
         } catch (NoDataWithThisIdException ex) {
