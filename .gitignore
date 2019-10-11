@@ -19,3 +19,4 @@ spring-shell.log
 **/target/
 
 .DS_Store
+src/test/java/

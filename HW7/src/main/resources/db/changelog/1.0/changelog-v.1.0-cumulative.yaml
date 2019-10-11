@@ -1,0 +1,21 @@
+databaseChangeLog:
+  - include:
+       file: db/changelog/1.0/2019-09-26--01-drop-tables-if-exists.yaml
+  - include:
+       file: db/changelog/1.0/2019-09-26--02-create-authors-table.yaml
+  - include:
+       file: db/changelog/1.0/2019-09-26--03-create-genres-table.yaml
+  - include:
+       file: db/changelog/1.0/2019-09-26--04-create-books-table.yaml
+  - include:
+       file: db/changelog/1.0/2019-09-26--05-create-books_authors-table.yaml
+  - include:
+       file: db/changelog/1.0/2019-09-26--06-insert-data-authors.yaml
+  - include:
+       file: db/changelog/1.0/2019-09-26--07-insert-data-genres.yaml
+  - include:
+       file: db/changelog/1.0/2019-09-26--08-insert-data-books.yaml
+  - include:
+       file: db/changelog/1.0/2019-09-26--09-insert-data-books_authors.yaml
+  - include:
+       file: db/changelog/1.0/2019-09-26--10-init-seq-primary-keys.yaml

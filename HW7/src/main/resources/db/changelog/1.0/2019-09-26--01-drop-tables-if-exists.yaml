@@ -1,0 +1,40 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1
+      author: photorex
+      runAlways: true
+      sql:
+        splitStatements: true
+        sql: drop table if exists "books_authors"
+
+  - changeSet:
+      id: 2
+      author: photorex
+      runAlways: true
+      sql:
+        splitStatements: true
+        sql: drop table if exists "comments"
+
+  - changeSet:
+      id: 3
+      author: photorex
+      runAlways: true
+      sql:
+        splitStatements: true
+        sql: drop table if exists "books"
+
+  - changeSet:
+      id: 4
+      author: photorex
+      runAlways: true
+      sql:
+        splitStatements: true
+        sql: drop table if exists "genres"
+
+  - changeSet:
+      id: 5
+      author: photorex
+      runAlways: true
+      sql:
+        splitStatements: true
+        sql: drop table if exists "authors"
