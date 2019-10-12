@@ -20,4 +20,9 @@ public class Comment {
     public Comment(String text) {
         this.text = text;
     }
+
+    @Override
+    public String toString() {
+        return text;
+    }
 }

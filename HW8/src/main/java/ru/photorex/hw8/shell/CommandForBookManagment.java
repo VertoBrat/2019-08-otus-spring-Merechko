@@ -19,16 +19,18 @@ public class CommandForBookManagment extends LibraryCommands {
 
     @ShellMethod(value = "Display all books into library.", key = {"tb", "t books"})
     public void displayBooks() {
-
+        List<Book> books = wormBookService.findAllBooks();
+        printTable(books, false);
     }
 
-    private void printTable(List<Book> books, boolean withAuthors) {
+    private void printTable(List<Book> books, boolean withComments) {
         LinkedHashMap<String, Object> headers = new LinkedHashMap<>();
         headers.put("id", "Id");
         headers.put("title", "Title");
-        headers.put("genre", "Genre");
-        if (withAuthors)
-            headers.put("author", "Authors");
+        headers.put("genres", "Genre");
+        headers.put("authors", "Authors");
+        if (withComments)
+            headers.put("comments", "Comments");
         tableBuilder.build(books, headers);
     }
 }
