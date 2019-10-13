@@ -3,6 +3,8 @@ package ru.photorex.hw8.shell;
 import lombok.RequiredArgsConstructor;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
+import org.springframework.shell.standard.ShellOption;
+import ru.photorex.hw8.exception.NoDataWithThisIdException;
 import ru.photorex.hw8.model.Book;
 import ru.photorex.hw8.service.IOService;
 import ru.photorex.hw8.service.LibraryWormBookService;
@@ -21,6 +23,16 @@ public class CommandForBookManagement extends LibraryCommands {
     public void displayBooks() {
         List<Book> books = wormBookService.findAllBooks();
         printTable(books, false);
+    }
+
+    @ShellMethod(value = "Delete book by id.", key = {"db", "d book"})
+    public void deleteBook(@ShellOption({"-i"}) String id) {
+        try {
+            wormBookService.deleteBook(id);
+            console.printString("Success");
+        } catch (NoDataWithThisIdException ex) {
+            console.printString(ex.getLocalizedMessage());
+        }
     }
 
     private void printTable(List<Book> books, boolean withComments) {

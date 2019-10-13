@@ -7,4 +7,6 @@ import java.util.List;
 public interface LibraryWormBookService {
 
     List<Book> findAllBooks();
+
+    void deleteBook(String id);
 }
