@@ -11,7 +11,7 @@ import java.util.List;
 
 @ShellComponent
 @RequiredArgsConstructor
-public class CommandForBookManagment extends LibraryCommands {
+public class CommandForBookManagement extends LibraryCommands {
 
     private final LibraryWormBookService wormBookService;
     private final ShellTableBuilder tableBuilder;
