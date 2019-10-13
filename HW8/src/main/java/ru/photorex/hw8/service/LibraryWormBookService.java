@@ -9,4 +9,6 @@ public interface LibraryWormBookService {
     List<Book> findAllBooks();
 
     void deleteBook(String id);
+
+    Book findBookById(String id);
 }

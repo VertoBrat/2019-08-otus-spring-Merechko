@@ -23,6 +23,11 @@ public class LibraryWormBookServiceImpl implements LibraryWormBookService {
     }
 
     @Override
+    public Book findBookById(String id) {
+        return bookRepository.findById(id).orElseThrow(() -> new NoDataWithThisIdException(id));
+    }
+
+    @Override
     public void deleteBook(String id) {
         Book book = bookRepository.findById(id).orElseThrow(() -> new NoDataWithThisIdException(id));
         bookRepository.delete(book);

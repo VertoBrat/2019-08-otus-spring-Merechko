@@ -3,6 +3,7 @@ package ru.photorex.hw8.model;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
@@ -17,8 +18,12 @@ public class Comment {
     @Field(value = "commentText")
     private String text;
 
-    public Comment(String text) {
+    @DBRef
+    private Book book;
+
+    public Comment(String text, Book book) {
         this.text = text;
+        this.book = book;
     }
 
     @Override
