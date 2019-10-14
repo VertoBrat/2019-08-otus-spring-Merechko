@@ -5,7 +5,6 @@ import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 import org.springframework.shell.standard.ShellOption;
 import ru.photorex.hw8.exception.NoDataWithThisIdException;
-import ru.photorex.hw8.model.Book;
 import ru.photorex.hw8.model.Comment;
 import ru.photorex.hw8.service.IOService;
 import ru.photorex.hw8.service.LibraryWormCommentService;
@@ -32,7 +31,7 @@ public class CommandForCommentManagement extends LibraryCommands {
                             @ShellOption({"-t"}) String commentText) {
         try {
             wormCommentService.saveComment(bookId, commentText);
-            console.printString("Success");
+            console.printString(SUCCESS_OPERATION);
         } catch (NoDataWithThisIdException ex) {
             console.printString(ex.getLocalizedMessage());
         }
@@ -43,7 +42,7 @@ public class CommandForCommentManagement extends LibraryCommands {
                               @ShellOption({"-t"}) String newCommentText) {
         try {
             wormCommentService.updateComment(commentId, newCommentText);
-            console.printString("Success");
+            console.printString(SUCCESS_OPERATION);
         } catch (NoDataWithThisIdException ex) {
             console.printString(ex.getLocalizedMessage());
         }
@@ -53,7 +52,7 @@ public class CommandForCommentManagement extends LibraryCommands {
     public void deleteCommentById(@ShellOption({"-i"}) String id) {
         try {
             wormCommentService.deleteComment(id);
-            console.printString("Success");
+            console.printString(SUCCESS_OPERATION);
         } catch (NoDataWithThisIdException ex) {
             console.printString(ex.getLocalizedMessage());
         }

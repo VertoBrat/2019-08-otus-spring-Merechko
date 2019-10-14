@@ -11,4 +11,6 @@ public interface LibraryWormBookService {
     void deleteBook(String id);
 
     Book findBookById(String id);
+
+    Book saveBook(Book book);
 }

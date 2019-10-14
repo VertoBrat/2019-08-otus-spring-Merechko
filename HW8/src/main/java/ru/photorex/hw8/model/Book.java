@@ -33,10 +33,14 @@ public class Book {
     @Field(value = "comments", order = 4)
     private List<Comment> comments = new ArrayList<>();
 
-    public Book(String title, Set<String> genres, Set<Author> authors, List<Comment> comments) {
+    public Book(String title, Set<String> genres, Set<Author> authors) {
         this.title = title;
         this.genres = genres;
         this.authors = authors;
+    }
+
+    public Book(String title, Set<String> genres, Set<Author> authors, List<Comment> comments) {
+        this(title, genres, authors);
         this.comments = comments;
     }
 }

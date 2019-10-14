@@ -28,6 +28,12 @@ public class LibraryWormBookServiceImpl implements LibraryWormBookService {
     }
 
     @Override
+    @Transactional
+    public Book saveBook(Book book) {
+        return bookRepository.save(book);
+    }
+
+    @Override
     public void deleteBook(String id) {
         Book book = bookRepository.findById(id).orElseThrow(() -> new NoDataWithThisIdException(id));
         bookRepository.delete(book);
