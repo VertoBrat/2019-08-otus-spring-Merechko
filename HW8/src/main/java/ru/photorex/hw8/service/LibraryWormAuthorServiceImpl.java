@@ -2,6 +2,7 @@ package ru.photorex.hw8.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.photorex.hw8.exception.NoDataWithThisIdException;
 import ru.photorex.hw8.model.Author;
 import ru.photorex.hw8.model.Book;
@@ -12,11 +13,13 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class LibraryWormAuthorServiceImpl implements LibraryWormAuthorService {
 
     private final BookRepository bookRepository;
 
     @Override
+    @Transactional
     public void saveAuthor(String bookId, Author author) {
         Book book = findBook(bookId);
         book.getAuthors().add(author);
@@ -24,6 +27,7 @@ public class LibraryWormAuthorServiceImpl implements LibraryWormAuthorService {
     }
 
     @Override
+    @Transactional
     public void deleteAuthor(String bookId, Author author) {
         Book book = findBook(bookId);
         Set<Author> authors = book.getAuthors().stream().filter(a -> !a.equals(author)).collect(Collectors.toSet());

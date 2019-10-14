@@ -29,6 +29,22 @@ public class CommandForBookManagement extends LibraryCommands {
         printTable(books, false);
     }
 
+    @ShellMethod(value = "Display book one author.", key = {"tba", "tb author"})
+    public void displayBookByAuthor(@ShellOption(value = {"-a"}, arity = 2) String[] authorFullName) {
+        List<Book> books = wormBookService.findBookByAuthor(new Author(authorFullName[0], authorFullName[1]));
+        if (!books.isEmpty()) {
+            printTable(books, false);
+        } else console.printString("No books this Author");
+    }
+
+    @ShellMethod(value = "Display book by genre.", key = {"tbg", "tb genre"})
+    public void displayBookByGenre(@ShellOption({"-g"}) String genre) {
+        List<Book> books = wormBookService.findBookByGenre(genre);
+        if (!books.isEmpty()) {
+            printTable(books, false);
+        } else console.printString("No book this genre");
+    }
+
     @ShellMethod(value = "Display book with comments by Id.", key = {"tbi"})
     public void displayBookById(@ShellOption({"-i"}) String id) {
         try {
@@ -46,6 +62,17 @@ public class CommandForBookManagement extends LibraryCommands {
         Set<Author> authors = Set.of(new Author(authorFullName[0], authorFullName[1]));
         Book book = new Book(title, Set.of(genre), authors);
         wormBookService.saveBook(book);
+    }
+
+    @ShellMethod(value = "Update book title.", key = {"ubt", "ub title"})
+    public void updateBookTitle(@ShellOption({"-i"}) String bookId,
+                                @ShellOption({"-t"}) String title) {
+        try {
+            wormBookService.updateTitle(bookId, title);
+            console.printString(SUCCESS_OPERATION);
+        } catch (NoDataWithThisIdException ex) {
+            console.printString(ex.getLocalizedMessage());
+        }
     }
 
     @ShellMethod(value = "Delete book by id.", key = {"db", "d book"})
