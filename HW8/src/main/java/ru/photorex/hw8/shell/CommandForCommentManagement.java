@@ -27,6 +27,17 @@ public class CommandForCommentManagement extends LibraryCommands {
         printTable(comments);
     }
 
+    @ShellMethod(value = "Save comment with book id.", key = {"ic", "i comment"})
+    public void saveComment(@ShellOption({"-b"}) String bookId,
+                            @ShellOption({"-t"}) String commentText) {
+        try {
+            wormCommentService.saveComment(bookId, commentText);
+            console.printString("Success");
+        } catch (NoDataWithThisIdException ex) {
+            console.printString(ex.getLocalizedMessage());
+        }
+    }
+
     @ShellMethod(value = "Delete comment by id.", key = {"dc"})
     public void deleteCommentById(@ShellOption({"-i"}) String id) {
         try {

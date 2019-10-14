@@ -7,4 +7,6 @@ import java.util.List;
 public interface LibraryWormCommentService {
     List<Comment> findAllComments();
     void deleteComment(String commentId);
+
+    Comment saveComment(String bookId, String commentText);
 }
