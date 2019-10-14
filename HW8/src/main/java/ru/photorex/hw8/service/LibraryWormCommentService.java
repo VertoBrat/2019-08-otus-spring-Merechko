@@ -9,4 +9,6 @@ public interface LibraryWormCommentService {
     void deleteComment(String commentId);
 
     Comment saveComment(String bookId, String commentText);
+
+    Comment updateComment(String commentId, String newCommentText);
 }

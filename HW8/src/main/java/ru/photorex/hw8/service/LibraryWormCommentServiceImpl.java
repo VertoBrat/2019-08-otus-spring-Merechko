@@ -32,6 +32,13 @@ public class LibraryWormCommentServiceImpl implements LibraryWormCommentService 
     }
 
     @Override
+    public Comment updateComment(String commentId, String newCommentText) {
+        Comment comment = commentRepository.findById(commentId).orElseThrow(() -> new NoDataWithThisIdException(commentId));
+        comment.setText(newCommentText);
+        return commentRepository.save(comment);
+    }
+
+    @Override
     @Transactional
     public void deleteComment(String commentId) {
         Comment comment = commentRepository.findById(commentId).orElseThrow(() -> new NoDataWithThisIdException(commentId));

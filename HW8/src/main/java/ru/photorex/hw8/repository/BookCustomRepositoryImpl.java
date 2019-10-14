@@ -25,7 +25,7 @@ public class BookCustomRepositoryImpl implements BookCustomRepository {
 
     @Override
     public void addCommentToArray(String commentId, String bookId) {
-        Update update = new Update().push(COMMENTS_COLLECTION, new DBRef(COMMENTS_COLLECTION, commentId));
+        Update update = new Update().addToSet(COMMENTS_COLLECTION, new DBRef(COMMENTS_COLLECTION, commentId));
         mongoOperations.updateFirst(new Query(Criteria.where("_id").is(bookId)), update, Book.class);
     }
 }
