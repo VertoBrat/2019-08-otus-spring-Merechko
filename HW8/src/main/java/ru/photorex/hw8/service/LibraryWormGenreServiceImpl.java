@@ -1,0 +1,38 @@
+package ru.photorex.hw8.service;
+
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import ru.photorex.hw8.exception.NoDataWithThisIdException;
+import ru.photorex.hw8.model.Book;
+import ru.photorex.hw8.repository.BookRepository;
+
+import java.util.Set;
+import java.util.stream.Collectors;
+
+@Service
+@RequiredArgsConstructor
+@Transactional
+public class LibraryWormGenreServiceImpl implements LibraryWormGenreService {
+
+    private final BookRepository bookRepository;
+
+    @Override
+    public void saveGenre(String bookId, String genre) {
+        Book book = findBook(bookId);
+        book.getGenres().add(genre);
+        bookRepository.save(book);
+    }
+
+    @Override
+    public void deleteGenre(String bookId, String genre) {
+        Book book = findBook(bookId);
+        Set<String> genres = book.getGenres().stream().filter(g -> !g.equals(genre)).collect(Collectors.toSet());
+        book.setGenres(genres);
+        bookRepository.save(book);
+    }
+
+    private Book findBook(String bookId) {
+        return bookRepository.findById(bookId).orElseThrow(() -> new NoDataWithThisIdException(bookId));
+    }
+}
