@@ -1,0 +1,33 @@
+ ██▓     ██▓ ▄▄▄▄    ██▀███   ▄▄▄       ██▀███ ▓██   ██▓
+▓██▒    ▓██▒▓█████▄ ▓██ ▒ ██▒▒████▄    ▓██ ▒ ██▒▒██  ██▒
+▒██░    ▒██▒▒██▒ ▄██▓██ ░▄█ ▒▒██  ▀█▄  ▓██ ░▄█ ▒ ▒██ ██░
+▒██░    ░██░▒██░█▀  ▒██▀▀█▄  ░██▄▄▄▄██ ▒██▀▀█▄   ░ ▐██▓░
+░██████▒░██░░▓█  ▀█▓░██▓ ▒██▒ ▓█   ▓██▒░██▓ ▒██▒ ░ ██▒▓░
+░ ▒░▓  ░░▓  ░▒▓███▀▒░ ▒▓ ░▒▓░ ▒▒   ▓▒█░░ ▒▓ ░▒▓░  ██▒▒▒
+░ ░ ▒  ░ ▒ ░▒░▒   ░   ░▒ ░ ▒░  ▒   ▒▒ ░  ░▒ ░ ▒░▓██ ░▒░
+  ░ ░    ▒ ░ ░    ░   ░░   ░   ░   ▒     ░░   ░ ▒ ▒ ░░
+    ░  ░ ░   ░         ░           ░  ░   ░     ░ ░
+                  ░                             ░ ░
+
+* * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+  You started Library Application!!!
+  In order to start using library you need to log in. So this command is available after log in :
+
+    l, login             - Login in application.            ||   iba, ib author      - Insert new author to the book.
+    lo, logout           - Logout from application.         ||   ib, i book          - Save book.
+                                                            ||   ibg, ib genre       - Insert new genre to the book by id.
+    ta, t authors        - Display all authors into library.||   ibc, ib comment     - Save new comment by book id.
+    tb, t books          - Display all books into library.  ||
+    tg, t genre          - Display all genres.              ||   ubt, ub title       - Update book title
+                                                            ||
+    tbi                  - Display book with comments by Id.||   dba, db author      - Delete author from book.
+    tbg, tb genre        - Display book by genre.           ||   db, d book          - Delete book using id.
+    tba, tb author       - Display all books some author.   ||   dbg, d genre        - Delete genre from book.
+    tc, t comments       - Display all comments             ||   dc, d comment      - Delete comment from book.
+
+${AnsiColor.RED}If you forgot some commands, you can use 'help' and 'help <command>' commands.
+${AnsiColor.DEFAULT}
+Enjoy!!!
+
+* * * * * * * * * * * * * * * * * * * * * * * * * * * * *
