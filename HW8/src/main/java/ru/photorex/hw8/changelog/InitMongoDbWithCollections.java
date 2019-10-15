@@ -10,6 +10,7 @@ import ru.photorex.hw8.model.Author;
 import ru.photorex.hw8.model.Book;
 import ru.photorex.hw8.model.Comment;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -30,10 +31,10 @@ public class InitMongoDbWithCollections {
 
     @ChangeSet(order = "002", id = "initCommentsCollection", author = "photorex", runAlways = true)
     public void initComments(MongoTemplate template) {
-        Comment comment1 = template.save(new Comment("Text#1", null));
-        Comment comment2 = template.save(new Comment("Text#2", null));
-        Comment comment3 = template.save(new Comment("Text#3", null));
-        Comment comment4 = template.save(new Comment("Text#4", null));
+        Comment comment1 = template.save(new Comment("Text#1", null, LocalDateTime.now()));
+        Comment comment2 = template.save(new Comment("Text#2", null, LocalDateTime.now()));
+        Comment comment3 = template.save(new Comment("Text#3", null, LocalDateTime.now()));
+        Comment comment4 = template.save(new Comment("Text#4", null, LocalDateTime.now()));
         fillCommentList(comment1, comment2, comment3, comment4);
     }
 

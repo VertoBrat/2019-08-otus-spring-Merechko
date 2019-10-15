@@ -5,9 +5,12 @@ import lombok.val;
 import org.springframework.data.mongodb.core.mapping.event.AbstractMongoEventListener;
 import org.springframework.data.mongodb.core.mapping.event.AfterDeleteEvent;
 import org.springframework.data.mongodb.core.mapping.event.AfterSaveEvent;
+import org.springframework.data.mongodb.core.mapping.event.BeforeConvertEvent;
 import org.springframework.stereotype.Component;
 import ru.photorex.hw8.model.Comment;
 import ru.photorex.hw8.repository.BookRepository;
+
+import java.time.LocalDateTime;
 
 @Component
 @RequiredArgsConstructor
@@ -28,5 +31,12 @@ public class CommentCascadeEventListener extends AbstractMongoEventListener<Comm
         val source = event.getSource();
         val id = source.get("_id").toString();
         bookRepository.removeCommentsFromArrayById(id);
+    }
+
+    @Override
+    public void onBeforeConvert(BeforeConvertEvent<Comment> event) {
+        super.onBeforeConvert(event);
+        val comment = event.getSource();
+        comment.setDateTime(LocalDateTime.now());
     }
 }
