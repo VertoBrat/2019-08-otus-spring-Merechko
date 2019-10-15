@@ -7,17 +7,28 @@ import ru.photorex.hw8.exception.NoDataWithThisIdException;
 import ru.photorex.hw8.model.Book;
 import ru.photorex.hw8.repository.BookRepository;
 
+import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-@Transactional
+@Transactional(readOnly = true)
 public class LibraryWormGenreServiceImpl implements LibraryWormGenreService {
 
     private final BookRepository bookRepository;
 
     @Override
+    public Set<String> findAllGenres() {
+        List<Book> books = bookRepository.findAll();
+        Set<String> genres = new HashSet<>();
+        books.forEach(b -> genres.addAll(b.getGenres()));
+        return genres;
+    }
+
+    @Override
+    @Transactional
     public void saveGenre(String bookId, String genre) {
         Book book = findBook(bookId);
         book.getGenres().add(genre);
@@ -25,6 +36,7 @@ public class LibraryWormGenreServiceImpl implements LibraryWormGenreService {
     }
 
     @Override
+    @Transactional
     public void deleteGenre(String bookId, String genre) {
         Book book = findBook(bookId);
         Set<String> genres = book.getGenres().stream().filter(g -> !g.equals(genre)).collect(Collectors.toSet());

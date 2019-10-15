@@ -28,6 +28,6 @@ public class Comment {
 
     @Override
     public String toString() {
-        return text;
+        return id + " " + text + System.lineSeparator();
     }
 }

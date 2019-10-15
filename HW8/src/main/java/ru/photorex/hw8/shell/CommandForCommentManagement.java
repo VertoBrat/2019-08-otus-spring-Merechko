@@ -26,7 +26,7 @@ public class CommandForCommentManagement extends LibraryCommands {
         printTable(comments);
     }
 
-    @ShellMethod(value = "Save comment with book id.", key = {"ic", "i comment"})
+    @ShellMethod(value = "Save comment with book id.", key = {"ibc", "ib comment"})
     public void saveComment(@ShellOption({"-b"}) String bookId,
                             @ShellOption({"-t"}) String commentText) {
         try {

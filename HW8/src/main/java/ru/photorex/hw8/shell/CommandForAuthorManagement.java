@@ -9,14 +9,24 @@ import ru.photorex.hw8.model.Author;
 import ru.photorex.hw8.service.IOService;
 import ru.photorex.hw8.service.LibraryWormAuthorService;
 
+import java.util.LinkedHashMap;
+import java.util.Set;
+
 @ShellComponent
 @RequiredArgsConstructor
 public class CommandForAuthorManagement extends LibraryCommands {
 
     private final LibraryWormAuthorService wormAuthorService;
+    private final ShellTableBuilder tableBuilder;
     private final IOService console;
 
-    @ShellMethod(value = "Insert new Author to the book", key = {"iba", "ib author"})
+    @ShellMethod(value = "Display all authors.", key = {"ta", "t authors"})
+    public void displayAuthors() {
+        Set<Author> authors = wormAuthorService.findAllAuthors();
+        printTable(authors);
+    }
+
+    @ShellMethod(value = "Insert new Author to the book.", key = {"iba", "ib author"})
     public void saveAuthor(@ShellOption({"-i"}) String bookId,
                            @ShellOption(value = {"-a"}, arity = 2) String[] authorFullName) {
         try {
@@ -36,5 +46,12 @@ public class CommandForAuthorManagement extends LibraryCommands {
         } catch (NoDataWithThisIdException ex) {
             console.printString(ex.getLocalizedMessage());
         }
+    }
+
+    private void printTable(Set<Author> authors) {
+        LinkedHashMap<String, Object> headers = new LinkedHashMap<>();
+        headers.put("firstName", "FirstName");
+        headers.put("lastName", "LastName");
+        tableBuilder.build(authors, headers);
     }
 }

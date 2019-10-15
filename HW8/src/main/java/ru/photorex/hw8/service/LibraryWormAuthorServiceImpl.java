@@ -8,15 +8,23 @@ import ru.photorex.hw8.model.Author;
 import ru.photorex.hw8.model.Book;
 import ru.photorex.hw8.repository.BookRepository;
 
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-@Transactional
+@Transactional(readOnly = true)
 public class LibraryWormAuthorServiceImpl implements LibraryWormAuthorService {
 
     private final BookRepository bookRepository;
+
+    @Override
+    public Set<Author> findAllAuthors() {
+        List<Book> books = bookRepository.findAll();
+        Set<Author> authors = new HashSet<>();
+        books.forEach(b -> authors.addAll(b.getAuthors()));
+        return authors;
+    }
 
     @Override
     @Transactional
