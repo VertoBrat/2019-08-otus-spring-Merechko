@@ -9,6 +9,7 @@ import ru.photorex.hw8.model.Author;
 import ru.photorex.hw8.model.Book;
 
 import java.util.List;
+import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.in;
@@ -18,6 +19,8 @@ public class BookRepositoryTest extends AbstractRepositoryTest {
 
     private static final Author AUTHOR_1 = new Author("FirstName#1", "LastName#1");
     private static final String GENRE_1 = "Genre#1";
+    private static final String GENRE_2 = "Genre#2";
+    private static final String GENRE_3 = "Genre#3";
     private static final int LIST_SIZE_2 = 2;
 
     @Autowired
@@ -50,5 +53,13 @@ public class BookRepositoryTest extends AbstractRepositoryTest {
         int expectedCommentsSize = commentsSize - 1;
         val bookAfterCommentDeleted = mongoOperations.findAll(Book.class).get(1);
         assertThat(bookAfterCommentDeleted.getComments().size()).isEqualTo(expectedCommentsSize);
+    }
+
+    @DisplayName(" должен получать все жанры")
+    @Test
+    void shouldReturnAllGenres() {
+        Set<String> expectedGenres = Set.of(GENRE_1, GENRE_2, GENRE_3);
+        Set<String> activeGenres = bookRepository.findAllGenres();
+        assertThat(activeGenres).hasSameSizeAs(expectedGenres).isEqualTo(expectedGenres);
     }
 }
