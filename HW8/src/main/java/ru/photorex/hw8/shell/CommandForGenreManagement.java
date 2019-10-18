@@ -8,7 +8,6 @@ import ru.photorex.hw8.exception.NoDataWithThisIdException;
 import ru.photorex.hw8.service.IOService;
 import ru.photorex.hw8.service.LibraryWormGenreService;
 
-import java.util.LinkedHashMap;
 import java.util.Set;
 
 @ShellComponent
