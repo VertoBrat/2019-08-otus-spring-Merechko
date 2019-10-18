@@ -11,4 +11,5 @@ public class MongoProperties {
     private String uri;
     private int port;
     private String database;
+    private String changeLogPackage;
 }

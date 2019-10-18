@@ -1,4 +1,4 @@
-package ru.photorex.hw8.changelog;
+package ru.photorex.hw8.test.changelog;
 
 import com.github.cloudyrock.mongock.ChangeLog;
 import com.github.cloudyrock.mongock.ChangeSet;

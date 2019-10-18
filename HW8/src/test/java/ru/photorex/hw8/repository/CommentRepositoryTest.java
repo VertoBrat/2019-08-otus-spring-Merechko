@@ -16,7 +16,10 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DisplayName("Репозиторий на основе mongoDb для работы с комментариями ")
-public class CommentRepositoryTest extends AbstractRepositoryTest {
+@DataMongoTest
+@EnableConfigurationProperties
+@ComponentScan({"ru.photorex.hw8.config", "ru.photorex.hw8.repository", "ru.photorex.hw8.events"})
+public class CommentRepositoryTest {
 
     private static final int ZERO_ELEMENT_COLLECTION = 0;
     private static final int FIRST_ELEMENT_COLLECTION = 1;

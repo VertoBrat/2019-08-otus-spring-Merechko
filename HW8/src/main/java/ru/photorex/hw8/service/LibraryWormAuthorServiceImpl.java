@@ -20,10 +20,7 @@ public class LibraryWormAuthorServiceImpl implements LibraryWormAuthorService {
 
     @Override
     public Set<Author> findAllAuthors() {
-        List<Book> books = bookRepository.findAll();
-        Set<Author> authors = new HashSet<>();
-        books.forEach(b -> authors.addAll(b.getAuthors()));
-        return authors;
+        return bookRepository.findAllAuthors();
     }
 
     @Override

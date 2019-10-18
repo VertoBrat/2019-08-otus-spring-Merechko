@@ -4,6 +4,9 @@ import lombok.val;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.mongodb.core.MongoOperations;
 import ru.photorex.hw8.model.Author;
 import ru.photorex.hw8.model.Book;
@@ -12,12 +15,17 @@ import java.util.List;
 import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.in;
 
 @DisplayName("Репозиторий на основе mongoDb для работы с книгами ")
-public class BookRepositoryTest extends AbstractRepositoryTest {
+@DataMongoTest
+@EnableConfigurationProperties
+@ComponentScan({"ru.photorex.hw8.config", "ru.photorex.hw8.repository", "ru.photorex.hw8.events"})
+public class BookRepositoryTest {
 
     private static final Author AUTHOR_1 = new Author("FirstName#1", "LastName#1");
+    private static final Author AUTHOR_2 = new Author("FirstName#2", "LastName#2");
+    private static final Author AUTHOR_3 = new Author("FirstName#3", "LastName#3");
+    private static final Author AUTHOR_4 = new Author("FirstName#4", "LastName#4");
     private static final String GENRE_1 = "Genre#1";
     private static final String GENRE_2 = "Genre#2";
     private static final String GENRE_3 = "Genre#3";
@@ -61,5 +69,13 @@ public class BookRepositoryTest extends AbstractRepositoryTest {
         Set<String> expectedGenres = Set.of(GENRE_1, GENRE_2, GENRE_3);
         Set<String> activeGenres = bookRepository.findAllGenres();
         assertThat(activeGenres).hasSameSizeAs(expectedGenres).isEqualTo(expectedGenres);
+    }
+
+    @DisplayName(" должен получать всех авторов")
+    @Test
+    void shouldReturnAllAuthors() {
+        Set<Author> expectedAuthors = Set.of(AUTHOR_1, AUTHOR_2, AUTHOR_3, AUTHOR_4);
+        Set<Author> activeAuthors = bookRepository.findAllAuthors();
+        assertThat(activeAuthors).hasSameSizeAs(expectedAuthors).isEqualTo(expectedAuthors);
     }
 }

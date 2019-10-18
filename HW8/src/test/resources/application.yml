@@ -3,7 +3,7 @@ spring:
     mongodb:
       port: 0
       database: test
-
+      changeLogPackage: ru.photorex.hw8.test.changelog
   shell:
     interactive:
       enabled: false
