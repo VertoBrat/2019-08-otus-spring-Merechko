@@ -2,6 +2,7 @@ package ru.photorex.hw8.events;
 
 import lombok.RequiredArgsConstructor;
 import lombok.val;
+import org.springframework.data.mongodb.core.aggregation.Fields;
 import org.springframework.data.mongodb.core.mapping.event.AbstractMongoEventListener;
 import org.springframework.data.mongodb.core.mapping.event.AfterDeleteEvent;
 import org.springframework.data.mongodb.core.mapping.event.AfterSaveEvent;
@@ -29,8 +30,10 @@ public class CommentCascadeEventListener extends AbstractMongoEventListener<Comm
     public void onAfterDelete(AfterDeleteEvent<Comment> event) {
         super.onAfterDelete(event);
         val source = event.getSource();
-        val id = source.get("_id").toString();
-        bookRepository.removeCommentsFromArrayById(id);
+        if (source.get(Fields.UNDERSCORE_ID) != null) {
+            val id = source.get(Fields.UNDERSCORE_ID).toString();
+            bookRepository.removeCommentsFromArrayById(id);
+        }
     }
 
     @Override

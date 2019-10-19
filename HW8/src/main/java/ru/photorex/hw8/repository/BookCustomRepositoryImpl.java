@@ -1,20 +1,20 @@
 package ru.photorex.hw8.repository;
 
 import com.mongodb.DBRef;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
-import org.bson.Document;
 import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.aggregation.Aggregation;
-import org.springframework.data.mongodb.core.aggregation.AggregationOperation;
-import org.springframework.data.mongodb.core.aggregation.AggregationOperationContext;
+import org.springframework.data.mongodb.core.aggregation.Fields;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import ru.photorex.hw8.model.Author;
 import ru.photorex.hw8.model.Book;
 
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -28,6 +28,7 @@ public class BookCustomRepositoryImpl implements BookCustomRepository {
 
     private static final String COMMENTS_COLLECTION = "comments";
     private static final String GENRES_FIELD = "genres";
+    private static final String AUTHORS_FIELD = "authors";
 
     private final MongoOperations mongoOperations;
 
@@ -41,30 +42,37 @@ public class BookCustomRepositoryImpl implements BookCustomRepository {
     @Override
     public void addCommentToArray(String commentId, String bookId) {
         Update update = new Update().addToSet(COMMENTS_COLLECTION, new DBRef(COMMENTS_COLLECTION, commentId));
-        mongoOperations.updateFirst(new Query(Criteria.where("_id").is(bookId)), update, Book.class);
+        mongoOperations.updateFirst(new Query(Criteria.where(Fields.UNDERSCORE_ID).is(bookId)), update, Book.class);
     }
 
     @Override
     public Set<String> findAllGenres() {
         Aggregation aggregation = newAggregation(
                 unwind(GENRES_FIELD),
-                project().andExclude("_id").andInclude(GENRES_FIELD)
+                project().andExclude(Fields.UNDERSCORE_ID).andInclude(GENRES_FIELD)
         );
 
-        List<Document> documents = mongoOperations.aggregate(aggregation, Book.class, Document.class).getMappedResults();
-        return documents.stream().map(d -> (String)d.get(GENRES_FIELD)).collect(HashSet::new, HashSet::add, HashSet::addAll);
+        List<GenreProjection> genres = mongoOperations.aggregate(aggregation, Book.class, GenreProjection.class).getMappedResults();
+        return genres.stream().map(GenreProjection::getGenres).collect(Collectors.toSet());
     }
 
     @Override
     public Set<Author> findAllAuthors() {
         Aggregation aggregation = newAggregation(
-                unwind("authors"),
-                project().andExclude("_id").andInclude("authors"),
-                project().and(valueOfToArray("authors")).as("authors_map"),
+                unwind(AUTHORS_FIELD),
+                project().andExclude(Fields.UNDERSCORE_ID).andInclude(AUTHORS_FIELD),
+                project().and(valueOfToArray(AUTHORS_FIELD)).as("authors_map"),
                 project().and("authors_map.v").arrayElementAt(0).as("firstName").and("authors_map.v").arrayElementAt(1).as("lastName")
         );
 
         List<Author> authors = mongoOperations.aggregate(aggregation, Book.class, Author.class).getMappedResults();
         return new HashSet<>(authors);
+    }
+
+    @Data
+    @NoArgsConstructor
+    @AllArgsConstructor
+    private static class GenreProjection {
+        String genres;
     }
 }

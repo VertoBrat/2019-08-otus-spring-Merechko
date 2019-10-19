@@ -5,7 +5,9 @@ import ru.photorex.hw8.model.Comment;
 
 import java.util.List;
 
-public interface CommentRepository extends MongoRepository<Comment, String>, CommentCustomRepository {
+public interface CommentRepository extends MongoRepository<Comment, String> {
 
     List<Comment> findAllByBook_Id(String bookId);
+
+    void removeByBookId(String bookId);
 }

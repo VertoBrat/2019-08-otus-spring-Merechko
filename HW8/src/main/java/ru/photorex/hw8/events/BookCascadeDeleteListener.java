@@ -6,11 +6,7 @@ import org.springframework.data.mongodb.core.mapping.event.AbstractMongoEventLis
 import org.springframework.data.mongodb.core.mapping.event.BeforeDeleteEvent;
 import org.springframework.stereotype.Component;
 import ru.photorex.hw8.model.Book;
-import ru.photorex.hw8.model.Comment;
 import ru.photorex.hw8.repository.CommentRepository;
-
-import java.util.List;
-
 
 @Component
 @RequiredArgsConstructor
@@ -23,8 +19,6 @@ public class BookCascadeDeleteListener extends AbstractMongoEventListener<Book> 
         super.onBeforeDelete(event);
         val source = event.getSource();
         String id = source.get("_id").toString();
-       // commentRepository.removeCommentsOfDeletedBook(id);
-        List<Comment> comments = commentRepository.findAllByBook_Id(id);
-        comments.forEach(commentRepository::delete);
+        commentRepository.removeByBookId(id);
     }
 }

@@ -65,4 +65,15 @@ public class CommentRepositoryTest {
         List<Comment> comments = commentRepository.findAll();
         assertThat(comments).hasSize(LIST_SIZE_2);
     }
+
+    @DisplayName(" должен удалять комментарий по номеру книги")
+    @Test
+    void shouldDeleteCommentWithBookId() {
+        val books = mongoOperations.findAll(Book.class);
+        val book = books.get(FIRST_ELEMENT_COLLECTION);
+        val commentSizeBeforeDeleting = mongoOperations.findAll(Comment.class).size();
+        commentRepository.removeByBookId(book.getId());
+        val commentSizeAfterDeleting = mongoOperations.findAll(Comment.class).size();
+        assertThat(commentSizeAfterDeleting).isEqualTo(commentSizeBeforeDeleting - 1);
+    }
 }
