@@ -26,3 +26,6 @@ Each task is located in a separate folder called "HW N", where N - number of tas
 
 ### HW7
 >use Spring Data JPA for our CRUD application.
+
+### HW8
+>MongoDb and Spring Boot, and CRUD application.
