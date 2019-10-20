@@ -40,7 +40,7 @@ public class InitMongoDbWithCollections {
 
     @ChangeSet(order = "003", id = "initBooksCollection", author = "photorex", runAlways = true)
     public void initBooks(MongoTemplate template) {
-        Book book1 = template.save(new Book("Effective_Java_3rd", Set.of("Story"), Set.of(new Author("Joshua", "Bloh")), List.of(comments.get(0))));
+        Book book1 = template.save(new Book("Effective_Java_3rd", Set.of("Story", "IT"), Set.of(new Author("Joshua", "Bloh")), List.of(comments.get(0))));
         Book book2 = template.save(new Book("Civilization of status", Set.of("Roman"), Set.of(new Author("Robert", "Shekli")), List.of(comments.get(1), comments.get(2))));
         Book book3 = template.save(new Book("Missing Certificate", Set.of("Comedy"), Set.of(new Author("Nikolay", "Gogol"), new Author("NoFirstName", "NoLastName")), List.of(comments.get(3))));
         fillBookList(book1, book2, book3);
