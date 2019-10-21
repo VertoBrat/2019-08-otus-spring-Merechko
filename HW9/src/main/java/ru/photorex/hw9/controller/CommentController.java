@@ -1,6 +1,8 @@
 package ru.photorex.hw9.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -18,11 +20,13 @@ import javax.validation.Valid;
 public class CommentController {
 
     private final LibraryWormCommentService wormCommentService;
+    private final Logger logger = LoggerFactory.getLogger(CommentController.class);
 
     @GetMapping("/comments/edit")
     public String getEditForm(@RequestParam(value = "id", required = false) String id,
-                              @RequestParam(value = "bookId", required = false) String bookId,
+                              @RequestParam(value = "bookId") String bookId,
                               Model model) {
+        logger.info("getEditForm with comment id = {}, bookId = {}", id, bookId);
         if (id != null) {
             CommentTo commentTo = wormCommentService.findCommentById(id);
             model.addAttribute("commentTo", commentTo);
@@ -36,7 +40,8 @@ public class CommentController {
 
     @PostMapping("/comments")
     public String updateSaveComment(@Valid @ModelAttribute CommentTo to, BindingResult result) {
-        if (result.hasErrors()){
+        logger.info("updateSaveComment {} with {} errors", to, result.getErrorCount());
+        if (result.hasErrors()) {
             return "comment/edit";
         }
         if (to.getId().isEmpty()) {

@@ -1,6 +1,8 @@
 package ru.photorex.hw9.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,9 +16,11 @@ import java.util.Set;
 public class AuthorController {
 
     private final LibraryWormAuthorService wormAuthorService;
+    private final Logger logger = LoggerFactory.getLogger(AuthorController.class);
 
     @GetMapping("/authors")
     public String getAllAuthors(Model model) {
+        logger.info("getAllAuthors");
         Set<AuthorTo> authorTos = wormAuthorService.findAllAuthors();
         model.addAttribute("authorsTos", authorTos);
         return "author/list";

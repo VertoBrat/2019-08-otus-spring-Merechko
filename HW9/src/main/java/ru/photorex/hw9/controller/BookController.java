@@ -1,6 +1,8 @@
 package ru.photorex.hw9.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -24,9 +26,11 @@ public class BookController {
     private final LibraryWormBookService wormBookService;
     private final LibraryWormAuthorService wormAuthorService;
     private final LibraryWormGenreService wormGenreService;
+    private final Logger logger = LoggerFactory.getLogger(BookController.class);
 
     @GetMapping("/")
     public String indexPage(Model model) {
+        logger.info("indexPage");
         List<BookTo> books = wormBookService.findAllBooks();
         Set<AuthorTo> authors = wormAuthorService.findAllAuthors();
         Set<GenreTo> genres = wormGenreService.findAllGenres();
@@ -38,6 +42,7 @@ public class BookController {
 
     @GetMapping("/books")
     public String getAllBooks(Model model) {
+        logger.info("getAllBooks");
         List<BookTo> books = wormBookService.findAllBooks();
         Filter filter = new Filter();
         model.addAttribute("books", books);
@@ -47,6 +52,7 @@ public class BookController {
 
     @GetMapping("/books/{id}")
     public String getBook(@PathVariable("id") String id, Model model) {
+        logger.info("getBook {}", id);
         BookTo bookTo = wormBookService.findBookById(id);
         model.addAttribute("bookTo", bookTo);
         return "book/view";
@@ -54,6 +60,7 @@ public class BookController {
 
     @GetMapping("/books/edit/{id}")
     public String editBookPage(@PathVariable("id") String id, Model model) {
+        logger.info("editBookPage {}", id);
         BookTo bookTo;
         if (id.equals("new")) {
             bookTo = new BookTo();
@@ -64,6 +71,7 @@ public class BookController {
 
     @PostMapping("/books")
     public String updateSaveBook(@Valid @ModelAttribute BookTo bookTo, BindingResult result) {
+        logger.info("updateSaveBook {} with {} errors", bookTo, result.getErrorCount());
         if (result.hasErrors()) {
             return "book/edit";
         }
@@ -73,6 +81,7 @@ public class BookController {
 
     @PostMapping("/books/filtered")
     public String filteredBooks(@ModelAttribute Filter filter, Model model) {
+        logger.info("filteredBooks {}", filter);
         List<BookTo> books = wormBookService.filteredBooks(filter);
         model.addAttribute("books", books);
         return "book/list";
@@ -80,6 +89,7 @@ public class BookController {
 
     @GetMapping("/books/delete/{id}")
     public String deleteBook(@PathVariable("id") String id) {
+        logger.info("deleteBook {}", id);
         wormBookService.deleteBook(id);
         return "redirect:/books";
     }
