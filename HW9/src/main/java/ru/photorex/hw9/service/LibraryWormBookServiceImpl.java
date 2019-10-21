@@ -35,16 +35,6 @@ public class LibraryWormBookServiceImpl implements LibraryWormBookService {
     }
 
     @Override
-    public List<Book> findBookByAuthor(Author author) {
-        return bookRepository.findAllByAuthors(author);
-    }
-
-    @Override
-    public List<Book> findBookByGenre(String genre) {
-        return bookRepository.findAllByGenres(genre);
-    }
-
-    @Override
     @Transactional
     public BookTo updateSaveBook(BookTo to) {
         if (!to.getId().isEmpty()) {
@@ -63,20 +53,6 @@ public class LibraryWormBookServiceImpl implements LibraryWormBookService {
             Author author = parserService.parseStringToAuthor(filter.getFilterText());
             return mapper.toListTo(bookRepository.findAllFilteredPerAuthors(author));
         }
-    }
-
-    @Override
-    @Transactional
-    public Book saveBook(Book book) {
-        return bookRepository.save(book);
-    }
-
-    @Override
-    @Transactional
-    public Book updateTitle(String bookId, String title) {
-        Book book = findById(bookId);
-        book.setTitle(title);
-        return bookRepository.save(book);
     }
 
     @Override
