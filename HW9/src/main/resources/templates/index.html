@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Library Application</title>
+    <title>Библиотека</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 </head>
@@ -19,7 +19,7 @@
                         редактирования.
                         <span th:text="|Всего ${booksSize} книг|">Всего 0 книг</span>
                     </p>
-                    <a href="books.html" class="btn btn-primary" th:href="@{/books}">Зайти</a>
+                    <a href="book/list.html" class="btn btn-primary" th:href="@{/books}">Зайти</a>
                 </div>
             </div>
         </div>
@@ -27,11 +27,10 @@
             <div class="card border-primary">
                 <div class="card-body">
                     <h5 class="card-title">Авторы</h5>
-                    <p class="card-text">Здесь можно посмотреть список всех авторов в библиотеке, а также режим
-                        редактирования.
+                    <p class="card-text">Здесь можно посмотреть список всех авторов в библиотеке.
                         <span th:text="|Всего ${authorsSize} авторов|">Всего 0 авторов</span>
                     </p>
-                    <a href="#" class="btn btn-primary">Зайти</a>
+                    <a href="#" class="btn btn-primary" th:href="@{/authors}">Зайти</a>
                 </div>
             </div>
         </div>
@@ -39,11 +38,10 @@
             <div class="card border-primary">
                 <div class="card-body">
                     <h5 class="card-title">Жанры</h5>
-                    <p class="card-text">Здесь можно посмотреть список всех жанров в библиотеке, а также режим
-                        редактирования.
+                    <p class="card-text">Здесь можно посмотреть список всех жанров в библиотеке.
                         <span th:text="|Всего ${genresSize} жанров|">Всего 0 жанров</span>
                     </p>
-                    <a href="#" class="btn btn-primary">Зайти</a>
+                    <a href="#" class="btn btn-primary" th:href="@{/genres}">Зайти</a>
                 </div>
             </div>
         </div>
