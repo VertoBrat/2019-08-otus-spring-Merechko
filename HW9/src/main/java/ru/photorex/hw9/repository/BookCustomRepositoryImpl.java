@@ -46,6 +46,23 @@ public class BookCustomRepositoryImpl implements BookCustomRepository {
     }
 
     @Override
+    public List<Book> findAllFilteredPerGenre(String genreName) {
+        Aggregation aggregation = newAggregation(
+                match(Criteria.where(GENRES_FIELD).regex(genreName, "i"))
+        );
+        return mongoOperations.aggregate(aggregation, Book.class, Book.class).getMappedResults();
+    }
+
+    @Override
+    public List<Book> findAllFilteredPerAuthors(Author author) {
+        Aggregation aggregation = newAggregation(
+                match(Criteria.where(AUTHORS_FIELD)
+                        .elemMatch(Criteria.where("firstName").regex(author.getFirstName(), "i").and("lastName").regex(author.getLastName(), "i")))
+        );
+        return mongoOperations.aggregate(aggregation, Book.class, Book.class).getMappedResults();
+    }
+
+    @Override
     public Set<String> findAllGenres() {
         Aggregation aggregation = newAggregation(
                 unwind(GENRES_FIELD),

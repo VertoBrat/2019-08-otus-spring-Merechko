@@ -3,15 +3,17 @@ package ru.photorex.hw9.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
-import ru.photorex.hw9.model.Author;
-import ru.photorex.hw9.model.Book;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
 import ru.photorex.hw9.service.LibraryWormAuthorService;
 import ru.photorex.hw9.service.LibraryWormBookService;
 import ru.photorex.hw9.service.LibraryWormGenreService;
+import ru.photorex.hw9.to.AuthorTo;
+import ru.photorex.hw9.to.BookTo;
+import ru.photorex.hw9.to.Filter;
+import ru.photorex.hw9.to.GenreTo;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Set;
 
@@ -25,9 +27,9 @@ public class BookController {
 
     @GetMapping("/")
     public String indexPage(Model model) {
-        List<Book> books = wormBookService.findAllBooks();
-        Set<Author> authors = wormAuthorService.findAllAuthors();
-        Set<String> genres = wormGenreService.findAllGenres();
+        List<BookTo> books = wormBookService.findAllBooks();
+        Set<AuthorTo> authors = wormAuthorService.findAllAuthors();
+        Set<GenreTo> genres = wormGenreService.findAllGenres();
         model.addAttribute("booksSize", books.size());
         model.addAttribute("authorsSize", authors.size());
         model.addAttribute("genresSize", genres.size());
@@ -36,9 +38,44 @@ public class BookController {
 
     @GetMapping("/books")
     public String getAllBooks(Model model) {
-        List<Book> books = wormBookService.findAllBooks();
+        List<BookTo> books = wormBookService.findAllBooks();
+        Filter filter = new Filter();
         model.addAttribute("books", books);
-        return "books";
+        model.addAttribute("filter", filter);
+        return "book/list";
+    }
+
+    @GetMapping("/books/{id}")
+    public String getBook(@PathVariable("id") String id, Model model) {
+        BookTo bookTo = wormBookService.findBookById(id);
+        model.addAttribute("bookTo", bookTo);
+        return "book/view";
+    }
+
+    @GetMapping("/books/edit/{id}")
+    public String editBookPage(@PathVariable("id") String id, Model model) {
+        BookTo bookTo;
+        if (id.equals("new")) {
+            bookTo = new BookTo();
+        } else bookTo = wormBookService.findBookById(id);
+        model.addAttribute("bookTo", bookTo);
+        return "book/edit";
+    }
+
+    @PostMapping("/books")
+    public String updateSaveBook(@Valid @ModelAttribute BookTo bookTo, BindingResult result) {
+        if (result.hasErrors()) {
+            return "book/edit";
+        }
+        wormBookService.updateSaveBook(bookTo);
+        return "redirect:/books";
+    }
+
+    @PostMapping("/books/filtered")
+    public String filteredBooks(@ModelAttribute Filter filter, Model model) {
+        List<BookTo> books = wormBookService.filteredBooks(filter);
+        model.addAttribute("books", books);
+        return "book/list";
     }
 
     @GetMapping("/books/delete/{id}")

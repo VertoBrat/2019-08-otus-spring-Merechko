@@ -1,7 +1,9 @@
 package ru.photorex.hw9.repository;
 
 import ru.photorex.hw9.model.Author;
+import ru.photorex.hw9.model.Book;
 
+import java.util.List;
 import java.util.Set;
 
 public interface BookCustomRepository {
@@ -13,4 +15,8 @@ public interface BookCustomRepository {
     Set<String> findAllGenres();
 
     Set<Author> findAllAuthors();
+
+    List<Book> findAllFilteredPerAuthors(Author author);
+
+    List<Book> findAllFilteredPerGenre(String genreName);
 }
