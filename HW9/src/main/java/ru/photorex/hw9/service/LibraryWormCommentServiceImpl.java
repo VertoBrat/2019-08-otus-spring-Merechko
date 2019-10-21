@@ -8,6 +8,8 @@ import ru.photorex.hw9.model.Book;
 import ru.photorex.hw9.model.Comment;
 import ru.photorex.hw9.repository.BookRepository;
 import ru.photorex.hw9.repository.CommentRepository;
+import ru.photorex.hw9.to.mapper.CommentMapper;
+import ru.photorex.hw9.to.CommentTo;
 
 import java.util.List;
 
@@ -18,10 +20,17 @@ public class LibraryWormCommentServiceImpl implements LibraryWormCommentService 
 
     private final CommentRepository commentRepository;
     private final BookRepository bookRepository;
+    private final CommentMapper mapper;
 
     @Override
     public List<Comment> findAllComments() {
         return commentRepository.findAll();
+    }
+
+    @Override
+    public CommentTo findCommentById(String id) {
+        Comment comment = commentRepository.findById(id).orElseThrow(() -> new NoDataWithThisIdException(id));
+        return mapper.toTo(comment);
     }
 
     @Override

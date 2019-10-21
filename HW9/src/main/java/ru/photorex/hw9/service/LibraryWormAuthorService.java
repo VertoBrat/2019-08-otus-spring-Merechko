@@ -1,13 +1,10 @@
 package ru.photorex.hw9.service;
 
-import ru.photorex.hw9.model.Author;
+import ru.photorex.hw9.to.AuthorTo;
 
 import java.util.Set;
 
 public interface LibraryWormAuthorService {
-    void saveAuthor(String bookId, Author author);
 
-    void deleteAuthor(String bookId, Author author);
-
-    Set<Author> findAllAuthors();
+    Set<AuthorTo> findAllAuthors();
 }

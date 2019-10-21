@@ -1,6 +1,7 @@
 package ru.photorex.hw9.service;
 
 import ru.photorex.hw9.model.Comment;
+import ru.photorex.hw9.to.CommentTo;
 
 import java.util.List;
 
@@ -11,4 +12,6 @@ public interface LibraryWormCommentService {
     Comment saveComment(String bookId, String commentText);
 
     Comment updateComment(String commentId, String newCommentText);
+
+    CommentTo findCommentById(String id);
 }
