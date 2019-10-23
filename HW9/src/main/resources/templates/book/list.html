@@ -22,10 +22,10 @@
     <div th:insert="navbar::nav"></div>
     <div class="row">
         <div class="col-auto mr-auto">
-            <a href="edit.html" class="btn btn-primary mt-4" th:href="@{/books/edit/new}">Добавить книгу</a>
+            <a href="edit.html" class="btn btn-primary mt-4" th:href="@{/books/edit}">Добавить книгу</a>
         </div>
         <div class="col-auto">
-            <form class="form-inline mt-4" th:action="@{/books/filtered}" th:object="${filter}" method="post">
+            <form class="form-inline mt-4" th:action="@{/books/filtered}" th:object="${filter}" method="get">
                 <div class="form-group mr-2">
                     <input type="search" class="form-control mb-2" th:field="*{filterText}">
                 </div>
@@ -67,21 +67,32 @@
                 <span class="badge badge-danger" th:text="${book.comments.size()}">0</span>
             </td>
             <td>
-                <a href="#" th:href="@{/books/{id}(id=${book.id})}">
-                    <span style="color: green">
-                        <i class="fas fa-sign-in-alt fa-2x"></i>
-                    </span>
-                </a>
-                <a href="#" class="mr-5 ml-5" th:href="@{/books/edit/{id}(id=${book.id})}">
-                    <span style="color: navy">
-                    <i class="far fa-edit fa-2x"></i>
-                    </span>
-                </a>
-                <a href="#" th:href="@{/books/delete/{id}(id=${book.id})}">
-                    <span style="color: red">
-                    <i class="far fa-trash-alt fa-2x"></i>
-                    </span>
-                </a>
+                <div class="row justify-content-md-center">
+                    <div class="col">
+                        <a href="#" th:href="@{/books/{id}(id=${book.id})}">
+                            <span style="color: green">
+                                <i class="fas fa-sign-in-alt fa-2x"></i>
+                            </span>
+                        </a>
+                    </div>
+                    <div class="col">
+                        <a href="#" th:href="@{/books/edit/{id}(id=${book.id})}">
+                            <span style="color: navy">
+                                <i class="far fa-edit fa-2x"></i>
+                            </span>
+                        </a>
+                    </div>
+                    <div class="col">
+                        <form th:action="@{/books/delete}" th:object="${book}" method="post">
+                            <input type="hidden" th:name="'id'" th:value="*{id}">
+                            <button class="btn btn-link" type="submit">
+                                <span style="color: red">
+                                    <i class="far fa-trash-alt fa-2x"></i>
+                                </span>
+                            </button>
+                        </form>
+                    </div>
+                </div>
             </td>
         </tr>
         </tbody>

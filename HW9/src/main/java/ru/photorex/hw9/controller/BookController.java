@@ -41,8 +41,8 @@ public class BookController {
     }
 
     @GetMapping("/books")
-    public String getAllBooks(Model model) {
-        logger.info("getAllBooks");
+    public String getBookListPage(Model model) {
+        logger.info("getBookListPage");
         List<BookTo> books = wormBookService.findAllBooks();
         Filter filter = new Filter();
         model.addAttribute("books", books);
@@ -51,20 +51,25 @@ public class BookController {
     }
 
     @GetMapping("/books/{id}")
-    public String getBook(@PathVariable("id") String id, Model model) {
-        logger.info("getBook {}", id);
+    public String getBookViewPage(@PathVariable("id") String id, Model model) {
+        logger.info("getBookViewPage {}", id);
         BookTo bookTo = wormBookService.findBookById(id);
         model.addAttribute("bookTo", bookTo);
         return "book/view";
     }
 
     @GetMapping("/books/edit/{id}")
-    public String editBookPage(@PathVariable("id") String id, Model model) {
-        logger.info("editBookPage {}", id);
-        BookTo bookTo;
-        if (id.equals("new")) {
-            bookTo = new BookTo();
-        } else bookTo = wormBookService.findBookById(id);
+    public String getBookEditPage(@PathVariable("id") String id, Model model) {
+        logger.info("getBookEditPage {}", id);
+        BookTo bookTo = wormBookService.findBookById(id);
+        model.addAttribute("bookTo", bookTo);
+        return "book/edit";
+    }
+
+    @GetMapping("/books/edit")
+    public String getBookEditBlankPage(Model model) {
+        logger.info("getBookEditBlankPage");
+        BookTo bookTo = new BookTo();
         model.addAttribute("bookTo", bookTo);
         return "book/edit";
     }
@@ -79,16 +84,16 @@ public class BookController {
         return "redirect:/books";
     }
 
-    @PostMapping("/books/filtered")
-    public String filteredBooks(@ModelAttribute Filter filter, Model model) {
-        logger.info("filteredBooks {}", filter);
+    @GetMapping("/books/filtered")
+    public String getFilteredBookList(@ModelAttribute Filter filter, Model model) {
+        logger.info("getFilteredBookList with filter type {} and filter text {}", filter.getType(), filter.getFilterText());
         List<BookTo> books = wormBookService.filteredBooks(filter);
         model.addAttribute("books", books);
         return "book/list";
     }
 
-    @GetMapping("/books/delete/{id}")
-    public String deleteBook(@PathVariable("id") String id) {
+    @PostMapping("/books/delete")
+    public String deleteBook(String id) {
         logger.info("deleteBook {}", id);
         wormBookService.deleteBook(id);
         return "redirect:/books";

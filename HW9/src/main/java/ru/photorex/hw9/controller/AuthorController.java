@@ -19,8 +19,8 @@ public class AuthorController {
     private final Logger logger = LoggerFactory.getLogger(AuthorController.class);
 
     @GetMapping("/authors")
-    public String getAllAuthors(Model model) {
-        logger.info("getAllAuthors");
+    public String getAuthorListPage(Model model) {
+        logger.info("getAuthorListPage");
         Set<AuthorTo> authorTos = wormAuthorService.findAllAuthors();
         model.addAttribute("authorsTos", authorTos);
         return "author/list";

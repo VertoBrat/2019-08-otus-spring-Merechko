@@ -19,8 +19,8 @@ public class GenreController {
     private final Logger logger = LoggerFactory.getLogger(GenreController.class);
 
     @GetMapping("/genres")
-    public String getAllGenres(Model model) {
-        logger.info("getAllGenres");
+    public String getGenreListPage(Model model) {
+        logger.info("getGenreListPage");
         Set<GenreTo> genreTos = wormGenreService.findAllGenres();
         model.addAttribute("genreTos", genreTos);
         return "genre/list";

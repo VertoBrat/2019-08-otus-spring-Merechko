@@ -23,10 +23,10 @@ public class CommentController {
     private final Logger logger = LoggerFactory.getLogger(CommentController.class);
 
     @GetMapping("/comments/edit")
-    public String getEditForm(@RequestParam(value = "id", required = false) String id,
-                              @RequestParam(value = "bookId") String bookId,
-                              Model model) {
-        logger.info("getEditForm with comment id = {}, bookId = {}", id, bookId);
+    public String getCommentEditPage(@RequestParam(value = "id", required = false) String id,
+                                     @RequestParam(value = "bookId") String bookId,
+                                     Model model) {
+        logger.info("getCommentEditPage with comment id = {}, bookId = {}", id, bookId);
         if (id != null) {
             CommentTo commentTo = wormCommentService.findCommentById(id);
             model.addAttribute("commentTo", commentTo);
