@@ -6,6 +6,9 @@ import lombok.NoArgsConstructor;
 import org.springframework.hateoas.RepresentationModel;
 import org.springframework.hateoas.server.core.Relation;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
+import java.util.HashSet;
 import java.util.Set;
 
 @Data
@@ -15,7 +18,11 @@ import java.util.Set;
 public class BookTo extends RepresentationModel<BookTo> {
 
     private String id;
+    @NotBlank
     private String title;
-    private Set<GenreTo> genres;
-    private Set<AuthorTo> authors;
+    @Size(min = 1)
+    private Set<GenreTo> genres = new HashSet<>();
+
+    @Size(min = 1)
+    private Set<AuthorTo> authors = new HashSet<>();
 }

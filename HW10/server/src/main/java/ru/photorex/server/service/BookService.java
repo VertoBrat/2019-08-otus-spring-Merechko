@@ -9,7 +9,13 @@ import ru.photorex.server.to.BookTo;
 
 public interface BookService {
 
-    PagedModel<BookTo> getAll(Pageable pageable, PagedResourcesAssembler<Book> pagedResourcesAssembler);
+    PagedModel<BookTo> getAllBook(Pageable pageable, PagedResourcesAssembler<Book> pagedResourcesAssembler);
 
-    EntityModel<BookTo> getBookById(String id);
+    BookTo getBookById(String id);
+
+    BookTo saveBook(BookTo to);
+
+    BookTo updateBook(String id, BookTo to);
+
+    void deleteBook(String id);
 }

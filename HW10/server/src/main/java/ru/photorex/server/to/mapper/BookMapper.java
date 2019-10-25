@@ -1,8 +1,6 @@
 package ru.photorex.server.to.mapper;
 
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.MappingTarget;
+import org.mapstruct.*;
 import ru.photorex.server.model.Book;
 import ru.photorex.server.to.BookTo;
 
@@ -10,6 +8,9 @@ import ru.photorex.server.to.BookTo;
         uses = {AuthorMapper.class, GenreMapper.class})
 public interface BookMapper extends BaseMapper<Book, BookTo> {
 
-    @Mapping(target = "comments", ignore = true)
+    @Mappings({
+            @Mapping(target = "comments", ignore = true),
+            @Mapping(target = "id", ignore = true)
+    })
     Book updateBook(BookTo to, @MappingTarget Book book);
 }

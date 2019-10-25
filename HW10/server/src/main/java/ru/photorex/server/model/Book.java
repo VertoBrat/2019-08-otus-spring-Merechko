@@ -7,10 +7,7 @@ import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Data
 @NoArgsConstructor
@@ -46,5 +43,9 @@ public class Book {
     public Book(String title, String content, Set<String> genres, Set<Author> authors, List<Comment> comments) {
         this(title, content, genres, authors);
         this.comments = comments;
+    }
+
+    public void addGenre(String...genre) {
+        genres.addAll(Arrays.asList(genre));
     }
 }
