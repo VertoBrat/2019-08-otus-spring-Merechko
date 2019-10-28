@@ -44,8 +44,4 @@ public class Book {
         this(title, content, genres, authors);
         this.comments = comments;
     }
-
-    public void addGenre(String...genre) {
-        genres.addAll(Arrays.asList(genre));
-    }
 }

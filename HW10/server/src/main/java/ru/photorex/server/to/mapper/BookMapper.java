@@ -5,7 +5,9 @@ import ru.photorex.server.model.Book;
 import ru.photorex.server.to.BookTo;
 
 @Mapper(componentModel = "spring",
-        uses = {AuthorMapper.class, GenreMapper.class})
+        uses = {AuthorMapper.class,
+                GenreMapper.class,
+                CommentMapper.class})
 public interface BookMapper extends BaseMapper<Book, BookTo> {
 
     @Mappings({
