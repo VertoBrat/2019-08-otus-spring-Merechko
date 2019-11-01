@@ -5,3 +5,5 @@ spring:
       port: 27017
       database: library
       changeLogPackage: ru.photorex.server.changelog
+server:
+  port: 8081

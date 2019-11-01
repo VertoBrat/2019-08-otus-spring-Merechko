@@ -2,14 +2,18 @@ package ru.photorex.server.to.mapper;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.springframework.util.StringUtils;
 import ru.photorex.server.model.Author;
 import ru.photorex.server.to.AuthorTo;
+
+import java.util.Arrays;
 
 @Mapper(componentModel = "spring")
 public interface AuthorMapper extends BaseMapper<Author, AuthorTo> {
 
     default Author toEntity(AuthorTo to) {
-        String[] names = to.getFullName().split(" ");
+        String fullName = StringUtils.trimLeadingWhitespace(to.getFullName());
+        String[] names = fullName.split(" ");
         Author author = new Author();
         if (names.length == 1) {
             author.setFirstName("");
