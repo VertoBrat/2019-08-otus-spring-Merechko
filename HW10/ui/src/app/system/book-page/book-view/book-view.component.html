@@ -1,0 +1,64 @@
+<app-loader *ngIf="!isLoaded"></app-loader>
+<div *ngIf="isLoaded">
+  <div class="card mt-4">
+    <div class="card-header">
+      <span>{{book.title}}</span>
+    </div>
+    <div class="card-body">
+      <h5 class="card-title">Краткое содержание</h5>
+      <p class="card-text">{{book.content}}</p>
+      <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#commentModal">
+        Оставить отзыв
+      </button>
+    </div>
+  </div>
+  <div class="mt-1 mb-1">
+    <span>Отзывы</span>
+  </div>
+  <div class="card mt-1" *ngFor="let comment of book.comments">
+    <div class="card-body">
+      <div class="row justify-content-end">
+        <div class="col offset-md-10">
+          <button class="btn btn-outline-light" (click)="delete(comment)">
+            <span style="color: red">
+              <fa name="trash" size="1x"></fa>
+            </span>
+          </button>
+          <p>{{comment.dateTime | appmoment: "yyyy-MM-DD HH:mm:ss.SSSZ"}}</p>
+        </div>
+      </div>
+      <p class="card-text">{{comment.text}}</p>
+    </div>
+  </div>
+  <a href="#" [routerLink]="['/books','list']" class="btn btn-primary mt-2">
+    Назад
+  </a>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="commentModal" tabindex="-1" role="dialog" aria-labelledby="commentModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Заполните поле</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="md-form mb-5">
+          <input type="textarea" id="commentText" class="form-control" [formControl]="commentText"
+                 [ngClass]="{'is-invalid':commentText.invalid && commentText.touched}"
+          >
+        </div>
+        <div *ngIf="commentText.invalid && commentText.touched">
+          <p style="color: red">Поле должно быть заполнено</p>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
+        <button type="button" class="btn btn-primary" (click)="onSubmit()" data-dismiss="modal">Отправить</button>
+      </div>
+    </div>
+  </div>
+</div>
