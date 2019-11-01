@@ -5,5 +5,8 @@ spring:
       port: 27017
       database: library
       changeLogPackage: ru.photorex.server.changelog
+    rest:
+      default-page-size: 10
 server:
   port: 8081
+

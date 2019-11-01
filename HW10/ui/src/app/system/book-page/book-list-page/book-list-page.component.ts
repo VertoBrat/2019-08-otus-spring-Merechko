@@ -16,16 +16,24 @@ export class BookListPageComponent implements OnInit {
   books: Array<Book> = [];
   isLoaded = false;
   noBooks = false;
+  totalPages: Array<number> = [];
+  pageNumber: number;
 
   ngOnInit() {
-    this.getListOfBooks();
+    this.getListOfBooks(0);
   }
 
-  getListOfBooks() {
-    this.service.getAllBooks()
+  getListOfBooks(page?: number) {
+    this.service.getAllBooks(page)
       .subscribe(b => {
-        this.books = b;
-        if (b.length === 0) {this.noBooks = true;}
+        if (b.page.totalElements !== 0) {
+          this.books = b._embedded.books;
+        } else {this.noBooks = true; }
+        this.totalPages.splice(0, this.totalPages.length);
+        for (let i = 1; i <= b.page.totalPages; i++ ) {
+          this.totalPages.push(i);
+        }
+        this.pageNumber = b.page.number + 1;
         this.isLoaded = true;
       });
   }
@@ -41,12 +49,24 @@ export class BookListPageComponent implements OnInit {
   }
 
   delete(id: string) {
-    const i = this.books.findIndex(b => b.id === id);
-    console.log(i);
+    // const i = this.books.findIndex(b => b.id === id);
+    // console.log(i);
     this.service.deleteBookById(id)
       .subscribe(r => {
-        this.books.splice(i, 1);
+        this.getListOfBooks(this.pageNumber - 1);
       });
+  }
+
+  onPage(n: number) {
+    this.getListOfBooks(n - 1);
+  }
+
+  onNext() {
+    this.getListOfBooks(this.pageNumber);
+  }
+
+  onPrevious() {
+    this.getListOfBooks(this.pageNumber - 2);
   }
 
 }

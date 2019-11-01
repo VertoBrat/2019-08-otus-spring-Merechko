@@ -9,7 +9,7 @@
 <div *ngIf="!isLoaded">
   <app-loader></app-loader>
 </div>
-<table class="table table-hover mt-1" *ngIf="isLoaded">
+<table class="table table-hover mt-1" *ngIf="isLoaded && !noBooks">
   <thead class="thead-light">
   <tr>
     <th scope="col">#</th>
@@ -22,7 +22,7 @@
   </thead>
   <tbody>
   <tr *ngFor="let book of books; let i = index">
-    <th scope="row">{{i + 1}}</th>
+    <th scope="row">{{i + 10 * (pageNumber - 1) + 1}}</th>
     <td>{{book.title}}</td>
     <td><span *ngFor="let genre of book.genres" class="mr-2">{{genre.name}}</span></td>
     <td><span *ngFor="let author of book.authors" class="mr-2">{{author.fullName}}</span></td>
@@ -57,6 +57,23 @@
   </tr>
   </tbody>
 </table>
+<nav aria-label="Page navigation" *ngIf="isLoaded && !noBooks">
+  <ul class="pagination justify-content-center">
+    <li class="page-item"
+    [ngClass]="{'disabled': pageNumber == 1}"
+    >
+      <button class="page-link" (click)="onPrevious()">Previous</button>
+    </li>
+    <li class="page-item" *ngFor="let n of totalPages"
+    [ngClass]="{'active': n == pageNumber}"
+    ><button class="page-link" (click)="onPage(n)">{{n}}</button></li>
+    <li class="page-item"
+    [ngClass]="{'disabled': pageNumber == totalPages.length}"
+    >
+      <button class="page-link" (click)="onNext()">Next</button>
+    </li>
+  </ul>
+</nav>
 <a href="#" [routerLink]="'/'" class="btn btn-primary mt-2">
   Назад
 </a>

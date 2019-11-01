@@ -46,7 +46,34 @@ public class InitMongoDbWithCollections {
         Book book1 = template.save(new Book("Effective_Java_3rd",contentOne, Set.of("Story", "IT"), Set.of(new Author("Joshua", "Bloh")), List.of(comments.get(0))));
         Book book2 = template.save(new Book("Civilization of status",contentTwo, Set.of("Roman"), Set.of(new Author("Robert", "Shekli")), List.of(comments.get(1), comments.get(2))));
         Book book3 = template.save(new Book("Missing Certificate",contentThree, Set.of("Comedy"), Set.of(new Author("Nikolay", "Gogol"), new Author("NoFirstName", "NoLastName")), List.of(comments.get(3))));
-        fillBookList(book1, book2, book3);
+        Book book4 = template.save(new Book("Some Book 4", null, Set.of("Some Genre"), Set.of(new Author("Some firstName", "Some lastName"))));
+        Book book5 = template.save(new Book("Some Book 5", null, Set.of("Some Genre"), Set.of(new Author("Some firstName", "Some lastName"))));
+        Book book6 = template.save(new Book("Some Book 6", null, Set.of("Some Genre"), Set.of(new Author("Some firstName", "Some lastName"))));
+        Book book7 = template.save(new Book("Some Book 7", null, Set.of("Some Genre"), Set.of(new Author("Some firstName", "Some lastName"))));
+        Book book8 = template.save(new Book("Some Book 8", null, Set.of("Some Genre"), Set.of(new Author("Some firstName", "Some lastName"))));
+        Book book9 = template.save(new Book("Some Book 9", null, Set.of("Some Genre"), Set.of(new Author("Some firstName", "Some lastName"))));
+        Book book10 = template.save(new Book("Some Book 10", null, Set.of("Some Genre"), Set.of(new Author("Some firstName", "Some lastName"))));
+        Book book11 = template.save(new Book("Some Book 11", null, Set.of("Some Genre"), Set.of(new Author("Some firstName", "Some lastName"))));
+        Book book12 = template.save(new Book("Some Book 12", null, Set.of("Some Genre"), Set.of(new Author("Some firstName", "Some lastName"))));
+        Book book13 = template.save(new Book("Some Book 13", null, Set.of("Some Genre"), Set.of(new Author("Some firstName", "Some lastName"))));
+        Book book14 = template.save(new Book("Some Book 14", null, Set.of("Some Genre"), Set.of(new Author("Some firstName", "Some lastName"))));
+        Book book15 = template.save(new Book("Some Book 15", null, Set.of("Some Genre"), Set.of(new Author("Some firstName", "Some lastName"))));
+        Book book16 = template.save(new Book("Some Book 16", null, Set.of("Some Genre"), Set.of(new Author("Some firstName", "Some lastName"))));
+        Book book17 = template.save(new Book("Some Book 17", null, Set.of("Some Genre"), Set.of(new Author("Some firstName", "Some lastName"))));
+        Book book18 = template.save(new Book("Some Book 18", null, Set.of("Some Genre"), Set.of(new Author("Some firstName", "Some lastName"))));
+        Book book19 = template.save(new Book("Some Book 19", null, Set.of("Some Genre"), Set.of(new Author("Some firstName", "Some lastName"))));
+        Book book20 = template.save(new Book("Some Book 20", null, Set.of("Some Genre"), Set.of(new Author("Some firstName", "Some lastName"))));
+        Book book21 = template.save(new Book("Some Book 21", null, Set.of("Some Genre"), Set.of(new Author("Some firstName", "Some lastName"))));
+        Book book22 = template.save(new Book("Some Book 22", null, Set.of("Some Genre"), Set.of(new Author("Some firstName", "Some lastName"))));
+        Book book23 = template.save(new Book("Some Book 23", null, Set.of("Some Genre"), Set.of(new Author("Some firstName", "Some lastName"))));
+        Book book24 = template.save(new Book("Some Book 24", null, Set.of("Some Genre"), Set.of(new Author("Some firstName", "Some lastName"))));
+        Book book25 = template.save(new Book("Some Book 25", null, Set.of("Some Genre"), Set.of(new Author("Some firstName", "Some lastName"))));
+
+        fillBookList(book1, book2, book3, book4, book5,
+                book6, book7, book8, book9, book10,
+                book11, book12, book13, book14, book15,
+                book16, book17, book18, book19, book20,
+                book21, book22, book23, book24, book25);
     }
 
     @ChangeSet(order = "004", id = "fillCommentsWithBook", author = "photorex", runAlways = true)

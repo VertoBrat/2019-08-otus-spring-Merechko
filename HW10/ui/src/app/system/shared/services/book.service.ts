@@ -1,8 +1,7 @@
 import {BaseApiService} from './base-api.service';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpParams} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs';
-import {map} from 'rxjs/operators';
 import {Book} from '../models/book.model';
 
 export interface BooksResponse {
@@ -10,7 +9,19 @@ export interface BooksResponse {
     books: Book[]
   };
   _links: {
+    first: {
+      href: string
+    },
+    prev: {
+      href: string
+    },
     self: {
+      href: string
+    },
+    next: {
+      href: string
+    },
+    last: {
       href: string
     }
   };
@@ -28,11 +39,11 @@ export class BookService extends BaseApiService {
     super(http);
   }
 
-  public getAllBooks(): Observable<Book[]> {
-    return this.get<BooksResponse>('api/books')
-      .pipe(
-        map(res => res._embedded.books)
-      );
+
+
+  public getAllBooks(page?: number): Observable<BooksResponse> {
+    const params = new HttpParams().set('page', page + '');
+    return this.get<BooksResponse>('api/books', params);
   }
 
   public getBookById(id: string): Observable<Book> {

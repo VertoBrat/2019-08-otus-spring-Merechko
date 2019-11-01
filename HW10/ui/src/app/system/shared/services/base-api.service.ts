@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {HttpClient, HttpErrorResponse} from '@angular/common/http';
+import {HttpClient, HttpErrorResponse, HttpParams} from '@angular/common/http';
 import {Observable, throwError} from 'rxjs';
 import {catchError} from 'rxjs/operators';
 
@@ -25,8 +25,8 @@ export class BaseApiService {
       'Something bad happened; please try again later.');
   }
 
-  public get<T>(url: string): Observable<T> {
-    return this.http.get<T>(url).pipe(catchError(this.handleError));
+  public get<T>(url: string, params?: HttpParams): Observable<T> {
+    return this.http.get<T>(url, {params}).pipe(catchError(this.handleError));
   }
 
   public getById<T>(url: string, id: string): Observable<T> {
