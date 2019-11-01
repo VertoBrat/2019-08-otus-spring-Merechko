@@ -1,0 +1,20 @@
+<div *ngIf="!isLoaded">
+  <app-loader></app-loader>
+</div>
+<table class="table table-hover mt-4" *ngIf="isLoaded">
+  <thead class="thead-light">
+  <tr>
+    <th scope="col">#</th>
+    <th scope="col">Название жанра</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let genre of genres; let i = index">
+    <th scope="row">{{i + 1}}</th>
+    <td>{{genre.name}}</td>
+  </tr>
+  </tbody>
+</table>
+<a href="#" [routerLink]="'/'" class="btn btn-primary mt-2">
+  Назад
+</a>
