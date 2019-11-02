@@ -46,6 +46,11 @@ export class BookService extends BaseApiService {
     return this.get<BooksResponse>('api/books', params);
   }
 
+  public getFilteredBook(search: string, type: string): Observable<BooksResponse> {
+    const params = new HttpParams().set('search', search).append('type', type);
+    return this.get<BooksResponse>('api/books', params);
+  }
+
   public getBookById(id: string): Observable<Book> {
     return this.getById<Book>('api/books/', id);
   }

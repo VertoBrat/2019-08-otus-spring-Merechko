@@ -5,6 +5,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PagedResourcesAssembler;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.PagedModel;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -31,6 +32,16 @@ public class BookController {
         logger.info("getAll with page {}", pageable.getPageNumber());
         PagedModel<BookTo> pagedModel = bookService.getAllBook(pageable, assembler);
         return ResponseEntity.ok(pagedModel);
+    }
+
+    @GetMapping(value = "/books", params = {"search", "type"})
+    public ResponseEntity getAllFiltered(@RequestParam("search") String search,
+                                         @RequestParam("type") String type) {
+        logger.info("getAllFiltered with search {}, type {}", search, type);
+        CollectionModel<BookTo> filteredBooks = bookService.getFilteredBook(search, type);
+        if (filteredBooks.getContent().isEmpty())
+            return ResponseEntity.noContent().build();
+        return ResponseEntity.ok(bookService.getFilteredBook(search, type));
     }
 
     @GetMapping("/books/{id}")

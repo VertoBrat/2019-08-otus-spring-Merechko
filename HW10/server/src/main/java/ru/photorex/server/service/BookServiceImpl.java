@@ -4,10 +4,12 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PagedResourcesAssembler;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.PagedModel;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.photorex.server.exception.NoDataWithThisIdException;
+import ru.photorex.server.model.Author;
 import ru.photorex.server.model.Book;
 import ru.photorex.server.repository.BookRepository;
 import ru.photorex.server.to.BookTo;
@@ -20,6 +22,7 @@ import ru.photorex.server.to.mapper.BookMapper;
 public class BookServiceImpl implements BookService {
 
     private final BookRepresentationModelAssembler modelAssembler;
+    private final FilterParserService parserService;
     private final BookRepository repository;
     private final BookMapper mapper;
 
@@ -27,6 +30,16 @@ public class BookServiceImpl implements BookService {
     public PagedModel<BookTo> getAllBook(Pageable pageable, PagedResourcesAssembler<Book> pagedResourcesAssembler) {
         Page<Book> pagedBook = repository.findAll(pageable);
         return pagedResourcesAssembler.toModel(pagedBook, modelAssembler);
+    }
+
+    @Override
+    public CollectionModel<BookTo> getFilteredBook(String search, String type) {
+        if (type.equals("genre")) {
+            return modelAssembler.toCollectionModel(repository.findAllFilteredPerGenre(search));
+        } else {
+            Author author = parserService.parseStringToAuthor(search);
+            return modelAssembler.toCollectionModel(repository.findAllFilteredPerAuthors(author));
+        }
     }
 
     @Override
