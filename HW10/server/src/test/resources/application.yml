@@ -4,3 +4,5 @@ spring:
       port: 0
       database: test
       changeLogPackage: ru.photorex.server.test.changelog
+    rest:
+      default-page-size: 1
