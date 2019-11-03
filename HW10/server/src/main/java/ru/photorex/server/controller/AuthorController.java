@@ -4,12 +4,11 @@ import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
 import ru.photorex.server.service.AuthorService;
 
-@Controller
+@RestController
 @RequiredArgsConstructor
 public class AuthorController {
 
@@ -17,7 +16,7 @@ public class AuthorController {
     private final Logger logger = LoggerFactory.getLogger(AuthorController.class);
 
     @GetMapping("/authors")
-    public ResponseEntity getAll(Model model) {
+    public ResponseEntity getAll() {
         logger.info("getAll");
         return ResponseEntity.ok(authorService.findAllAuthors());
     }
