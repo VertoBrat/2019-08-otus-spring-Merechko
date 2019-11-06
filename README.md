@@ -32,3 +32,6 @@ Each task is located in a separate folder called "HW N", where N - number of tas
 
 ### HW9
 >CRUD Library with Web UI, MongoDb, SpringMVC, Thymeleaf
+
+### HW10
+>CRUD Library with Angular, Rest Server, MongoDb
