@@ -55,12 +55,20 @@ export class BookService extends BaseApiService {
     return this.getById<Book>('api/books/', id);
   }
 
-  public updateBook(id: string, book: Book): Observable<Book> {
+  private updateBook(id: string, book: Book): Observable<Book> {
     return this.update<Book>('api/books/', id, book);
   }
 
-  public saveBook(book: Book): Observable<Book> {
+  private saveBook(book: Book): Observable<Book> {
     return this.post<Book>('api/books', book);
+  }
+
+  public saveOrUpdateBook(book: Book): Observable<Book> {
+    if (book.id) {
+      return this.updateBook(book.id, book);
+    } else {
+      return this.saveBook(book);
+    }
   }
 
   public deleteBookById(id: string): Observable<any> {

@@ -18,6 +18,7 @@ export class BookEditPageComponent implements OnInit {
               private router: Router) {
   }
 
+  pageNumber: number;
   form: FormGroup;
   id: string;
   title: string;
@@ -26,6 +27,7 @@ export class BookEditPageComponent implements OnInit {
   authors: string[];
 
   ngOnInit() {
+    this.pageNumber = this.route.snapshot.queryParams.page;
     this.route.queryParams.subscribe((p: Params) => {
       if (p.id) {
         this.service.getBookById(p.id)
@@ -57,17 +59,12 @@ export class BookEditPageComponent implements OnInit {
       this.getAuthorsFromForm(formData.authors)
     );
     book.setId(formData.id);
-    if (book.id) {
-      this.service.updateBook(book.id, book)
-        .subscribe(b => {
-          this.router.navigate(['/books', 'list']);
+    this.service.saveOrUpdateBook(book)
+      .subscribe(b => {
+        this.router.navigate(['/books', 'list'], {
+          queryParams: {page: this.pageNumber}
         });
-    } else {
-      this.service.saveBook(book)
-        .subscribe(b => {
-          this.router.navigate(['/books', 'list']);
-        });
-    }
+      });
   }
 
   private getGenresFromForm(formValue: string): Genre[] {

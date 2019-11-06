@@ -30,7 +30,7 @@
       <p class="card-text">{{comment.text}}</p>
     </div>
   </div>
-  <a href="#" [routerLink]="['/books','list']" class="btn btn-primary mt-2">
+  <a href="#" [routerLink]="['/books','list']" [queryParams]="{page: pageNumber}" class="btn btn-primary mt-2">
     Назад
   </a>
 </div>
@@ -56,8 +56,8 @@
         </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
         <button type="button" class="btn btn-primary" (click)="onSubmit()" data-dismiss="modal">Отправить</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
       </div>
     </div>
   </div>

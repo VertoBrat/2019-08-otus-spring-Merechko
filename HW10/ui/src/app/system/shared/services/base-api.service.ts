@@ -34,7 +34,7 @@ export class BaseApiService {
   }
 
   public update<T>(url: string, id: string, body: T): Observable<T> {
-    return this.http.patch<T>(url + id, body).pipe(catchError(this.handleError));
+    return this.http.put<T>(url + id, body).pipe(catchError(this.handleError));
   }
 
   public post<T>(url: string, body: T): Observable<T> {

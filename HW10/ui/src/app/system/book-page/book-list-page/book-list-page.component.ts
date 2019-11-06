@@ -1,8 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {BookService} from '../../shared/services/book.service';
 import {Book} from '../../shared/models/book.model';
-import {Router} from '@angular/router';
-import {FormControl, FormGroup, Validators} from '@angular/forms';
+import {ActivatedRoute, Router} from '@angular/router';
+import {FormControl, FormGroup} from '@angular/forms';
 
 @Component({
   selector: 'app-book-list-page',
@@ -12,7 +12,8 @@ import {FormControl, FormGroup, Validators} from '@angular/forms';
 export class BookListPageComponent implements OnInit {
 
   constructor(private service: BookService,
-              private router: Router) {
+              private router: Router,
+              private route: ActivatedRoute) {
   }
 
   books: Array<Book> = [];
@@ -20,11 +21,13 @@ export class BookListPageComponent implements OnInit {
   noBooks = false;
   totalPages: Array<number> = [];
   pageNumber: number;
+  statePage = 0;
   form: FormGroup;
   paged = true;
 
   ngOnInit() {
-    this.getListOfBooks(0);
+    this.statePage = this.route.snapshot.queryParams.page;
+    this.getListOfBooks(this.statePage);
     this.form = new FormGroup({
       search: new FormControl(''),
       type: new FormControl('genre')
@@ -34,7 +37,7 @@ export class BookListPageComponent implements OnInit {
   getListOfBooks(page?: number) {
     this.service.getAllBooks(page)
       .subscribe(b => {
-        if (b.page.totalElements !== 0) {
+        if (b.page.totalElements !== 0 && b.page.totalPages > page) {
           this.books = b._embedded.books;
         } else {
           this.noBooks = true;
@@ -63,12 +66,14 @@ export class BookListPageComponent implements OnInit {
   }
 
   onView(book: Book) {
-    this.router.navigate(['/books', book.id]);
+    this.router.navigate(['/books', book.id], {
+      queryParams: {page: this.pageNumber - 1}
+    });
   }
 
   edit(book: Book) {
     this.router.navigate(['/books', 'edit'], {
-      queryParams: {id: book.id}
+      queryParams: {id: book.id, page: this.pageNumber - 1}
     });
   }
 

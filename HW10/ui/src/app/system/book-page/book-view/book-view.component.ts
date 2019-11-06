@@ -1,10 +1,11 @@
 import {Component, OnInit} from '@angular/core';
 import {BookService} from '../../shared/services/book.service';
-import {ActivatedRoute, Router} from '@angular/router';
+import {ActivatedRoute, NavigationStart, Router} from '@angular/router';
 import {Book} from '../../shared/models/book.model';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import { Comment } from '../../shared/models/comment.model';
 import {CommentService} from '../../shared/services/comment.service';
+import {filter} from 'rxjs/operators';
 
 @Component({
   selector: 'app-book-view',
@@ -22,9 +23,12 @@ export class BookViewComponent implements OnInit {
   isLoaded = false;
   form: FormGroup;
   bookId: string;
+  pageNumber: number;
 
   ngOnInit() {
     this.bookId = this.route.snapshot.params.id;
+    this.pageNumber = this.route.snapshot.queryParams.page;
+    console.log(this.pageNumber);
     this.getBookById();
     this.form = new FormGroup({
       commentText: new FormControl('', Validators.required)

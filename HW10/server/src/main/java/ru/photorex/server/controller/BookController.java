@@ -59,7 +59,7 @@ public class BookController {
         return ResponseEntity.created(location).body(bookTo);
     }
 
-    @PatchMapping("/books/{id}")
+    @PutMapping("/books/{id}")
     public ResponseEntity update(@PathVariable("id") String id,@Valid @RequestBody BookTo to, BindingResult result) {
         logger.info("update with id {}, entity {}, count of error {}", id, to, result.getErrorCount());
         checkErrors(result);

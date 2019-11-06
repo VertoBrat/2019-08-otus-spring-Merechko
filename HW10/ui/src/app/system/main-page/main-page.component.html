@@ -6,7 +6,7 @@
         <p class="card-text">Здесь можно посмотреть список всех книг в библиотеке, а также режим
           редактирования.
         </p>
-        <a href="#" [routerLink]="['/books', 'list']" class="btn btn-primary">Зайти</a>
+        <a href="#" [routerLink]="['/books', 'list']" [queryParams]="{page: 0}" class="btn btn-primary">Зайти</a>
       </div>
     </div>
   </div>
