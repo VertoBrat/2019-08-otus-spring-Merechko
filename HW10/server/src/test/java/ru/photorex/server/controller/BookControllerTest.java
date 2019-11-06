@@ -137,7 +137,7 @@ public class BookControllerTest {
         BookTo to = bookMapper.toTo(book);
         to.setTitle(NEW_TITLE);
         to.setComments(null);
-        mockMvc.perform(patch(MAIN_URL_ID, book.getId())
+        mockMvc.perform(put(MAIN_URL_ID, book.getId())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(mapper.writeValueAsString(to)))
                 .andDo(print())
