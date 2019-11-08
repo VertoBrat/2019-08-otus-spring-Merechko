@@ -1,0 +1,97 @@
+<div class="row">
+  <div class="col-auto mr-auto">
+    <button [routerLink]="['/books', 'edit']" class="btn btn-primary mt-4">Добавить книгу</button>
+  </div>
+  <div class="col-auto">
+    <form class="form-inline mt-4" [formGroup]="form" (ngSubmit)="onSubmitSearch()">
+      <div class="form-group mr-2">
+        <input type="search" class="form-control mb-2" formControlName="search">
+      </div>
+      <div class="form-group mr-2">
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="radio" value="genre" name="type" formControlName="type" checked>
+          <label class="form-check-label">по жанрам</label>
+        </div>
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="radio" value="author" name="type" formControlName="type">
+          <label class="form-check-label">по авторам</label>
+        </div>
+      </div>
+      <button type="submit" class="btn btn-outline-success mb-2">Найти</button>
+    </form>
+  </div>
+</div>
+<div class="mt-3 mb-3" *ngIf="noBooks">
+  <p class="h3"> В библиотеке нет книг </p>
+</div>
+<div *ngIf="!isLoaded">
+  <app-loader></app-loader>
+</div>
+<table class="table table-hover mt-1" *ngIf="isLoaded && !noBooks">
+  <thead class="thead-light">
+  <tr>
+    <th scope="col">#</th>
+    <th scope="col">Название</th>
+    <th scope="col">Жанры</th>
+    <th scope="col">Авторы</th>
+    <th scope="col">Число комментов</th>
+    <th scope="col"></th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let book of books; let i = index">
+    <th scope="row">{{i + 10 * (pageNumber - 1) + 1}}</th>
+    <td>{{book.title}}</td>
+    <td><span *ngFor="let genre of book.genres" class="mr-2">{{genre.name}}</span></td>
+    <td><span *ngFor="let author of book.authors" class="mr-2">{{author.fullName}}</span></td>
+    <td>
+      <span class="badge badge-danger">{{book.comments.length}}</span>
+    </td>
+    <td>
+      <div class="row justify-content-md-center">
+        <div class="col">
+          <button class="btn btn-outline-light" (click)="onView(book)">
+            <span style="color: green">
+              <fa name="sign-in" size="2x"></fa>
+            </span>
+          </button>
+        </div>
+        <div class="col">
+          <button class="btn btn-outline-light" (click)="edit(book)">
+            <span style="color: navy">
+              <fa name="edit" size="2x"></fa>
+            </span>
+          </button>
+        </div>
+        <div class="col">
+          <button class="btn btn-outline-light" (click)="delete(book.id)">
+            <span style="color: red">
+              <fa name="trash" size="2x"></fa>
+            </span>
+          </button>
+        </div>
+      </div>
+    </td>
+  </tr>
+  </tbody>
+</table>
+<nav aria-label="Page navigation" *ngIf="isLoaded && !noBooks && paged">
+  <ul class="pagination justify-content-center">
+    <li class="page-item"
+    [ngClass]="{'disabled': pageNumber == 1}"
+    >
+      <button class="page-link" (click)="onPrevious()">Previous</button>
+    </li>
+    <li class="page-item" *ngFor="let n of totalPages"
+    [ngClass]="{'active': n == pageNumber}"
+    ><button class="page-link" (click)="onPage(n)">{{n}}</button></li>
+    <li class="page-item"
+    [ngClass]="{'disabled': pageNumber == totalPages.length}"
+    >
+      <button class="page-link" (click)="onNext()">Next</button>
+    </li>
+  </ul>
+</nav>
+<a href="#" [routerLink]="'/'" class="btn btn-primary mt-2">
+  Назад
+</a>
