@@ -5,8 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.web.reactive.function.server.RouterFunction;
 import org.springframework.web.reactive.function.server.ServerResponse;
-import org.springframework.web.server.WebExceptionHandler;
-import org.springframework.web.server.handler.ResponseStatusExceptionHandler;
+import ru.photorex.apiserver.handler.AuthorHandler;
 import ru.photorex.apiserver.handler.BookHandler;
 import ru.photorex.apiserver.handler.GenreHandler;
 
@@ -19,7 +18,8 @@ public class ServerApplication {
 
     @Bean
     public RouterFunction<ServerResponse> all(BookHandler bookHandler,
-                                              GenreHandler genreHandler) {
+                                              GenreHandler genreHandler,
+                                              AuthorHandler authorHandler) {
         return route()
                 .path("/books", b -> b
                     .GET("", bookHandler::all)
@@ -29,6 +29,8 @@ public class ServerApplication {
                     .DELETE("/{id}", bookHandler::delete))
                 .path("/genres", b -> b
                     .GET("", genreHandler::all))
+                .path("/authors", b -> b
+                    .GET("", authorHandler::all))
                 .build();
 
     }
