@@ -7,6 +7,7 @@ import org.springframework.web.reactive.function.server.RouterFunction;
 import org.springframework.web.reactive.function.server.ServerResponse;
 import ru.photorex.apiserver.handler.AuthorHandler;
 import ru.photorex.apiserver.handler.BookHandler;
+import ru.photorex.apiserver.handler.CommentHandler;
 import ru.photorex.apiserver.handler.GenreHandler;
 
 import java.util.function.Predicate;
@@ -24,7 +25,8 @@ public class ServerApplication {
     @Bean
     public RouterFunction<ServerResponse> all(BookHandler bookHandler,
                                               GenreHandler genreHandler,
-                                              AuthorHandler authorHandler) {
+                                              AuthorHandler authorHandler,
+                                              CommentHandler commentHandler) {
         return route()
                 .path("/books", b -> b
                         .GET("", queryParam("page", Predicate.not(String::isEmpty)), bookHandler::all)
@@ -35,6 +37,9 @@ public class ServerApplication {
                         .POST("", bookHandler::save)
                         .PUT("/{id}", bookHandler::update)
                         .DELETE("/{id}", bookHandler::delete))
+                .path("/comments", b -> b
+                        .POST("", commentHandler::save)
+                        .DELETE("/{id}", commentHandler::delete))
                 .path("/genres", b -> b
                         .GET("", genreHandler::all))
                 .path("/authors", b -> b
