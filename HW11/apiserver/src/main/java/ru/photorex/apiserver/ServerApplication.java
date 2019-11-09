@@ -38,6 +38,7 @@ public class ServerApplication {
                         .PUT("/{id}", bookHandler::update)
                         .DELETE("/{id}", bookHandler::delete))
                 .path("/comments", b -> b
+                        .PUT("/{id}", commentHandler::update)
                         .POST("", commentHandler::save)
                         .DELETE("/{id}", commentHandler::delete))
                 .path("/genres", b -> b

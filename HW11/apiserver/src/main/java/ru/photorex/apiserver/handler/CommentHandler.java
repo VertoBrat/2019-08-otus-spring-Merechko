@@ -8,5 +8,7 @@ public interface CommentHandler {
 
     Mono<ServerResponse> save(ServerRequest request);
 
+    Mono<ServerResponse> update(ServerRequest request);
+
     Mono<ServerResponse> delete(ServerRequest request);
 }

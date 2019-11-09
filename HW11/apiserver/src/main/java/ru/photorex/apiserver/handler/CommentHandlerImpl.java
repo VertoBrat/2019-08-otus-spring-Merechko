@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.reactive.function.server.ServerResponse;
 import reactor.core.publisher.Mono;
+import ru.photorex.apiserver.model.Comment;
 import ru.photorex.apiserver.repository.CommentRepository;
 import ru.photorex.apiserver.to.CommentTo;
 import ru.photorex.apiserver.to.mapper.CommentMapper;
@@ -30,6 +31,19 @@ public class CommentHandlerImpl implements CommentHandler {
                 .flatMap(repository::save)
                 .map(mapper::toTo);
         return ok().contentType(MediaType.APPLICATION_JSON).body(comment, CommentTo.class);
+    }
+
+    @Override
+    public Mono<ServerResponse> update(ServerRequest request) {
+        Mono<CommentTo> to = request.bodyToMono(CommentTo.class)
+                .flatMap(validator::validate)
+                .transform(toComment -> {
+                    Mono<Comment> dbComment = repository.findById(request.pathVariable("id"));
+                    return Mono.zip(toComment, dbComment, mapper::updateComment);
+                })
+                .flatMap(repository::save)
+                .map(mapper::toTo);
+        return ok().contentType(MediaType.APPLICATION_JSON).body(to, CommentTo.class);
     }
 
     @Override

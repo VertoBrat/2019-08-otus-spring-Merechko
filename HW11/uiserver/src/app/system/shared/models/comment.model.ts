@@ -13,4 +13,7 @@ export class Comment {
     this.bookId = bookId;
   }
 
+  setId(id: string) {
+    this.id = id;
+  }
 }

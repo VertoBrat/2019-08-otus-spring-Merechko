@@ -2,6 +2,7 @@ package ru.photorex.apiserver.to.mapper;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
 import org.mapstruct.Mappings;
 import ru.photorex.apiserver.model.Book;
 import ru.photorex.apiserver.model.Comment;
@@ -15,6 +16,13 @@ public interface CommentMapper extends BaseMapper<Comment, CommentTo> {
             @Mapping(source = "dateTime", dateFormat = "dd-MM-yyyy HH:mm", target = "dateTime")}
     )
     CommentTo toTo(Comment comment);
+
+    @Mappings({
+            @Mapping(target = "id", ignore = true),
+            @Mapping(target = "book", ignore = true),
+            @Mapping(target = "dateTime", ignore = true)
+    })
+    Comment updateComment(CommentTo to,@MappingTarget Comment entity);
 
     default Comment toEntity(CommentTo to) {
         Comment comment = new Comment();
