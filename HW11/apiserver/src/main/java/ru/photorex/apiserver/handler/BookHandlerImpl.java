@@ -8,14 +8,18 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.reactive.function.server.ServerResponse;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import ru.photorex.apiserver.model.Book;
 import ru.photorex.apiserver.paging.AbstractPagedModel;
 import ru.photorex.apiserver.paging.BookPagedModel;
 import ru.photorex.apiserver.repository.BookRepository;
+import ru.photorex.apiserver.service.FilterParserService;
 import ru.photorex.apiserver.to.BookTo;
 import ru.photorex.apiserver.to.mapper.BookMapper;
 import ru.photorex.apiserver.util.CustomValidator;
+
+import java.util.Optional;
 
 import static org.springframework.web.reactive.function.BodyInserters.fromValue;
 import static org.springframework.web.reactive.function.server.ServerResponse.*;
@@ -24,6 +28,7 @@ import static org.springframework.web.reactive.function.server.ServerResponse.*;
 @RequiredArgsConstructor
 public class BookHandlerImpl implements BookHandler {
 
+    private final FilterParserService parserService;
     private final BookRepository repository;
     private final CustomValidator validator;
     private final BookMapper mapper;
@@ -32,11 +37,14 @@ public class BookHandlerImpl implements BookHandler {
 
     @Override
     public Mono<ServerResponse> all(ServerRequest request) {
-        Pageable pageable = PageRequest.of(request.queryParam("page").map(Integer::parseInt).map(Math::abs).orElse(0), pageSize);
-        Mono<AbstractPagedModel<BookTo>> modelMono =
-                repository.findAll().map(mapper::toTo)
-                                    .collectList()
-                                    .map(list -> new BookPagedModel(list, pageable));
+        Pageable pageable = PageRequest.of(request.queryParam("page")
+                .map(Integer::parseInt)
+                .map(Math::abs)
+                .orElse(0), pageSize);
+        Mono<AbstractPagedModel<BookTo>> modelMono = repository.findAll()
+                .map(mapper::toTo)
+                .collectList()
+                .map(list -> new BookPagedModel(list, pageable));
         return ok().contentType(MediaType.APPLICATION_JSON).body(modelMono, AbstractPagedModel.class);
     }
 
@@ -46,6 +54,11 @@ public class BookHandlerImpl implements BookHandler {
                 .map(mapper::toTo)
                 .flatMap(b -> ok().contentType(MediaType.APPLICATION_JSON).body(fromValue(b)))
                 .switchIfEmpty(notFound().build());
+    }
+
+    @Override
+    public Mono<ServerResponse> filtered(ServerRequest request) {
+        return request.queryParam("type").get().equals("genre") ? filteredByGenre(request) : filteredByAuthor(request);
     }
 
     @Override
@@ -74,5 +87,22 @@ public class BookHandlerImpl implements BookHandler {
     @Override
     public Mono<ServerResponse> delete(ServerRequest request) {
         return noContent().build(repository.deleteById(request.pathVariable("id")));
+    }
+
+    private Mono<ServerResponse> filteredByAuthor(ServerRequest request) {
+        return request.queryParam("search")
+                .map(parserService::parseStringToAuthor)
+                .map(repository::findAllFilteredPerAuthors)
+                .map(f -> f.map(mapper::toTo))
+                .map(books -> ok().contentType(MediaType.APPLICATION_JSON).body(books, BookTo.class))
+                .orElse(noContent().build());
+    }
+
+    private Mono<ServerResponse> filteredByGenre(ServerRequest request) {
+        return request.queryParam("search")
+                .map(repository::findAllFilteredPerGenre)
+                .map(f -> f.map(mapper::toTo))
+                .map(books -> ok().contentType(MediaType.APPLICATION_JSON).body(books, BookTo.class))
+                .orElse(noContent().build());
     }
 }

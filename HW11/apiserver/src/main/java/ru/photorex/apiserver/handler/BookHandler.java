@@ -10,6 +10,8 @@ public interface BookHandler {
 
     Mono<ServerResponse> byId(ServerRequest request);
 
+    Mono<ServerResponse> filtered(ServerRequest request);
+
     Mono<ServerResponse> save(ServerRequest request);
 
     Mono<ServerResponse> update(ServerRequest request);

@@ -57,7 +57,7 @@ export class BookListPageComponent implements OnInit {
         if (b === null) {
           this.noBooks = true;
         } else {
-          this.books = b.books;
+          this.books = b;
           this.noBooks = false;
         }
         this.isLoaded = true;
