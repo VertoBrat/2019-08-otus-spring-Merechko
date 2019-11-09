@@ -1,13 +1,17 @@
 package ru.photorex.apiserver.handler;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.reactive.function.server.ServerResponse;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import ru.photorex.apiserver.model.Book;
+import ru.photorex.apiserver.paging.AbstractPagedModel;
+import ru.photorex.apiserver.paging.BookPagedModel;
 import ru.photorex.apiserver.repository.BookRepository;
 import ru.photorex.apiserver.to.BookTo;
 import ru.photorex.apiserver.to.mapper.BookMapper;
@@ -23,11 +27,17 @@ public class BookHandlerImpl implements BookHandler {
     private final BookRepository repository;
     private final CustomValidator validator;
     private final BookMapper mapper;
+    @Value("${page.size}")
+    private int pageSize;
 
     @Override
     public Mono<ServerResponse> all(ServerRequest request) {
-        Flux<BookTo> books = repository.findAll().map(mapper::toTo);
-        return ok().contentType(MediaType.APPLICATION_JSON).body(books, BookTo.class);
+        Pageable pageable = PageRequest.of(request.queryParam("page").map(Integer::parseInt).map(Math::abs).orElse(0), pageSize);
+        Mono<AbstractPagedModel<BookTo>> modelMono =
+                repository.findAll().map(mapper::toTo)
+                                    .collectList()
+                                    .map(list -> new BookPagedModel(list, pageable));
+        return ok().contentType(MediaType.APPLICATION_JSON).body(modelMono, AbstractPagedModel.class);
     }
 
     @Override

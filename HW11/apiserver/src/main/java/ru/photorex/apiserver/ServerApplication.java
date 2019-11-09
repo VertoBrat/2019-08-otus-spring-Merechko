@@ -9,6 +9,7 @@ import ru.photorex.apiserver.handler.AuthorHandler;
 import ru.photorex.apiserver.handler.BookHandler;
 import ru.photorex.apiserver.handler.GenreHandler;
 
+import static org.springframework.web.reactive.function.server.RequestPredicates.queryParam;
 import static org.springframework.web.reactive.function.server.RouterFunctions.route;
 
 @SpringBootApplication
@@ -22,7 +23,7 @@ public class ServerApplication {
                                               AuthorHandler authorHandler) {
         return route()
                 .path("/books", b -> b
-                    .GET("", bookHandler::all)
+                    .GET("",queryParam("page", s -> !s.isEmpty()), bookHandler::all)
                     .GET("/{id}", bookHandler::byId)
                     .POST("", bookHandler::save)
                     .PUT("/{id}", bookHandler::update)
