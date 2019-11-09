@@ -1,12 +1,12 @@
 package ru.photorex.apiserver.repository;
 
 import com.mongodb.DBRef;
+import com.mongodb.client.result.UpdateResult;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.bson.types.ObjectId;
-import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.ReactiveMongoTemplate;
 import org.springframework.data.mongodb.core.aggregation.Aggregation;
 import org.springframework.data.mongodb.core.aggregation.Fields;
@@ -14,6 +14,7 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 import ru.photorex.apiserver.model.Author;
 import ru.photorex.apiserver.model.Book;
 
@@ -27,7 +28,6 @@ public class BookCustomRepositoryImpl implements BookCustomRepository {
     private static final String GENRES_FIELD = "genres";
     private static final String AUTHORS_FIELD = "authors";
 
-    private final MongoOperations mongoOperations;
     private final ReactiveMongoTemplate mongoTemplate;
 
     @Override
