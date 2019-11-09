@@ -5,26 +5,7 @@ import {Observable} from 'rxjs';
 import {Book} from '../models/book.model';
 
 export interface BooksResponse {
-  _embedded: {
-    books: Book[]
-  };
-  _links: {
-    first: {
-      href: string
-    },
-    prev: {
-      href: string
-    },
-    self: {
-      href: string
-    },
-    next: {
-      href: string
-    },
-    last: {
-      href: string
-    }
-  };
+  books: Book[];
   page: {
     size: number,
     totalElements: number,

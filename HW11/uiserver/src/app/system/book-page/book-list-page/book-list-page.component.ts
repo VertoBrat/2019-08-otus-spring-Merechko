@@ -38,7 +38,7 @@ export class BookListPageComponent implements OnInit {
     this.service.getAllBooks(page)
       .subscribe(b => {
         if (b.page.totalElements !== 0 && b.page.totalPages > page) {
-          this.books = b._embedded.books;
+          this.books = b.books;
         } else {
           this.noBooks = true;
         }
@@ -57,7 +57,7 @@ export class BookListPageComponent implements OnInit {
         if (b === null) {
           this.noBooks = true;
         } else {
-          this.books = b._embedded.books;
+          this.books = b.books;
           this.noBooks = false;
         }
         this.isLoaded = true;
