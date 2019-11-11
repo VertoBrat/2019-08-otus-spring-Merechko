@@ -9,6 +9,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.reactive.function.server.ServerResponse;
 import reactor.core.publisher.Mono;
+import reactor.util.Logger;
+import reactor.util.Loggers;
 import ru.photorex.apiserver.model.Book;
 import ru.photorex.apiserver.paging.BookPagedModel;
 import ru.photorex.apiserver.repository.BookRepository;
@@ -24,6 +26,7 @@ import static org.springframework.web.reactive.function.server.ServerResponse.*;
 @RequiredArgsConstructor
 public class BookHandlerImpl implements BookHandler {
 
+    private final Logger logger = Loggers.getLogger(BookHandlerImpl.class);
     private final FilterParserService parserService;
     private final BookRepository repository;
     private final CustomValidator validator;
@@ -40,7 +43,8 @@ public class BookHandlerImpl implements BookHandler {
         Mono<BookPagedModel> modelMono = repository.findAll()
                 .map(mapper::toTo)
                 .collectList()
-                .map(list -> new BookPagedModel(list, pageable));
+                .map(list -> new BookPagedModel(list, pageable))
+                .log(logger);
         return ok().contentType(MediaType.APPLICATION_JSON).body(modelMono, BookPagedModel.class);
     }
 
@@ -49,7 +53,8 @@ public class BookHandlerImpl implements BookHandler {
         return repository.findById(request.pathVariable("id"))
                 .map(mapper::toTo)
                 .flatMap(b -> ok().contentType(MediaType.APPLICATION_JSON).body(fromValue(b)))
-                .switchIfEmpty(notFound().build());
+                .switchIfEmpty(notFound().build())
+                .log(logger);
     }
 
     @Override
@@ -66,7 +71,8 @@ public class BookHandlerImpl implements BookHandler {
                 .map(mapper::toTo)
                 .flatMap(b -> created(request.uriBuilder().pathSegment(b.getId()).build())
                         .contentType(MediaType.APPLICATION_JSON)
-                        .body(fromValue(b)));
+                        .body(fromValue(b)))
+                .log(logger);
     }
 
     @Override
@@ -78,13 +84,14 @@ public class BookHandlerImpl implements BookHandler {
                     return Mono.zip(toBook, dbBook, mapper::updateBook);
                 })
                 .flatMap(repository::save)
-                .map(mapper::toTo);
+                .map(mapper::toTo)
+                .log(logger);
         return ok().contentType(MediaType.APPLICATION_JSON).body(to, BookTo.class);
     }
 
     @Override
     public Mono<ServerResponse> delete(ServerRequest request) {
-        return noContent().build(repository.deleteById(request.pathVariable("id")));
+        return noContent().build(repository.deleteById(request.pathVariable("id"))).log(logger);
     }
 
     private Mono<ServerResponse> filteredByAuthor(ServerRequest request) {
@@ -93,7 +100,8 @@ public class BookHandlerImpl implements BookHandler {
                 .map(repository::findAllFilteredPerAuthors)
                 .map(f -> f.map(mapper::toTo))
                 .map(books -> ok().contentType(MediaType.APPLICATION_JSON).body(books, BookTo.class))
-                .orElse(noContent().build());
+                .orElse(noContent().build())
+                .log(logger);
     }
 
     private Mono<ServerResponse> filteredByGenre(ServerRequest request) {
@@ -101,6 +109,7 @@ public class BookHandlerImpl implements BookHandler {
                 .map(repository::findAllFilteredPerGenre)
                 .map(f -> f.map(mapper::toTo))
                 .map(books -> ok().contentType(MediaType.APPLICATION_JSON).body(books, BookTo.class))
-                .orElse(noContent().build());
+                .orElse(noContent().build())
+                .log(logger);
     }
 }
