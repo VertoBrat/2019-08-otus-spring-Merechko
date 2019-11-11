@@ -40,7 +40,7 @@
   </a>
 </div>
 <!-- Modal -->
-<div class="modal fade" id="commentModal" tabindex="-1" role="dialog" aria-labelledby="commentModalLabel"
+<div #modal class="modal fade" id="commentModal" tabindex="-1" role="dialog" aria-labelledby="commentModalLabel"
      aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
@@ -62,7 +62,7 @@
         </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-primary" (click)="onSubmit()" data-dismiss="modal">Отправить</button>
+        <button type="button" class="btn btn-primary" [disabled]="form.invalid" (click)="onSubmit()" data-dismiss="modal">Отправить</button>
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
       </div>
     </div>

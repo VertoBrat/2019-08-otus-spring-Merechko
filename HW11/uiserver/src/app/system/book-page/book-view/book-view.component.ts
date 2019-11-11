@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {BookService} from '../../shared/services/book.service';
 import {ActivatedRoute, NavigationStart, Router} from '@angular/router';
 import {Book} from '../../shared/models/book.model';
@@ -19,6 +19,8 @@ export class BookViewComponent implements OnInit {
               private route: ActivatedRoute,
               private router: Router) {
   }
+
+  @ViewChild('modal', {static: true}) modal: ElementRef;
 
   book: Book;
   isLoaded = false;
@@ -58,6 +60,7 @@ export class BookViewComponent implements OnInit {
     this.commentService.saveOrUpdateComment(comment)
       .subscribe(c => {
         this.getBookById();
+        this.modal.nativeElement.click();
       });
   }
 
