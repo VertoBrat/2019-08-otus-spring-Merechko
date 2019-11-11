@@ -10,6 +10,7 @@ import ru.photorex.apiserver.model.Author;
 import ru.photorex.apiserver.model.Book;
 import ru.photorex.apiserver.model.Comment;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -30,18 +31,17 @@ public class InitEmbeddedMongoDbWithCollections {
 
     @ChangeSet(order = "002", id = "initCommentsCollection", author = "photorex", runAlways = true)
     public void initComments(MongoTemplate template) {
-        Comment comment1 = template.save(new Comment("Text#1", null));
-        Comment comment2 = template.save(new Comment("Text#2", null));
-        Comment comment3 = template.save(new Comment("Text#3", null));
-        Comment comment4 = template.save(new Comment("Text#4", null));
-        fillCommentList(comment1, comment2, comment3, comment4);
+        Comment comment1 = template.save(new Comment("Text#1", null, LocalDateTime.now()));
+        Comment comment2 = template.save(new Comment("Text#2", null, LocalDateTime.now()));
+        Comment comment3 = template.save(new Comment("Text#3", null, LocalDateTime.now()));
+        fillCommentList(comment1, comment2, comment3);
     }
 
     @ChangeSet(order = "003", id = "initBooksCollection", author = "photorex", runAlways = true)
     public void initBooks(MongoTemplate template) {
-        Book book1 = template.save(new Book("Title#1","Content#1", Set.of("Genre#1"), Set.of(new Author("FirstName#1", "LastName#1")), List.of(comments.get(0))));
-        Book book2 = template.save(new Book("Title#2", "Content#2", Set.of("Genre#2"), Set.of(new Author("FirstName#2", "LastName#2"), new Author("FirstName#1", "LastName#1")), List.of(comments.get(1))));
-        Book book3 = template.save(new Book("Title#3", "Content#3", Set.of("Genre#3", "Genre#1"), Set.of(new Author("FirstName#3", "LastName#3"), new Author("FirstName#4", "LastName#4")), List.of(comments.get(3))));
+        Book book1 = template.save(new Book("Title1","Content1", Set.of("Genre1"), Set.of(new Author("FirstName1", "LastName1")), List.of(comments.get(0))));
+        Book book2 = template.save(new Book("Title2", "Content2", Set.of("Genre2"), Set.of(new Author("FirstName2", "LastName2"), new Author("FirstName1", "LastName1")), List.of(comments.get(1))));
+        Book book3 = template.save(new Book("Title3", "Content3", Set.of("Genre3", "Genre1"), Set.of(new Author("FirstName3", "LastName3"), new Author("FirstName4", "LastName4")), List.of(comments.get(2))));
         fillBookList(book1, book2, book3);
     }
 
@@ -49,8 +49,7 @@ public class InitEmbeddedMongoDbWithCollections {
     public void fillCommentsWithBooks(MongoTemplate template) {
         template.updateFirst(Query.query(where("id").is(comments.get(0).getId())), new Update().set("book", books.get(0)),Comment.class);
         template.updateFirst(Query.query(where("id").is(comments.get(1).getId())), new Update().set("book", books.get(1)),Comment.class);
-        template.updateFirst(Query.query(where("id").is(comments.get(2).getId())), new Update().set("book", books.get(1)),Comment.class);
-        template.updateFirst(Query.query(where("id").is(comments.get(3).getId())), new Update().set("book", books.get(2)),Comment.class);
+        template.updateFirst(Query.query(where("id").is(comments.get(2).getId())), new Update().set("book", books.get(2)),Comment.class);
     }
 
     private void fillCommentList(Comment...comments) {

@@ -67,7 +67,7 @@ public class BookRepositoryTest {
     @DisplayName(" должен возвращать все книги по фильтру жанра")
     @Test
     void shouldReturnFilteredBooksByGenreName() {
-        Flux<Book> bookFlux = repository.findAllFilteredPerGenre("Genre#1");
+        Flux<Book> bookFlux = repository.findAllFilteredPerGenre("Genre1");
 
         StepVerifier
                 .create(bookFlux)
@@ -79,7 +79,7 @@ public class BookRepositoryTest {
     @DisplayName(" должен возвращать все книги по фильтру автора")
     @Test
     void shouldReturnFilteredBooksByAuthor() {
-        Flux<Book> bookFlux = repository.findAllFilteredPerAuthors(new Author("FirstName#1", "LastName#1"));
+        Flux<Book> bookFlux = repository.findAllFilteredPerAuthors(new Author("FirstName1", "LastName1"));
 
         StepVerifier
                 .create(bookFlux)
@@ -95,7 +95,7 @@ public class BookRepositoryTest {
 
         StepVerifier
                 .create(genres)
-                .expectNext("Genre#1", "Genre#2", "Genre#3")
+                .expectNext("Genre1", "Genre2", "Genre3")
                 .expectComplete()
                 .verify();
     }

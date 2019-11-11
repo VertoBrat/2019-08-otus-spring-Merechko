@@ -8,18 +8,14 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.reactive.function.server.ServerResponse;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import ru.photorex.apiserver.model.Book;
-import ru.photorex.apiserver.paging.AbstractPagedModel;
 import ru.photorex.apiserver.paging.BookPagedModel;
 import ru.photorex.apiserver.repository.BookRepository;
 import ru.photorex.apiserver.service.FilterParserService;
 import ru.photorex.apiserver.to.BookTo;
 import ru.photorex.apiserver.to.mapper.BookMapper;
 import ru.photorex.apiserver.util.CustomValidator;
-
-import java.util.Optional;
 
 import static org.springframework.web.reactive.function.BodyInserters.fromValue;
 import static org.springframework.web.reactive.function.server.ServerResponse.*;
@@ -41,11 +37,11 @@ public class BookHandlerImpl implements BookHandler {
                 .map(Integer::parseInt)
                 .map(Math::abs)
                 .orElse(0), pageSize);
-        Mono<AbstractPagedModel<BookTo>> modelMono = repository.findAll()
+        Mono<BookPagedModel> modelMono = repository.findAll()
                 .map(mapper::toTo)
                 .collectList()
                 .map(list -> new BookPagedModel(list, pageable));
-        return ok().contentType(MediaType.APPLICATION_JSON).body(modelMono, AbstractPagedModel.class);
+        return ok().contentType(MediaType.APPLICATION_JSON).body(modelMono, BookPagedModel.class);
     }
 
     @Override
@@ -63,12 +59,14 @@ public class BookHandlerImpl implements BookHandler {
 
     @Override
     public Mono<ServerResponse> save(ServerRequest request) {
-        Mono<BookTo> to = request.bodyToMono(BookTo.class)
+        return request.bodyToMono(BookTo.class)
                 .flatMap(validator::validate)
                 .map(mapper::toEntity)
                 .flatMap(repository::save)
-                .map(mapper::toTo);
-        return ok().contentType(MediaType.APPLICATION_JSON).body(to, BookTo.class);
+                .map(mapper::toTo)
+                .flatMap(b -> created(request.uriBuilder().pathSegment(b.getId()).build())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .body(fromValue(b)));
     }
 
     @Override
