@@ -31,16 +31,16 @@ public class BookCustomRepositoryImpl implements BookCustomRepository {
     private final ReactiveMongoTemplate mongoTemplate;
 
     @Override
-    public void removeCommentsFromArrayById(String id) {
+    public Mono<UpdateResult> removeCommentsFromArrayById(String id) {
         Query query = Query.query(Criteria.where("$id").is(new ObjectId(id)));
         Update update = new Update().pull(COMMENTS_COLLECTION, query);
-        mongoTemplate.updateMulti(new Query(), update, Book.class).subscribe();
+        return mongoTemplate.updateMulti(new Query(), update, Book.class);
     }
 
     @Override
-    public void addCommentToArray(String commentId, String bookId) {
+    public Mono<UpdateResult> addCommentToArray(String commentId, String bookId) {
         Update update = new Update().addToSet(COMMENTS_COLLECTION, new DBRef(COMMENTS_COLLECTION, commentId));
-        mongoTemplate.updateFirst(new Query(Criteria.where(Fields.UNDERSCORE_ID).is(bookId)), update, Book.class).subscribe();
+        return mongoTemplate.updateFirst(new Query(Criteria.where(Fields.UNDERSCORE_ID).is(bookId)), update, Book.class);
     }
 
     @Override

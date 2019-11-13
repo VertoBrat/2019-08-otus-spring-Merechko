@@ -23,7 +23,7 @@ public class CommentCascadeEventListener extends AbstractMongoEventListener<Comm
     public void onAfterSave(AfterSaveEvent<Comment> event) {
         super.onAfterSave(event);
         val comment = event.getSource();
-        bookRepository.addCommentToArray(comment.getId(), comment.getBook().getId());
+        bookRepository.addCommentToArray(comment.getId(), comment.getBook().getId()).subscribe();
     }
 
     @Override
@@ -32,7 +32,7 @@ public class CommentCascadeEventListener extends AbstractMongoEventListener<Comm
         val source = event.getSource();
         if (source.get(Fields.UNDERSCORE_ID) != null) {
             val id = source.get(Fields.UNDERSCORE_ID).toString();
-            bookRepository.removeCommentsFromArrayById(id);
+            bookRepository.removeCommentsFromArrayById(id).subscribe();
         }
     }
 

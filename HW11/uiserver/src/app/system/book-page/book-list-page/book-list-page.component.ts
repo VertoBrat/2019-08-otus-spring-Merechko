@@ -88,14 +88,17 @@ export class BookListPageComponent implements OnInit {
 
   onPage(n: number) {
     this.getListOfBooks(n - 1);
+    this.statePage = n - 1;
   }
 
   onNext() {
     this.getListOfBooks(this.pageNumber);
+    this.statePage = this.pageNumber;
   }
 
   onPrevious() {
     this.getListOfBooks(this.pageNumber - 2);
+    this.statePage = this.pageNumber - 2;
   }
 
   onSubmitSearch() {
