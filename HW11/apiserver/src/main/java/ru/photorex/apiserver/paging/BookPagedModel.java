@@ -2,7 +2,6 @@ package ru.photorex.apiserver.paging;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.data.domain.Pageable;
 import ru.photorex.apiserver.to.BookTo;

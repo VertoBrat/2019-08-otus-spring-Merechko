@@ -88,6 +88,6 @@ public class BookCustomRepositoryImpl implements BookCustomRepository {
     @NoArgsConstructor
     @AllArgsConstructor
     private static class GenreProjection {
-        String genres;
+        private String genres;
     }
 }
