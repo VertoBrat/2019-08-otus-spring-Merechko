@@ -1,0 +1,9 @@
+spring:
+  data:
+    mongodb:
+      host: localhost
+      port: 27017
+      database: library
+      changeLogPackage: ru.photorex.apiserver.changelog
+page:
+  size: 10

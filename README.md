@@ -35,3 +35,6 @@ Each task is located in a separate folder called "HW N", where N - number of tas
 
 ### HW10
 >CRUD Library with Angular, Rest Server, MongoDb
+
+### HW11
+>CRUD Library with Angular, RestServer on WebFlux, Reactive MongoDb

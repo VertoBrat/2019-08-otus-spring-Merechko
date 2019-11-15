@@ -1,0 +1,33 @@
+<div class="row mt-5">
+  <div class="col-sm-4">
+    <div class="card border-primary">
+      <div class="card-body">
+        <h5 class="card-title">Книги</h5>
+        <p class="card-text">Здесь можно посмотреть список всех книг в библиотеке, а также режим
+          редактирования.
+        </p>
+        <a href="#" [routerLink]="['/books', 'list']" [queryParams]="{page: 0}" class="btn btn-primary">Зайти</a>
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-4">
+    <div class="card border-primary">
+      <div class="card-body">
+        <h5 class="card-title">Авторы</h5>
+        <p class="card-text">Здесь можно посмотреть список всех авторов в библиотеке.
+        </p>
+        <a href="#" [routerLink]="'/authors'" class="btn btn-primary">Зайти</a>
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-4">
+    <div class="card border-primary">
+      <div class="card-body">
+        <h5 class="card-title">Жанры</h5>
+        <p class="card-text">Здесь можно посмотреть список всех жанров в библиотеке.
+        </p>
+        <a href="#" [routerLink]="'/genres'" class="btn btn-primary">Зайти</a>
+      </div>
+    </div>
+  </div>
+</div>
