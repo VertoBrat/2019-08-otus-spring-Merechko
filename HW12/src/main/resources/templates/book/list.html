@@ -19,7 +19,7 @@
         integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
         crossorigin="anonymous"></script>
 <div class="container">
-    <div th:insert="navbar::nav"></div>
+    <div th:insert="navbar::nav (userName=${userName})"></div>
     <div class="row">
         <div class="col-auto mr-auto">
             <a href="edit.html" class="btn btn-primary mt-4" th:href="@{/books/edit}">Добавить книгу</a>

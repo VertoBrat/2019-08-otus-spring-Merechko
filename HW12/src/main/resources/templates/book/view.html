@@ -18,7 +18,7 @@
         integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
         crossorigin="anonymous"></script>
 <div class="container" th:object="${bookTo}">
-    <div th:insert="navbar::nav"></div>
+    <div th:insert="navbar::nav (userName=${userName})"></div>
     <div class="card mt-4">
         <div class="card-header">
             <span th:text="*{title}">Название</span>
