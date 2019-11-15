@@ -3,12 +3,18 @@ package ru.photorex.hw12.changelog;
 import com.github.cloudyrock.mongock.ChangeLog;
 import com.github.cloudyrock.mongock.ChangeSet;
 import com.mongodb.client.MongoDatabase;
+import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.DependsOn;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Component;
 import ru.photorex.hw12.model.Author;
 import ru.photorex.hw12.model.Book;
 import ru.photorex.hw12.model.Comment;
+import ru.photorex.hw12.model.User;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -20,6 +26,8 @@ import static org.springframework.data.mongodb.core.query.Criteria.where;
 
 @ChangeLog(order = "001")
 public class InitMongoDbWithCollections {
+
+    private final PasswordEncoder encoder = new BCryptPasswordEncoder();
 
     private List<Comment> comments = new ArrayList<>();
     private List<Book> books = new ArrayList<>();
@@ -55,6 +63,12 @@ public class InitMongoDbWithCollections {
         template.updateFirst(Query.query(where("id").is(comments.get(1).getId())), new Update().set("book", books.get(1)),Comment.class);
         template.updateFirst(Query.query(where("id").is(comments.get(2).getId())), new Update().set("book", books.get(1)),Comment.class);
         template.updateFirst(Query.query(where("id").is(comments.get(3).getId())), new Update().set("book", books.get(2)),Comment.class);
+    }
+
+    @ChangeSet(order = "005", id = "initUserCollection", author = "photorex", runAlways = true)
+    public void initUserCollection(MongoTemplate template) {
+        template.save(new User("user", encoder.encode("user"), "Nick Perumov", Set.of(User.Role.ROLE_USER)));
+        template.save(new User("admin", encoder.encode("admin"), "Robert Shekli", Set.of(User.Role.ROLE_ADMIN)));
     }
 
     private void fillCommentList(Comment...comments) {
