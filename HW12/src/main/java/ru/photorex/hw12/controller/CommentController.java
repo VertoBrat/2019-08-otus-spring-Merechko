@@ -52,4 +52,12 @@ public class CommentController {
         }
         return "redirect:/books/" + to.getBookId();
     }
+
+    @PostMapping("/comments/delete")
+    public String deleteComment(String commentId) {
+        logger.info("deleteComment with id {}", commentId);
+        CommentTo to = wormCommentService.findCommentById(commentId);
+        wormCommentService.deleteComment(commentId);
+        return "redirect:/books/" + to.getBookId();
+    }
 }

@@ -15,5 +15,4 @@ public class MainController {
     public String accessDenied() {
         return "error/access-denied";
     }
-
 }

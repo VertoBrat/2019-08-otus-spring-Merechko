@@ -17,5 +17,5 @@ public class CommentTo {
     private String text;
     private Date dateTime;
     private String bookId;
-    private String user;
+    private UserTo user;
 }

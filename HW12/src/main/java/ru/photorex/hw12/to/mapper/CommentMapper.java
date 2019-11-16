@@ -6,12 +6,11 @@ import org.mapstruct.Mappings;
 import ru.photorex.hw12.model.Comment;
 import ru.photorex.hw12.to.CommentTo;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", uses = {UserMapper.class})
 public interface CommentMapper extends BaseMapper<Comment, CommentTo> {
 
     @Mappings( {
             @Mapping(source = "comment.book.id", target = "bookId"),
-            @Mapping(source = "comment.user.username", target = "user"),
             @Mapping(source = "dateTime", dateFormat = "dd-MM-yyyy HH:mm", target = "dateTime")}
     )
     CommentTo toTo(Comment comment);

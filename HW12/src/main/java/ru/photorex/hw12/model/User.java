@@ -1,6 +1,7 @@
 package ru.photorex.hw12.model;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
@@ -11,6 +12,7 @@ import java.util.Collection;
 import java.util.Set;
 
 @Data
+@NoArgsConstructor
 @Document(collection = "users")
 public class User implements UserDetails{
 

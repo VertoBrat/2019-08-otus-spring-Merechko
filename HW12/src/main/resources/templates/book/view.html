@@ -18,7 +18,7 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
         integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
         crossorigin="anonymous"></script>
-<div class="container" th:object="${bookTo}">
+<div class="container" th:object="${bookTo}" th:with="user=${#conversions.convert(#authentication.getPrincipal(), 'ru.photorex.hw12.model.User')}">
     <div th:insert="navbar::nav"></div>
     <div class="card mt-4">
         <div class="card-header">
@@ -38,12 +38,15 @@
         <div class="card-body">
             <div class="row justify-content-end">
                 <div class="col offset-md-10">
-                    <button class="btn btn-outline-light">
+                    <form th:action="@{/comments/delete}" th:object="${comment}" method="post">
+                        <input type="hidden" th:name="'commentId'" th:value="*{id}">
+                        <button class="btn btn-link" type="submit">
                                 <span style="color: red">
                                     <i class="far fa-trash-alt fa-1x"></i>
                                 </span>
-                    </button>
-                    <a href="#" th:href="@{/comments/edit/{id}(id=${comment.id})}">
+                        </button>
+                    </form>
+                    <a href="#" th:href="@{/comments/edit/{id}(id=${comment.id})}" th:if="${user.id == comment.user.id}">
                             <span style="color: navy">
                                 <i class="far fa-edit fa-1x"></i>
                             </span>
@@ -52,7 +55,7 @@
                 </div>
             </div>
 
-            <p class="text-right" th:text="${comment.user}">автор</p>
+            <p class="text-right" th:text="${comment.user.nick}">автор</p>
             <p class="card-text" th:text="${comment.text}">текст комментария</p>
         </div>
     </div>
