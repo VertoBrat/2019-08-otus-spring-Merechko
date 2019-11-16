@@ -7,10 +7,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import ru.photorex.hw12.model.User;
 import ru.photorex.hw12.service.LibraryWormCommentService;
 import ru.photorex.hw12.to.CommentTo;
@@ -25,18 +22,20 @@ public class CommentController {
     private final Logger logger = LoggerFactory.getLogger(CommentController.class);
 
     @GetMapping("/comments/edit")
-    public String getCommentEditPage(@RequestParam(value = "id", required = false) String id,
-                                     @RequestParam(value = "bookId") String bookId,
-                                     Model model) {
-        logger.info("getCommentEditPage with comment id = {}, bookId = {}", id, bookId);
-        if (id != null) {
-            CommentTo commentTo = wormCommentService.findCommentById(id);
-            model.addAttribute("commentTo", commentTo);
-        } else {
-            CommentTo commentTo = new CommentTo();
-            commentTo.setBookId(bookId);
-            model.addAttribute("commentTo", commentTo);
-        }
+    public String getCommentEditBlankPage(@RequestParam(value = "bookId") String bookId,
+                                          Model model) {
+        logger.info("getCommentEditBlankPage with bookId = {}", bookId);
+        CommentTo commentTo = new CommentTo();
+        commentTo.setBookId(bookId);
+        model.addAttribute("commentTo", commentTo);
+        return "comment/edit";
+    }
+
+    @GetMapping("/comments/edit/{id}")
+    public String getCommentEditPage(@PathVariable("id") String commentId, Model model) {
+        logger.info("getCommentEditPage with id {}", commentId);
+        CommentTo commentTo = wormCommentService.findCommentById(commentId);
+        model.addAttribute("commentTo", commentTo);
         return "comment/edit";
     }
 

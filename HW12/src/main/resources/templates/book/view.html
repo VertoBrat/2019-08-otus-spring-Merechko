@@ -6,6 +6,7 @@
     <title>Книга</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://kit.fontawesome.com/5b37d578b8.js" crossorigin="anonymous"></script>
 </head>
 <body>
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
@@ -25,7 +26,8 @@
         </div>
         <div class="card-body">
             <h5 class="card-title">Краткое содержание</h5>
-            <p class="card-text" th:text="*{content}">With supporting text below as a natural lead-in to additional content.</p>
+            <p class="card-text" th:text="*{content}">With supporting text below as a natural lead-in to additional
+                content.</p>
             <a href="#" class="btn btn-primary" th:href="@{/comments/edit(bookId = *{id})}">Оставить отзыв</a>
         </div>
     </div>
@@ -34,7 +36,22 @@
     </div>
     <div class="card mt-1" th:each="comment:*{comments}">
         <div class="card-body">
-            <p class="text-right" th:text="${#dates.format(comment.dateTime, 'dd-MM-yyyy HH:mm')}">01-01-2000 00:00</p>
+            <div class="row justify-content-end">
+                <div class="col offset-md-10">
+                    <button class="btn btn-outline-light">
+                                <span style="color: red">
+                                    <i class="far fa-trash-alt fa-1x"></i>
+                                </span>
+                    </button>
+                    <a href="#" th:href="@{/comments/edit/{id}(id=${comment.id})}">
+                            <span style="color: navy">
+                                <i class="far fa-edit fa-1x"></i>
+                            </span>
+                    </a>
+                    <p th:text="${#dates.format(comment.dateTime, 'dd-MM-yyyy HH:mm')}">01-01-2000 00:00</p>
+                </div>
+            </div>
+
             <p class="text-right" th:text="${comment.user}">автор</p>
             <p class="card-text" th:text="${comment.text}">текст комментария</p>
         </div>

@@ -1,4 +1,4 @@
-package ru.photorex.hw12.config;
+package ru.photorex.hw12.security;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -14,6 +14,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final UserDetailServiceImpl userDetailService;
+    private final LoggingAccessDeniedHandler accessDeniedHandler;
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
@@ -35,10 +36,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .formLogin()
                 .loginPage("/login").permitAll()
-               // .successForwardUrl("/books")
                 .and()
                 .logout()
                 .logoutSuccessUrl("/")
+                .and()
+                .exceptionHandling()
+                .accessDeniedHandler(accessDeniedHandler)
         ;
     }
 }

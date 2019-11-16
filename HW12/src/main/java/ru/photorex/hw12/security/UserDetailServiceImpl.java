@@ -1,4 +1,4 @@
-package ru.photorex.hw12.config;
+package ru.photorex.hw12.security;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
