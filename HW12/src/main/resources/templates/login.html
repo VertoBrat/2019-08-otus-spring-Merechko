@@ -9,7 +9,7 @@
 </head>
 <body>
 <div class="container">
-    <form th:action="@{/login}" method="post">
+    <form th:action="@{/login}" method="post" class="mt-4">
         <div th:if="${param.error}">
             <div class="alert alert-danger">
                 Неправильный логин или пароль
@@ -23,8 +23,14 @@
             <label for="password">Password</label>
             <input type="password" class="form-control" id="password" name="password" placeholder="Password">
         </div>
-        <button type="submit" class="btn btn-primary">Войти</button>
+        <button type="submit" class="btn btn-primary mr-3">Войти</button>
+        <a href="" th:href="@{/users/new}" class="btn btn-primary">Зарегистрироваться</a>
     </form>
+    <div class="mt-3">
+        <p>В базе есть уже два юзера:</p>
+        <p>Логин: user, пароль: user</p>
+        <p>Логин: admin, пароль: admin</p>
+    </div>
 </div>
 </body>
 </html>
