@@ -35,6 +35,7 @@
     <div class="card mt-1" th:each="comment:*{comments}">
         <div class="card-body">
             <p class="text-right" th:text="${#dates.format(comment.dateTime, 'dd-MM-yyyy HH:mm')}">01-01-2000 00:00</p>
+            <p class="text-right" th:text="${comment.user}">автор</p>
             <p class="card-text" th:text="${comment.text}">текст комментария</p>
         </div>
     </div>

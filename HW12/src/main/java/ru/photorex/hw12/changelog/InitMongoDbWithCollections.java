@@ -31,6 +31,7 @@ public class InitMongoDbWithCollections {
 
     private List<Comment> comments = new ArrayList<>();
     private List<Book> books = new ArrayList<>();
+    private List<User> users = new ArrayList<>();
 
     @ChangeSet(order = "001", id = "dropDataBase", author = "photorex", runAlways = true)
     public void dropDb(MongoDatabase mongoDatabase) {
@@ -39,10 +40,10 @@ public class InitMongoDbWithCollections {
 
     @ChangeSet(order = "002", id = "initCommentsCollection", author = "photorex", runAlways = true)
     public void initComments(MongoTemplate template) {
-        Comment comment1 = template.save(new Comment("Text#1", null, LocalDateTime.now()));
-        Comment comment2 = template.save(new Comment("Text#2", null, LocalDateTime.now()));
-        Comment comment3 = template.save(new Comment("Text#3", null, LocalDateTime.now()));
-        Comment comment4 = template.save(new Comment("Text#4", null, LocalDateTime.now()));
+        Comment comment1 = template.save(new Comment("Text#1", null, null, LocalDateTime.now()));
+        Comment comment2 = template.save(new Comment("Text#2", null, null, LocalDateTime.now()));
+        Comment comment3 = template.save(new Comment("Text#3", null, null, LocalDateTime.now()));
+        Comment comment4 = template.save(new Comment("Text#4", null, null, LocalDateTime.now()));
         fillCommentList(comment1, comment2, comment3, comment4);
     }
 
@@ -57,18 +58,19 @@ public class InitMongoDbWithCollections {
         fillBookList(book1, book2, book3);
     }
 
-    @ChangeSet(order = "004", id = "fillCommentsWithBook", author = "photorex", runAlways = true)
-    public void fillCommentsWithBooks(MongoTemplate template) {
-        template.updateFirst(Query.query(where("id").is(comments.get(0).getId())), new Update().set("book", books.get(0)),Comment.class);
-        template.updateFirst(Query.query(where("id").is(comments.get(1).getId())), new Update().set("book", books.get(1)),Comment.class);
-        template.updateFirst(Query.query(where("id").is(comments.get(2).getId())), new Update().set("book", books.get(1)),Comment.class);
-        template.updateFirst(Query.query(where("id").is(comments.get(3).getId())), new Update().set("book", books.get(2)),Comment.class);
+    @ChangeSet(order = "004", id = "initUserCollection", author = "photorex", runAlways = true)
+    public void initUserCollection(MongoTemplate template) {
+        User user1 = template.save(new User("user", encoder.encode("user"), "Nick Perumov", Set.of(User.Role.ROLE_USER)));
+        User user2 = template.save(new User("admin", encoder.encode("admin"), "Robert Shekli", Set.of(User.Role.ROLE_ADMIN)));
+        fillUserList(user1, user2);
     }
 
-    @ChangeSet(order = "005", id = "initUserCollection", author = "photorex", runAlways = true)
-    public void initUserCollection(MongoTemplate template) {
-        template.save(new User("user", encoder.encode("user"), "Nick Perumov", Set.of(User.Role.ROLE_USER)));
-        template.save(new User("admin", encoder.encode("admin"), "Robert Shekli", Set.of(User.Role.ROLE_ADMIN)));
+    @ChangeSet(order = "005", id = "fillCommentsWithBook", author = "photorex", runAlways = true)
+    public void fillCommentsWithBooks(MongoTemplate template) {
+        template.updateFirst(Query.query(where("id").is(comments.get(0).getId())), new Update().set("book", books.get(0)).set("user", users.get(0)),Comment.class);
+        template.updateFirst(Query.query(where("id").is(comments.get(1).getId())), new Update().set("book", books.get(1)).set("user", users.get(0)),Comment.class);
+        template.updateFirst(Query.query(where("id").is(comments.get(2).getId())), new Update().set("book", books.get(1)).set("user", users.get(0)),Comment.class);
+        template.updateFirst(Query.query(where("id").is(comments.get(3).getId())), new Update().set("book", books.get(2)).set("user", users.get(1)),Comment.class);
     }
 
     private void fillCommentList(Comment...comments) {
@@ -78,4 +80,6 @@ public class InitMongoDbWithCollections {
     private void fillBookList(Book...books) {
         this.books.addAll(Arrays.asList(books));
     }
+
+    private void fillUserList(User...users) { this.users.addAll(Arrays.asList(users)); }
 }

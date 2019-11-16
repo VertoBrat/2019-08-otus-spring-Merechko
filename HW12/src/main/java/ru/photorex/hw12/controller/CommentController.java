@@ -3,6 +3,7 @@ package ru.photorex.hw12.controller;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import ru.photorex.hw12.model.User;
 import ru.photorex.hw12.service.LibraryWormCommentService;
 import ru.photorex.hw12.to.CommentTo;
 
@@ -39,13 +41,13 @@ public class CommentController {
     }
 
     @PostMapping("/comments")
-    public String updateSaveComment(@Valid @ModelAttribute CommentTo to, BindingResult result) {
+    public String updateSaveComment(@AuthenticationPrincipal User user, @Valid @ModelAttribute CommentTo to, BindingResult result) {
         logger.info("updateSaveComment {} with {} errors", to, result.getErrorCount());
         if (result.hasErrors()) {
             return "comment/edit";
         }
         if (to.getId().isEmpty()) {
-            wormCommentService.saveComment(to.getBookId(), to.getText());
+            wormCommentService.saveComment(to.getBookId(), to.getText(), user);
         } else {
             wormCommentService.updateComment(to.getId(), to.getText());
         }

@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.photorex.hw12.exception.NoDataWithThisIdException;
 import ru.photorex.hw12.model.Book;
 import ru.photorex.hw12.model.Comment;
+import ru.photorex.hw12.model.User;
 import ru.photorex.hw12.repository.BookRepository;
 import ru.photorex.hw12.repository.CommentRepository;
 import ru.photorex.hw12.to.CommentTo;
@@ -28,9 +29,9 @@ public class LibraryWormCommentServiceImpl implements LibraryWormCommentService 
 
     @Override
     @Transactional
-    public CommentTo saveComment(String bookId, String commentText) {
+    public CommentTo saveComment(String bookId, String commentText, User user) {
         Book book = bookRepository.findById(bookId).orElseThrow(() -> new NoDataWithThisIdException(bookId));
-        return mapper.toTo(commentRepository.save(new Comment(commentText, book)));
+        return mapper.toTo(commentRepository.save(new Comment(commentText, book, user)));
     }
 
     @Override

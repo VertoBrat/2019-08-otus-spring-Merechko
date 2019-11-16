@@ -23,16 +23,20 @@ public class Comment {
     @DBRef
     private Book book;
 
+    @DBRef
+    private User user;
+
     @Field(value = "datetime")
     private LocalDateTime dateTime;
 
-    public Comment(String text, Book book) {
+    public Comment(String text, Book book, User user) {
         this.text = text;
         this.book = book;
+        this.user = user;
     }
 
-    public Comment(String text, Book book, LocalDateTime dateTime) {
-        this(text, book);
+    public Comment(String text, Book book, User user, LocalDateTime dateTime) {
+        this(text, book, user);
         this.dateTime = dateTime;
     }
 
