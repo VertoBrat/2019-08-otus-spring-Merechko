@@ -60,8 +60,8 @@ public class InitMongoDbWithCollections {
 
     @ChangeSet(order = "004", id = "initUserCollection", author = "photorex", runAlways = true)
     public void initUserCollection(MongoTemplate template) {
-        User user1 = template.save(new User("user", encoder.encode("user"), "Nick Perumov", Set.of(User.Role.ROLE_USER)));
-        User user2 = template.save(new User("admin", encoder.encode("admin"), "Robert Shekli", Set.of(User.Role.ROLE_ADMIN)));
+        User user1 = template.save(new User("user", encoder.encode("user"), "Юзер Юзерович", Set.of(User.Role.ROLE_USER)));
+        User user2 = template.save(new User("admin", encoder.encode("admin"), "Админ Админович", Set.of(User.Role.ROLE_ADMIN, User.Role.ROLE_USER)));
         fillUserList(user1, user2);
     }
 

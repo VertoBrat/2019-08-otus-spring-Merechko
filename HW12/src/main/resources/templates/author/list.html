@@ -19,7 +19,7 @@
         integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
         crossorigin="anonymous"></script>
 <div class="container">
-    <div th:insert="navbar::nav (userName=${userName})"></div>
+    <div th:insert="navbar::nav"></div>
     <div th:if="${authorsTos.size() == 0}">
         <p class="h3">В библиотеке нет авторов</p>
     </div>

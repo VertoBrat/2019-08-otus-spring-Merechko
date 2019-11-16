@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <body>
-<div th:fragment="nav (userName)">
+<div th:fragment="nav" th:with="user=${#conversions.convert(#authentication.getPrincipal(), 'ru.photorex.hw12.model.User')}">
     <nav class="navbar navbar-expand-lg navbar-light bg-light justify-content-between">
         <a class="navbar-brand" href="#" th:href="@{/}">Library CRUD Application</a>
-        <div th:if="${userName}">
-            Здравствуйте, <span th:text="${userName}"></span>
+        <div th:if="${user}">
+            Здравствуйте, <span th:text="${user.fullName}"></span>
             <a href="#" class="btn btn-primary" th:href="@{/logout}">Выйти</a>
         </div>
     </nav>
