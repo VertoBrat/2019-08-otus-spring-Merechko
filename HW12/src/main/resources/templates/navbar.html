@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <body>
 <div th:fragment="nav">
-    <nav class="navbar navbar-expand-lg navbar-light bg-light justify-content-between">
+    <nav class="navbar navbar-expand-lg navbar-light bg-primary justify-content-between">
         <a class="navbar-brand" href="#" th:href="@{/}">Library CRUD Application</a>
         <div th:if="${#authentication.name} != 'anonymousUser'">
             <a href="#" class="btn btn-primary mr-3" sec:authorize="hasRole('ROLE_ADMIN')">Админка в пути...</a>
