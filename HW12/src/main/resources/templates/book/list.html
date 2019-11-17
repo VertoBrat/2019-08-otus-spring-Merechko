@@ -25,7 +25,7 @@
             <a href="edit.html" class="btn btn-primary mt-4" th:href="@{/books/edit}">Добавить книгу</a>
         </div>
         <div class="col-auto">
-            <form class="form-inline mt-4" th:action="@{/books/filtered}" th:object="${filter}" method="get">
+            <form class="form-inline mt-4" th:action="@{/books/filtered}" th:object="${filter}" method="post">
                 <div class="form-group mr-2">
                     <input type="search" class="form-control mb-2" th:field="*{filterText}">
                 </div>

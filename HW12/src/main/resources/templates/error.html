@@ -11,7 +11,7 @@
 <div class="container">
     <div>
         <h1>Произошла ошибка, будем посмотреть....</h1>
-        <p th:text="${message}">сообщение</p>
+        <p th:text="${ex.getMessage()}">сообщение</p>
         <p><a href="/" class="btn btn-primary" th:href="@{/}">Вернуться на главную</a></p>
     </div>
 </div>

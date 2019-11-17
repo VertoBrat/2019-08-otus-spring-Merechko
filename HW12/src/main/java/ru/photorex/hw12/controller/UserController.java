@@ -30,11 +30,16 @@ public class UserController {
     }
 
     @PostMapping("/users/registration")
-    public String booksPageAfterRegistration(@Valid @ModelAttribute RegUser user, BindingResult result) {
+    public String booksPageAfterRegistration(@Valid @ModelAttribute RegUser user, Model model, BindingResult result) {
         logger.info("booksPageAfterRegistration with user {}", user);
         if (result.hasErrors()) {
             return "user/new";
         }
+        if (userService.findUserByUserName(user.getUsername()).getNick() != null) {
+            model.addAttribute("error", "error");
+            return "user/new";
+        }
+        model.addAttribute("success", "success");
         userService.saveNewUser(user);
         return "redirect:/login";
     }

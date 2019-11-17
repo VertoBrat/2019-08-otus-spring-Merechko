@@ -3,6 +3,7 @@ package ru.photorex.hw12.controller;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -10,13 +11,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import ru.photorex.hw12.model.User;
 import ru.photorex.hw12.service.LibraryWormAuthorService;
 import ru.photorex.hw12.service.LibraryWormBookService;
 import ru.photorex.hw12.service.LibraryWormGenreService;
-import ru.photorex.hw12.to.AuthorTo;
-import ru.photorex.hw12.to.BookTo;
-import ru.photorex.hw12.to.Filter;
-import ru.photorex.hw12.to.GenreTo;
+import ru.photorex.hw12.to.*;
+import ru.photorex.hw12.to.mapper.UserMapper;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -29,6 +29,7 @@ public class BookController {
     private final LibraryWormBookService wormBookService;
     private final LibraryWormAuthorService wormAuthorService;
     private final LibraryWormGenreService wormGenreService;
+    private final UserMapper mapper;
     private final Logger logger = LoggerFactory.getLogger(BookController.class);
 
     @GetMapping("/")
@@ -54,10 +55,12 @@ public class BookController {
     }
 
     @GetMapping("/books/{id}")
-    public String getBookViewPage(@PathVariable("id") String id, Model model) {
+    public String getBookViewPage(@AuthenticationPrincipal User user, @PathVariable("id") String id, Model model) {
         logger.info("getBookViewPage {}", id);
         BookTo bookTo = wormBookService.findBookById(id);
+        UserTo userTo = mapper.toTo(user);
         model.addAttribute("bookTo", bookTo);
+        model.addAttribute("userId", userTo.getId());
         return "book/view";
     }
 
@@ -87,7 +90,7 @@ public class BookController {
         return "redirect:/books";
     }
 
-    @GetMapping("/books/filtered")
+    @PostMapping("/books/filtered")
     public String getFilteredBookList(@ModelAttribute Filter filter, Model model) {
         logger.info("getFilteredBookList with filter type {} and filter text {}", filter.getType(), filter.getFilterText());
         List<BookTo> books = wormBookService.filteredBooks(filter);
