@@ -9,12 +9,12 @@ import ru.photorex.hw12.repository.UserRepository;
 
 @Service
 @RequiredArgsConstructor
-public class UserDetailServiceImpl implements UserDetailsService {
+public class UserDetailsServiceImpl implements UserDetailsService {
 
     private final UserRepository repository;
 
     @Override
-    public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String s) {
         return repository.findByUserName(s).orElseThrow(() -> new UsernameNotFoundException(s));
     }
 }

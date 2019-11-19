@@ -11,9 +11,7 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.web.servlet.MockMvc;
 import ru.photorex.hw12.model.Book;
-import ru.photorex.hw12.model.User;
 import ru.photorex.hw12.to.CommentTo;
-import ru.photorex.hw12.to.UserTo;
 
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -47,7 +45,7 @@ public class CommentControllerTest {
 
     @DisplayName(" должен принять новый коммент и перенаправить на страницу книги")
     @Test
-    @WithUserDetails(userDetailsServiceBeanName = "userDetailServiceImpl")
+    @WithUserDetails(userDetailsServiceBeanName = "userDetailsServiceImpl")
     void shouldTakeNewCommetAndRedirectToBookPage() throws Exception {
         val book = mongoOperations.findAll(Book.class).get(0);
         mockMvc.perform(post("/comments")

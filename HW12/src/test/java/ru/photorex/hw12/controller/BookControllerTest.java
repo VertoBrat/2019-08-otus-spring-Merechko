@@ -9,7 +9,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.security.test.context.support.WithUserDetails;
-import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
 import ru.photorex.hw12.model.Book;
 import ru.photorex.hw12.to.BookTo;
@@ -59,7 +58,7 @@ public class BookControllerTest {
 
     @DisplayName(" должен возвращать страницу с книгой по запросу")
     @Test
-    @WithUserDetails(userDetailsServiceBeanName = "userDetailServiceImpl")
+    @WithUserDetails(userDetailsServiceBeanName = "userDetailsServiceImpl")
     void shouldReturnBookPage() throws Exception {
         val book = mongoOperations.findAll(Book.class).get(0);
         String title = book.getTitle();
