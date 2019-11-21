@@ -22,7 +22,7 @@
     <div th:insert="navbar::nav"></div>
     <div class="row">
         <div class="col-auto mr-auto">
-            <a href="edit.html" class="btn btn-primary mt-4" th:href="@{/books/edit}">Добавить книгу</a>
+            <a href="edit.html" class="btn btn-primary mt-4" th:href="@{/books/edit}" sec:authorize="hasRole('ROLE_ADMIN')">Добавить книгу</a>
         </div>
         <div class="col-auto">
             <form class="form-inline mt-4" th:action="@{/books/filtered}" th:object="${filter}" method="post">
