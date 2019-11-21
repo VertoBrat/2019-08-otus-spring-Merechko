@@ -31,7 +31,7 @@ public class UserController {
 
     @PostMapping("/users/registration")
     public String booksPageAfterRegistration(@Valid @ModelAttribute RegUser user, Model model, BindingResult result) {
-        logger.info("booksPageAfterRegistration with user {}", user);
+        logger.info("booksPageAfterRegistration with user {} and errors {}", user, result.getErrorCount());
         if (result.hasErrors()) {
             return "user/new";
         }
