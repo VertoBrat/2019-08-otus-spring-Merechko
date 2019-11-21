@@ -68,7 +68,7 @@
             </td>
             <td>
                 <div class="row justify-content-md-center">
-                    <div class="col">
+                    <div class="col" sec:authorize="hasAnyRole('ROLE_USER', 'ROLE_ADMIN')">
                         <a href="#" th:href="@{/books/{id}(id=${book.id})}">
                             <span style="color: green">
                                 <i class="fas fa-sign-in-alt fa-2x"></i>

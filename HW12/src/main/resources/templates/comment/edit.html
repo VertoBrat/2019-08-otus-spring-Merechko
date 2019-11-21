@@ -31,7 +31,8 @@
                 <p>Поле должно быть заполнено</p>
             </div>
         </div>
-        <button type="submit" class="btn btn-primary">Добавить</button>
+        <button type="submit" class="btn btn-primary mr-2">Добавить</button>
+        <a href="#" class="btn btn-primary" th:href="@{/books/{id}(id=*{bookId})}">Назад</a>
     </form>
 </div>
 </body>
