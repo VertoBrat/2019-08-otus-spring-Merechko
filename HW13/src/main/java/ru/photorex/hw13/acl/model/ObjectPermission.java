@@ -24,4 +24,12 @@ public class ObjectPermission {
     private boolean auditSuccess;
 
     private boolean auditFailure;
+
+    public ObjectPermission(MongoSid sid, int mask, boolean granting, boolean auditSuccess, boolean auditFailure) {
+        this.sid = sid;
+        this.mask = mask;
+        this.granting = granting;
+        this.auditSuccess = auditSuccess;
+        this.auditFailure = auditFailure;
+    }
 }
