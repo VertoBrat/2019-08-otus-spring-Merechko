@@ -1,5 +1,7 @@
 package ru.photorex.hw13.acl.service;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -7,7 +9,6 @@ import org.springframework.security.acls.domain.*;
 import org.springframework.security.acls.jdbc.LookupStrategy;
 import org.springframework.security.acls.model.*;
 import org.springframework.security.util.FieldUtils;
-import org.springframework.util.Assert;
 import ru.photorex.hw13.acl.model.MongoAcl;
 import ru.photorex.hw13.acl.model.ObjectPermission;
 
@@ -16,6 +17,7 @@ import java.util.*;
 
 public class MongoBasicLookupStrategy implements LookupStrategy {
 
+    private static final Logger logger = LoggerFactory.getLogger(MongoBasicLookupStrategy.class);
     private final AclAuthorizationStrategy aclAuthorizationStrategy;
     private PermissionFactory permissionFactory = new DefaultPermissionFactory();
     private final AclCache aclCache;
@@ -35,8 +37,6 @@ public class MongoBasicLookupStrategy implements LookupStrategy {
 
     @Override
     public Map<ObjectIdentity, Acl> readAclsById(List<ObjectIdentity> list, List<Sid> sids) {
-        Assert.isTrue(batchSize >= 1, "BatchSize must be >= 1");
-        Assert.notEmpty(list, "Objects to lookup required");
 
         Map<ObjectIdentity, Acl> result = new HashMap<>();
         Set<ObjectIdentity> currentBatchToLoad = new HashSet<>();
@@ -58,8 +58,10 @@ public class MongoBasicLookupStrategy implements LookupStrategy {
                 // (they should always, as our base impl doesn't filter on SID)
                 if (acl != null) {
                     if (acl.isSidLoaded(sids)) {
-                        result.put(acl.getObjectIdentity(), acl);
-                        aclFound = true;
+                        if (definesAccessPermissionsForSids(acl, sids)) {
+                            result.put(acl.getObjectIdentity(), acl);
+                            aclFound = true;
+                        }
                     }
                     else {
                         throw new IllegalStateException(
@@ -115,7 +117,7 @@ public class MongoBasicLookupStrategy implements LookupStrategy {
             try {
                 acl = convertMongoAclToAcl(mongoAcl, mongoAcls);
             } catch (ClassNotFoundException ex) {
-
+                logger.warn("Some troubles with classCast");
             }
             if (acl != null) {
                 result.put(acl.getObjectIdentity(), acl);
@@ -128,7 +130,7 @@ public class MongoBasicLookupStrategy implements LookupStrategy {
     private Acl convertMongoAclToAcl(MongoAcl mongoAcl, List<MongoAcl> mongoAcls) throws ClassNotFoundException {
         //Seek parent ACL
         Acl parent = null;
-        if (!mongoAcl.getParentId().isEmpty()) {
+        if (mongoAcl.getParentId() != null) {
             MongoAcl parentMongoAcl = mongoAcls.stream()
                     .filter(mongoAcl1 -> mongoAcl1.getId().equals(mongoAcl.getParentId()))
                     .findFirst().orElse(null);
@@ -178,6 +180,35 @@ public class MongoBasicLookupStrategy implements LookupStrategy {
         aclCache.putInCache(acl);
 
         return acl;
+    }
+
+    protected boolean definesAccessPermissionsForSids(Acl acl, List<Sid> sids) {
+        // check whether the list of sids is a match-all list or if the owner is found within the list
+        if (sids == null || sids.isEmpty() || sids.contains(acl.getOwner())) {
+            return true;
+        }
+        // check the contained permissions for permissions granted to a certain user available in the provided list of sids
+        if (hasPermissionsForSids(acl, sids)) {
+            return true;
+        }
+        // check if a parent reference is available and inheritance is enabled
+        if (acl.getParentAcl() != null && acl.isEntriesInheriting()) {
+            if (definesAccessPermissionsForSids(acl.getParentAcl(), sids)) {
+                return true;
+            }
+
+            return hasPermissionsForSids(acl.getParentAcl(), sids);
+        }
+        return false;
+    }
+
+    protected boolean hasPermissionsForSids(Acl acl, List<Sid> sids) {
+        for (AccessControlEntry ace : acl.getEntries()) {
+            if (sids.contains(ace.getSid())) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private List<AccessControlEntryImpl> readAces(AclImpl acl) {

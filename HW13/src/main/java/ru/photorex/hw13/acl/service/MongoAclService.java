@@ -21,6 +21,7 @@ public class MongoAclService implements AclService {
 
     @Override
     public List<ObjectIdentity> findChildren(ObjectIdentity objectIdentity) {
+        logger.info("findChildren with objectIdentity {}", objectIdentity);
         List<MongoAcl> acls = aclRepository.findByObjectIdAndClassName(objectIdentity.getIdentifier().toString(), objectIdentity.getType());
         if (acls.isEmpty()) {
             return Collections.emptyList();

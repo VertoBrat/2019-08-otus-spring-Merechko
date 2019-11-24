@@ -7,4 +7,7 @@ import ru.photorex.hw13.model.Book;
 import java.util.List;
 
 public interface BookRepository extends MongoRepository<Book, String>, BookCustomRepository {
+
+    @PostFilter("hasPermission(filterObject, 'READ')")
+    List<Book> findAll();
 }

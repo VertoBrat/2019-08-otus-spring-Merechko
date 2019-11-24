@@ -55,7 +55,7 @@ public class User implements UserDetails{
     }
 
     public enum Role implements GrantedAuthority {
-        ROLE_ADMIN("ROLE_ADMIN"), ROLE_USER("ROLE_USER");
+        ROLE_ADMIN("ROLE_ADMIN"), ROLE_USER("ROLE_USER"), ROLE_EDITOR("ROLE_EDITOR");
 
         private final String authority;
 
