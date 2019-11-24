@@ -1,6 +1,7 @@
 package ru.photorex.hw13.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.photorex.hw13.exception.NoDataWithThisIdException;
@@ -35,6 +36,12 @@ public class LibraryWormBookServiceImpl implements LibraryWormBookService {
     }
 
     @Override
+    public BookTo findBookByIdForEdit(String id) {
+        Book book = findByIdForEdit(id);
+        return mapper.toTo(book);
+    }
+
+    @Override
     @Transactional
     public BookTo updateSaveBook(BookTo to) {
         if (!to.getId().isEmpty()) {
@@ -63,6 +70,11 @@ public class LibraryWormBookServiceImpl implements LibraryWormBookService {
     }
 
     private Book findById(String id) {
+        return bookRepository.findById(id).orElseThrow(() -> new NoDataWithThisIdException(id));
+    }
+
+    @PostAuthorize("hasPermission(returnObject, 'WRITE')")
+    private Book findByIdForEdit(String id) {
         return bookRepository.findById(id).orElseThrow(() -> new NoDataWithThisIdException(id));
     }
 }

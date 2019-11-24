@@ -22,7 +22,7 @@
     <div th:insert="navbar::nav"></div>
     <div class="row">
         <div class="col-auto mr-auto">
-            <a href="edit.html" class="btn btn-primary mt-4" th:href="@{/books/edit}" sec:authorize="hasRole('ROLE_ADMIN')">Добавить книгу</a>
+            <a href="edit.html" class="btn btn-primary mt-4" th:href="@{/books/edit}" sec:authorize="hasRole('ROLE_EDITOR')">Добавить книгу</a>
         </div>
         <div class="col-auto">
             <form class="form-inline mt-4" th:action="@{/books/filtered}" th:object="${filter}" method="post">
@@ -68,7 +68,7 @@
             </td>
             <td>
                 <div class="row justify-content-md-center">
-                    <div class="col" sec:authorize="hasAnyRole('ROLE_USER', 'ROLE_ADMIN')">
+                    <div class="col" sec:authorize="hasRole('ROLE_USER')">
                         <a href="#" th:href="@{/books/{id}(id=${book.id})}">
                             <span style="color: green">
                                 <i class="fas fa-sign-in-alt fa-2x"></i>
@@ -82,7 +82,7 @@
                             </span>
                         </a>
                     </div>
-                    <div class="col" sec:authorize="hasRole('ROLE_ADMIN')">
+                    <div class="col" sec:authorize="hasRole('ROLE_EDITOR')">
                         <form th:action="@{/books/delete}" th:object="${book}" method="post">
                             <input type="hidden" th:name="'id'" th:value="*{id}">
                             <button class="btn btn-link" type="submit">

@@ -61,7 +61,7 @@ public class BookController {
     @GetMapping("/books/edit/{id}")
     public String getBookEditPage(@PathVariable("id") String id, Model model) {
         logger.info("getBookEditPage {}", id);
-        BookTo bookTo = wormBookService.findBookById(id);
+        BookTo bookTo = wormBookService.findBookByIdForEdit(id);
         model.addAttribute("bookTo", bookTo);
         return "book/edit";
     }

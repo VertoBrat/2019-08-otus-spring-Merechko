@@ -13,6 +13,8 @@ public interface LibraryWormBookService {
 
     BookTo findBookById(String id);
 
+    BookTo findBookByIdForEdit(String id);
+
     BookTo updateSaveBook(BookTo to);
 
     List<BookTo> filteredBooks(Filter filter);
