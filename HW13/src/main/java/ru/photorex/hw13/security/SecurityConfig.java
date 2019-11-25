@@ -3,6 +3,7 @@ package ru.photorex.hw13.security;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -35,7 +36,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf().disable()
                 .authorizeRequests()
                 .antMatchers("/", "/authors", "/genres", "/users/new", "/users/registration").permitAll()
-                .antMatchers("/books/edit/**", "/books/delete").hasRole("ADMIN")
+ //               .antMatchers("/books/edit/**").hasRole("ADMIN")
+ //               .antMatchers(HttpMethod.POST, "/books", "/books/delete").hasRole("EDITOR")
                 .antMatchers("/**").authenticated()
                 .and()
                 .formLogin()

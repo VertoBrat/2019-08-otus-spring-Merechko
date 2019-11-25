@@ -3,7 +3,6 @@ package ru.photorex.hw13.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.acls.domain.BasePermission;
-import org.springframework.security.acls.model.Permission;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -50,13 +49,14 @@ public class LibraryWormBookServiceImpl implements LibraryWormBookService {
 
     @Override
     @Transactional
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public BookTo updateSaveBook(BookTo to) {
         if (!to.getId().isEmpty()) {
             Book book = findById(to.getId());
             return mapper.toTo(bookRepository.save(mapper.updateBook(to, book)));
         }
         to.setId(null);
-        Book dbBook = bookRepository.save(mapper.toEntity(to));
+        Book dbBook = bookRepository.insert(mapper.toEntity(to));
         grantAclCollections(dbBook.getId());
         return mapper.toTo(dbBook);
     }

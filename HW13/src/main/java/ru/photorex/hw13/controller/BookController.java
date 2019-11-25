@@ -3,6 +3,7 @@ package ru.photorex.hw13.controller;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,23 +13,19 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import ru.photorex.hw13.model.User;
-import ru.photorex.hw13.service.LibraryWormAuthorService;
 import ru.photorex.hw13.service.LibraryWormBookService;
-import ru.photorex.hw13.service.LibraryWormGenreService;
 import ru.photorex.hw13.to.*;
 import ru.photorex.hw13.to.mapper.UserMapper;
 
 import javax.validation.Valid;
 import java.util.List;
-import java.util.Set;
 
 @Controller
 @RequiredArgsConstructor
 public class BookController {
 
+    private static final String BOOK_TO_MODEL_ATTRIBUTE = "bookTo";
     private final LibraryWormBookService wormBookService;
-    private final LibraryWormAuthorService wormAuthorService;
-    private final LibraryWormGenreService wormGenreService;
     private final UserMapper mapper;
     private final Logger logger = LoggerFactory.getLogger(BookController.class);
 
@@ -53,7 +50,7 @@ public class BookController {
         logger.info("getBookViewPage {}", id);
         BookTo bookTo = wormBookService.findBookById(id);
         UserTo userTo = mapper.toTo(user);
-        model.addAttribute("bookTo", bookTo);
+        model.addAttribute(BOOK_TO_MODEL_ATTRIBUTE, bookTo);
         model.addAttribute("userId", userTo.getId());
         return "book/view";
     }
@@ -62,15 +59,16 @@ public class BookController {
     public String getBookEditPage(@PathVariable("id") String id, Model model) {
         logger.info("getBookEditPage {}", id);
         BookTo bookTo = wormBookService.findBookByIdForEdit(id);
-        model.addAttribute("bookTo", bookTo);
+        model.addAttribute(BOOK_TO_MODEL_ATTRIBUTE, bookTo);
         return "book/edit";
     }
 
     @GetMapping("/books/edit")
+    @PreAuthorize("hasRole('ROLE_EDITOR')")
     public String getBookEditBlankPage(Model model) {
         logger.info("getBookEditBlankPage");
         BookTo bookTo = new BookTo();
-        model.addAttribute("bookTo", bookTo);
+        model.addAttribute(BOOK_TO_MODEL_ATTRIBUTE, bookTo);
         return "book/edit";
     }
 
