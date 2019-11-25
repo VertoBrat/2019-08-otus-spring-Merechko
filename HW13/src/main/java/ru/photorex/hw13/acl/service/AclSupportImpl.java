@@ -76,9 +76,9 @@ public class AclSupportImpl implements AclSupport {
             indices.add(index);
         }
 
-        for (Integer index : indices) {
-            acl.updateAuditing(index, true, true);
-        }
+//        for (Integer index : indices) {
+//            acl.updateAuditing(index, true, true);
+//        }
 
         acl = (AuditableAcl) aclService.updateAcl(acl);
         logger.info("Updated acl is {}", acl);

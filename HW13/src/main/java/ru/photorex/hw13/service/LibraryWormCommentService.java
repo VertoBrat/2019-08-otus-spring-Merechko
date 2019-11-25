@@ -13,4 +13,6 @@ public interface LibraryWormCommentService {
     CommentTo updateComment(String commentId, String newCommentText);
 
     CommentTo findCommentById(String id);
+
+    CommentTo findCommentByIdForEdit(String id);
 }

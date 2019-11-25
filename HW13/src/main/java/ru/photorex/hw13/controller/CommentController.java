@@ -34,7 +34,7 @@ public class CommentController {
     @GetMapping("/comments/edit/{id}")
     public String getCommentEditPage(@PathVariable("id") String commentId, Model model) {
         logger.info("getCommentEditPage with id {}", commentId);
-        CommentTo commentTo = wormCommentService.findCommentById(commentId);
+        CommentTo commentTo = wormCommentService.findCommentByIdForEdit(commentId);
         model.addAttribute("commentTo", commentTo);
         return "comment/edit";
     }
