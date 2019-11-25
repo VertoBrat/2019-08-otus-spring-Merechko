@@ -29,7 +29,6 @@ public class MongoAcl {
 
     private boolean inheritPermissions;
 
-    @DBRef
     private List<ObjectPermission> permissions = new ArrayList<>();
 
     public MongoAcl(String className, String objectId, MongoSid owner, String parentId, boolean inheritPermissions) {

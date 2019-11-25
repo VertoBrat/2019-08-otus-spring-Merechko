@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Configuration;
 public class ApplicationConfig {
 
     @Bean
-    public Mongock mongock(MongoClient mongoClient, MongoProperties properties) {
+    public Mongock mongock(MongoClient mongoClient, MongoPropertiesResolver properties) {
         return new SpringMongockBuilder(mongoClient, properties.getDatabase(), properties.getChangeLogPackage()).build();
     }
 }

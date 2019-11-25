@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 @Data
 @Component
 @ConfigurationProperties("spring.data.mongodb")
-public class MongoProperties {
+public class MongoPropertiesResolver {
     private String uri;
     private int port;
     private String database;

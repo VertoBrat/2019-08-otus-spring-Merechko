@@ -1,21 +1,18 @@
 package ru.photorex.hw13.config;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.ehcache.EhCacheFactoryBean;
 import org.springframework.cache.ehcache.EhCacheManagerFactoryBean;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.security.access.expression.method.DefaultMethodSecurityExpressionHandler;
 import org.springframework.security.access.expression.method.MethodSecurityExpressionHandler;
 import org.springframework.security.acls.AclPermissionCacheOptimizer;
 import org.springframework.security.acls.AclPermissionEvaluator;
 import org.springframework.security.acls.domain.*;
-import org.springframework.security.acls.jdbc.BasicLookupStrategy;
-import org.springframework.security.acls.jdbc.JdbcMutableAclService;
 import org.springframework.security.acls.jdbc.LookupStrategy;
 import org.springframework.security.acls.model.PermissionGrantingStrategy;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import ru.photorex.hw13.acl.repository.MongoAclRepository;
 import ru.photorex.hw13.acl.service.MongoBasicLookupStrategy;
@@ -23,8 +20,8 @@ import ru.photorex.hw13.acl.service.MongoMutableAclService;
 
 import java.util.Objects;
 
-@Configuration
 @RequiredArgsConstructor
+@EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
 public class AclConfig {
 
     private final MongoAclRepository aclRepository;

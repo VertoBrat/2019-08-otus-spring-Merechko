@@ -28,8 +28,8 @@ public class User implements UserDetails{
     @Field("fullName")
     private String fullName;
 
-    @Field("isEnabled")
-    private boolean isEnabled;
+    @Field("enabled")
+    private boolean enabled;
 
     @Field("isAccountNonExpired")
     private boolean isAccountNonExpired;
@@ -47,7 +47,7 @@ public class User implements UserDetails{
         this.userName = userName;
         this.password = password;
         this.fullName = fullName;
-        this.isEnabled = true;
+        this.enabled = true;
         this.isAccountNonExpired = true;
         this.isAccountNonLocked = true;
         this.isCredentialsNonExpired = true;
@@ -100,6 +100,6 @@ public class User implements UserDetails{
 
     @Override
     public boolean isEnabled() {
-        return isEnabled;
+        return enabled;
     }
 }

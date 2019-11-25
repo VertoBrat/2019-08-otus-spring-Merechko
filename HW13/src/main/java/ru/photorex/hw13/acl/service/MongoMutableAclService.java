@@ -1,5 +1,6 @@
 package ru.photorex.hw13.acl.service;
 
+import org.bson.types.ObjectId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.acls.domain.AccessControlEntryImpl;
@@ -80,7 +81,7 @@ public class MongoMutableAclService extends MongoAclService implements MutableAc
                 sid = new MongoSid(grantedAuthority.getGrantedAuthority(), false);
             }
             ObjectPermission permission =
-                    new ObjectPermission(ace.getId().toString(), sid, ace.getPermission().getMask(),
+                    new ObjectPermission(new ObjectId(), sid, ace.getPermission().getMask(),
                             ace.isGranting(), ace.isAuditSuccess(), ace.isAuditFailure());
             mongoAcl.getPermissions().add(permission);
         }

@@ -1,12 +1,18 @@
 package ru.photorex.hw13.service;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.access.prepost.PostAuthorize;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.acls.domain.BasePermission;
+import org.springframework.security.acls.model.Permission;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.photorex.hw13.acl.service.AclSupport;
 import ru.photorex.hw13.exception.NoDataWithThisIdException;
 import ru.photorex.hw13.model.Author;
 import ru.photorex.hw13.model.Book;
+import ru.photorex.hw13.model.Comment;
 import ru.photorex.hw13.repository.BookRepository;
 import ru.photorex.hw13.to.BookTo;
 import ru.photorex.hw13.to.Filter;
@@ -23,6 +29,7 @@ public class LibraryWormBookServiceImpl implements LibraryWormBookService {
     private final BookRepository bookRepository;
     private final FilterParserService parserService;
     private final BookMapper mapper;
+    private final AclSupport aclSupport;
 
     @Override
     public List<BookTo> findAllBooks() {
@@ -36,9 +43,9 @@ public class LibraryWormBookServiceImpl implements LibraryWormBookService {
     }
 
     @Override
+    @PreAuthorize("hasPermission(#id, 'ru.photorex.hw13.model.Book', 'WRITE') or hasRole('ROLE_ADMIN')")
     public BookTo findBookByIdForEdit(String id) {
-        Book book = findByIdForEdit(id);
-        return mapper.toTo(book);
+        return findBookById(id);
     }
 
     @Override
@@ -48,8 +55,10 @@ public class LibraryWormBookServiceImpl implements LibraryWormBookService {
             Book book = findById(to.getId());
             return mapper.toTo(bookRepository.save(mapper.updateBook(to, book)));
         }
-        Book book = mapper.toEntity(to);
-        return mapper.toTo(bookRepository.save(book));
+        to.setId(null);
+        Book dbBook = bookRepository.save(mapper.toEntity(to));
+        grantAclCollections(dbBook.getId());
+        return mapper.toTo(dbBook);
     }
 
     @Override
@@ -64,17 +73,31 @@ public class LibraryWormBookServiceImpl implements LibraryWormBookService {
 
     @Override
     @Transactional
+    @PreAuthorize("hasPermission(#id, 'ru.photorex.hw13.model.Book', 'DELETE')")
     public void deleteBook(String id) {
         Book book = findById(id);
         bookRepository.delete(book);
+        aclSupport.deleteFromAcls(Book.class.getTypeName(), id, true);
+        for (Comment c : book.getComments()) {
+            aclSupport.deleteFromAcls(Comment.class.getTypeName(), c.getId(), true);
+        }
     }
 
     private Book findById(String id) {
         return bookRepository.findById(id).orElseThrow(() -> new NoDataWithThisIdException(id));
     }
 
-    @PostAuthorize("hasPermission(returnObject, 'WRITE')")
-    private Book findByIdForEdit(String id) {
-        return bookRepository.findById(id).orElseThrow(() -> new NoDataWithThisIdException(id));
+    private String getUserNameFromAuth() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        return auth.getName();
     }
+
+    private void grantAclCollections(String id) {
+        aclSupport.grantPermissionsToUser(
+                Book.class.getTypeName(),
+                id,
+                getUserNameFromAuth(),
+                BasePermission.READ, BasePermission.WRITE, BasePermission.CREATE, BasePermission.DELETE);
+    }
+
 }
