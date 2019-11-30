@@ -11,7 +11,6 @@ import ru.photorex.hw14.model.mongo.Comment;
 import ru.photorex.hw14.model.sql.BookTo;
 import ru.photorex.hw14.model.sql.CommentTo;
 import ru.photorex.hw14.model.sql.UserTo;
-import ru.photorex.hw14.repository.UserRepository;
 
 import java.util.Map;
 
@@ -19,8 +18,8 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class CommentProcessor implements ItemProcessor<Comment, CommentTo> {
 
-    private final UserRepository userRepository;
     private Map<String, Long> books;
+    private Map<String, Long> users;
 
 
 
@@ -29,7 +28,7 @@ public class CommentProcessor implements ItemProcessor<Comment, CommentTo> {
         CommentTo to = new CommentTo();
         to.setText(comment.getText());
         to.setDateTime(comment.getDateTime());
-        UserTo user = userRepository.findByUserName(comment.getUser().getUserName());
+        UserTo user = new UserTo(users.get(comment.getUser().getUserName()));
         to.setUser(user);
         BookTo book = new BookTo(books.get(comment.getBook().getIsbn()));
         to.setBook(book);
@@ -41,6 +40,7 @@ public class CommentProcessor implements ItemProcessor<Comment, CommentTo> {
         JobExecution jobExecution = stepExecution.getJobExecution();
         ExecutionContext jobContext = jobExecution.getExecutionContext();
         this.books =(Map<String, Long>) jobContext.get("books");
+        this.users = (Map<String, Long>) jobContext.get("users");
     }
 
 }

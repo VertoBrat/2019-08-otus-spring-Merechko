@@ -89,7 +89,7 @@ public class BatchConfig {
                 .reader(reader)
                 .processor(processor)
                 .writer(writer)
-                .listener(promotionListener())
+                .listener(promotionBookListener())
                 .build();
     }
 
@@ -103,6 +103,7 @@ public class BatchConfig {
                 .reader(reader)
                 .processor(processor)
                 .writer(writer)
+                .listener(promotionUserListener())
                 .build();
     }
 
@@ -133,9 +134,16 @@ public class BatchConfig {
     }
 
     @Bean
-    public ExecutionContextPromotionListener promotionListener() {
+    public ExecutionContextPromotionListener promotionBookListener() {
         ExecutionContextPromotionListener listener = new ExecutionContextPromotionListener();
         listener.setKeys(new String[] {"books", "bookIds"});
+        return listener;
+    }
+
+    @Bean
+    public ExecutionContextPromotionListener promotionUserListener() {
+        ExecutionContextPromotionListener listener = new ExecutionContextPromotionListener();
+        listener.setKeys(new String[] {"users"});
         return listener;
     }
 

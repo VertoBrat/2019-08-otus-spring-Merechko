@@ -14,7 +14,7 @@ import ru.photorex.hw14.model.sql.BookTo;
 import java.util.HashSet;
 import java.util.Set;
 
-@Component("bookProcessor")
+@Component
 @RequiredArgsConstructor
 public class BookProcessor implements ItemProcessor<Book, BookTo> {
 

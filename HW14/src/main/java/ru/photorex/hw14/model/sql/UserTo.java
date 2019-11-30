@@ -41,4 +41,8 @@ public class UserTo {
 
     @Column(name = "is_credentials_non_expired")
     private boolean isCredentialsNonExpired;
+
+    public UserTo(Long id) {
+        this.id = id;
+    }
 }
