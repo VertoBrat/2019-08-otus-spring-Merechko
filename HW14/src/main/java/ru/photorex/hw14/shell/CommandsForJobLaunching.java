@@ -23,6 +23,6 @@ public class CommandsForJobLaunching {
     @ShellMethod(value = "Launch some job by name.", key = {"l"})
     public void runJobByName(@ShellOption({"-n"}) String jobName) {
         ExitStatus status = service.startJobByName(jobName);
-        ioService.printString(status.getExitDescription());
+        ioService.printString(status.getExitCode());
     }
 }

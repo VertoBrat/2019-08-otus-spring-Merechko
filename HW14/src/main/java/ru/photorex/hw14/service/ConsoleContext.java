@@ -15,5 +15,4 @@ public class ConsoleContext {
 
     private InputStream inputStream;
     private PrintStream printStream;
-    private ByteArrayOutputStream outputStream;
 }

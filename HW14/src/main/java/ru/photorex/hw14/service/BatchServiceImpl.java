@@ -32,8 +32,8 @@ public class BatchServiceImpl implements BatchService {
         Optional<Job> job = jobs.stream().filter(j -> j.getName().equals(jobName)).findFirst();
         if (job.isPresent()) {
             try {
-                JobExecution jobExecution = launcher.run(job.get(), new JobParameters());
-                return jobExecution.getExitStatus();
+                launcher.run(job.get(), new JobParameters());
+                return ExitStatus.COMPLETED;
             } catch (JobExecutionAlreadyRunningException | JobRestartException | JobInstanceAlreadyCompleteException | JobParametersInvalidException e) {
                 logger.error(e.getMessage());
             }
