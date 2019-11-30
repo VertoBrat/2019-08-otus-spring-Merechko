@@ -28,12 +28,12 @@ public class BookProcessor implements ItemProcessor<Book, BookTo> {
 
         ExecutionContext stepContext = this.stepExecution.getExecutionContext();
         if (stepContext.get(BOOK_IDS) != null) {
-            Set<ObjectId> ids = (Set<ObjectId>) stepContext.get(BOOK_IDS);
-            ids.add(new ObjectId(book.getId()));
+            Set<String> ids = (Set<String>) stepContext.get(BOOK_IDS);
+            ids.add(book.getId());
             stepContext.put(BOOK_IDS, ids);
         } else {
-            Set<ObjectId> bookIds = new HashSet<>();
-            bookIds.add(new ObjectId(book.getId()));
+            Set<String> bookIds = new HashSet<>();
+            bookIds.add(book.getId());
             stepContext.put(BOOK_IDS, bookIds);
         }
         return to;

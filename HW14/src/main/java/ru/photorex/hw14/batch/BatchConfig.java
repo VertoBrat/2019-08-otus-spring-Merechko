@@ -30,6 +30,7 @@ import ru.photorex.hw14.model.sql.UserTo;
 
 import java.util.HashMap;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Configuration
 @EnableBatchProcessing
@@ -66,7 +67,8 @@ public class BatchConfig {
 
     @Bean
     @StepScope
-    public ItemReader<Comment> commentMongoReader(@Value("#{jobExecutionContext['bookIds']}")Set<ObjectId> ids) {
+    public ItemReader<Comment> commentMongoReader(@Value("#{jobExecutionContext['bookIds']}")Set<String> ids) {
+        Set<ObjectId> objectIds = ids.stream().map(ObjectId::new).collect(Collectors.toSet());
         return new MongoItemReaderBuilder<Comment>()
                 .name("commentReader")
                 .collection("comments")
@@ -74,7 +76,7 @@ public class BatchConfig {
                 .sorts(new HashMap<>())
                 .parameterValues(ids)
                 .targetType(Comment.class)
-                .query(Query.query(Criteria.where("book.$id").in(ids)).limit(100))
+                .query(Query.query(Criteria.where("book.$id").in(objectIds)).limit(100))
                 .pageSize(100)
                 .build();
     }
