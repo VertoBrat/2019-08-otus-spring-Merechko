@@ -3,11 +3,8 @@ package ru.photorex.hw14.model.sql;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.BatchSize;
-import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
-import java.util.UUID;
 
 @Data
 @AllArgsConstructor

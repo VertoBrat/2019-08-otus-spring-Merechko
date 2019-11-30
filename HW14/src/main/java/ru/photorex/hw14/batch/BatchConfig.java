@@ -74,8 +74,8 @@ public class BatchConfig {
                 .sorts(new HashMap<>())
                 .parameterValues(ids)
                 .targetType(Comment.class)
-                .query(Query.query(Criteria.where("book.$id").in(ids)).limit(5))
-                .pageSize(5)
+                .query(Query.query(Criteria.where("book.$id").in(ids)).limit(100))
+                .pageSize(100)
                 .build();
     }
 

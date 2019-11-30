@@ -4,11 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import org.bson.LazyBSONObject;
-import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
-import java.util.UUID;
 
 @Data
 @AllArgsConstructor

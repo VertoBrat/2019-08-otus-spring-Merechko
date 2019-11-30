@@ -15,6 +15,9 @@ create table AUTHORS
     LAST_NAME varchar(255) not null
 );
 
+create unique index authors_fl_name_uindex
+    on AUTHORS (FIRST_NAME, LAST_NAME);
+
 create table GENRES
 (
     ID bigserial not null
@@ -22,6 +25,9 @@ create table GENRES
             primary key,
     NAME varchar(100)
 );
+
+create unique index genres_name_uindex
+    on genres (NAME);
 
 create table BOOKS
 (

@@ -1,7 +1,6 @@
 package ru.photorex.hw14.model.mapper;
 
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
 import ru.photorex.hw14.model.mongo.Comment;
 import ru.photorex.hw14.model.sql.CommentTo;
 
