@@ -13,3 +13,5 @@ spring:
     initialization-mode: always
   batch:
     initialize-schema: always
+    job:
+      enabled: false
