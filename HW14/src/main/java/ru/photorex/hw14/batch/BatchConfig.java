@@ -87,6 +87,7 @@ public class BatchConfig {
                          ItemWriter<BookTo> writer) {
         return stepBuilderFactory
                 .get("bookStep")
+                .allowStartIfComplete(true)
                 .<Book, BookTo>chunk(10)
                 .reader(reader)
                 .processor(processor)
@@ -101,6 +102,7 @@ public class BatchConfig {
                          ItemWriter<UserTo> writer) {
         return stepBuilderFactory
                 .get("userStep")
+                .allowStartIfComplete(true)
                 .<User, UserTo> chunk(10)
                 .reader(reader)
                 .processor(processor)
@@ -115,6 +117,7 @@ public class BatchConfig {
                             ItemWriter<CommentTo> writer) {
         return stepBuilderFactory
                 .get("commentStep")
+                .allowStartIfComplete(true)
                 .<Comment, CommentTo> chunk(10)
                 .reader(reader)
                 .processor(processor)
@@ -127,7 +130,7 @@ public class BatchConfig {
                         @Qualifier("userStep") Step user,
                         @Qualifier("commentStep") Step comment) {
         return jobBuilderFactory
-                .get("firstJob")
+                .get("migrate")
                 .incrementer(new RunIdIncrementer())
                 .start(book)
                 .next(user)

@@ -15,3 +15,9 @@ spring:
     initialize-schema: always
     job:
       enabled: false
+
+logging:
+  level:
+    org.springframework.batch.core.job : info
+    org.springframework.batch.core.step : info
+    root: error

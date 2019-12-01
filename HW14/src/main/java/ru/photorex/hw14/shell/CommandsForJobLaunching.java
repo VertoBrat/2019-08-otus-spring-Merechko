@@ -12,17 +12,17 @@ import ru.photorex.hw14.service.IOService;
 @RequiredArgsConstructor
 public class CommandsForJobLaunching {
 
-    private final BatchService service;
+    private final BatchService batchService;
     private final IOService ioService;
 
-    @ShellMethod(value = "Display available jobs.", key = {"dj", "d job"})
+    @ShellMethod(value = "Display available jobs.", key = {"display", "d jobs"})
     public void displayAllJobsName() {
-        service.getJobNames().forEach(ioService::printString);
+        batchService.getJobNames().forEach(ioService::printString);
     }
 
-    @ShellMethod(value = "Launch some job by name.", key = {"l"})
+    @ShellMethod(value = "Launch some job by name.", key = {"start"})
     public void runJobByName(@ShellOption({"-n"}) String jobName) {
-        ExitStatus status = service.startJobByName(jobName);
+        ExitStatus status = batchService.startJobByName(jobName);
         ioService.printString(status.getExitCode());
     }
 }
