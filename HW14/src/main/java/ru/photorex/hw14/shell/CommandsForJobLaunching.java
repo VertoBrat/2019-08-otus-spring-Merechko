@@ -25,4 +25,9 @@ public class CommandsForJobLaunching {
         ExitStatus status = batchService.startJobByName(jobName);
         ioService.printString(status.getExitCode());
     }
+
+    @ShellMethod(value = "Restart some job by name.", key = {"restart"})
+    public void restartJobByName(@ShellOption({"-n"}) String jobName) {
+        runJobByName(jobName);
+    }
 }

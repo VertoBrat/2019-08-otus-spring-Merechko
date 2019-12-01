@@ -5,5 +5,6 @@ Application for migration mongoDb collections to postgresDb tables. *
 So this command is available:                                       *
 display             - Display available jobs.                       *
 start -n            - Launch some job by name.                      *
+restart -n          - Restart some job by name.                     *
                                                                     *
 *********************************************************************
