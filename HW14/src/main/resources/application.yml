@@ -1,0 +1,23 @@
+spring:
+  data:
+    mongodb:
+      uri: mongodb://localhost
+      port: 27017
+      database: library
+      changeLogPackage: ru.photorex.hw14.initmongoconfig.changelog
+  datasource:
+    url: jdbc:postgresql://localhost:5432/library
+    driver-class-name: org.postgresql.Driver
+    username: worm
+    password: root
+    initialization-mode: always
+  batch:
+    initialize-schema: always
+    job:
+      enabled: false
+
+logging:
+  level:
+    org.springframework.batch.core.job : info
+    org.springframework.batch.core.step : info
+    root: error
