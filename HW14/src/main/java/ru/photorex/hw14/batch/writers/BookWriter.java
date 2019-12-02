@@ -15,10 +15,11 @@ import ru.photorex.hw14.repository.GenreRepository;
 
 import java.util.*;
 
+import static ru.photorex.hw14.batch.BatchConfig.BOOKS;
+
 @Component
 public class BookWriter implements ItemWriter<BookTo> {
 
-    private static final String BOOKS = "books";
     private final BookRepository bookRepository;
     private final AuthorRepository authorRepository;
     private final GenreRepository genreRepository;

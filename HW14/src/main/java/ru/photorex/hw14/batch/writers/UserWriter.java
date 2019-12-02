@@ -14,11 +14,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static ru.photorex.hw14.batch.BatchConfig.USERS;
+
 @Component
 @RequiredArgsConstructor
 public class UserWriter implements ItemWriter<UserTo> {
 
-    private static final String USERS = "users";
     private final UserRepository repository;
     private StepExecution stepExecution;
 

@@ -14,23 +14,24 @@ import ru.photorex.hw14.model.sql.UserTo;
 
 import java.util.Map;
 
+import static ru.photorex.hw14.batch.BatchConfig.BOOKS;
+import static ru.photorex.hw14.batch.BatchConfig.USERS;
+
 @Component
 @RequiredArgsConstructor
 public class CommentProcessor implements ItemProcessor<Comment, CommentTo> {
 
-    private Map<String, Long> books;
-    private Map<String, Long> users;
-
-
+    private Map<String, Long> booksMap;
+    private Map<String, Long> usersMap;
 
     @Override
     public CommentTo process(Comment comment) {
         CommentTo to = new CommentTo();
         to.setText(comment.getText());
         to.setDateTime(comment.getDateTime());
-        UserTo user = new UserTo(users.get(comment.getUser().getUserName()));
+        UserTo user = new UserTo(usersMap.get(comment.getUser().getUserName()));
         to.setUser(user);
-        BookTo book = new BookTo(books.get(comment.getBook().getIsbn()));
+        BookTo book = new BookTo(booksMap.get(comment.getBook().getIsbn()));
         to.setBook(book);
         return to;
     }
@@ -39,8 +40,8 @@ public class CommentProcessor implements ItemProcessor<Comment, CommentTo> {
     public void retrieveInterStepData(StepExecution stepExecution) {
         JobExecution jobExecution = stepExecution.getJobExecution();
         ExecutionContext jobContext = jobExecution.getExecutionContext();
-        this.books =(Map<String, Long>) jobContext.get("books");
-        this.users = (Map<String, Long>) jobContext.get("users");
+        this.booksMap =(Map<String, Long>) jobContext.get(BOOKS);
+        this.usersMap = (Map<String, Long>) jobContext.get(USERS);
     }
 
 }

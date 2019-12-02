@@ -1,7 +1,6 @@
 package ru.photorex.hw14.batch.processors;
 
 import lombok.RequiredArgsConstructor;
-import org.bson.types.ObjectId;
 import org.springframework.batch.core.StepExecution;
 import org.springframework.batch.core.annotation.BeforeStep;
 import org.springframework.batch.item.ExecutionContext;
@@ -14,11 +13,12 @@ import ru.photorex.hw14.model.sql.BookTo;
 import java.util.HashSet;
 import java.util.Set;
 
+import static ru.photorex.hw14.batch.BatchConfig.BOOK_IDS;
+
 @Component
 @RequiredArgsConstructor
 public class BookProcessor implements ItemProcessor<Book, BookTo> {
 
-    private static final String BOOK_IDS = "bookIds";
     private final BookMapper bookMapper;
     private StepExecution stepExecution;
 

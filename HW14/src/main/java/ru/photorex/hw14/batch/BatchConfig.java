@@ -37,6 +37,9 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class BatchConfig {
 
+    public static final String BOOKS = " books";
+    public static final String BOOK_IDS ="bookIds";
+    public static final String USERS = "users";
     private final JobBuilderFactory jobBuilderFactory;
     private final StepBuilderFactory stepBuilderFactory;
     private final MongoTemplate mongoTemplate;
@@ -141,14 +144,14 @@ public class BatchConfig {
     @Bean
     public ExecutionContextPromotionListener promotionBookListener() {
         ExecutionContextPromotionListener listener = new ExecutionContextPromotionListener();
-        listener.setKeys(new String[] {"books", "bookIds"});
+        listener.setKeys(new String[] {BOOKS, BOOK_IDS});
         return listener;
     }
 
     @Bean
     public ExecutionContextPromotionListener promotionUserListener() {
         ExecutionContextPromotionListener listener = new ExecutionContextPromotionListener();
-        listener.setKeys(new String[] {"users"});
+        listener.setKeys(new String[] {USERS});
         return listener;
     }
 

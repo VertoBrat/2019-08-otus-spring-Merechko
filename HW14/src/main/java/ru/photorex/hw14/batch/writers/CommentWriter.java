@@ -11,6 +11,8 @@ import ru.photorex.hw14.repository.CommentRepository;
 
 import java.util.List;
 
+import static ru.photorex.hw14.batch.BatchConfig.*;
+
 @Component
 @RequiredArgsConstructor
 public class CommentWriter implements ItemWriter<CommentTo> {
@@ -27,8 +29,8 @@ public class CommentWriter implements ItemWriter<CommentTo> {
     @AfterStep
     public void removeCustomMapsFromContext(StepExecution stepExecution) {
         ExecutionContext stepContext = stepExecution.getExecutionContext();
-        stepContext.remove("books");
-        stepContext.remove("bookIds");
-        stepContext.remove("users");
+        stepContext.remove(BOOKS);
+        stepContext.remove(BOOK_IDS);
+        stepContext.remove(USERS);
     }
 }
