@@ -1,14 +1,9 @@
-# Getting Started
+## Spring Integration
+Цель: Реализовать обработку доменной сущности через каналы Spring Integration
 
-### Reference Documentation
-For further reference, please consider the following sections:
-
-* [Official Apache Maven documentation](https://maven.apache.org/guides/index.html)
-* [Spring Boot Maven Plugin Reference Guide](https://docs.spring.io/spring-boot/docs/2.2.1.RELEASE/maven-plugin/)
-* [Spring Integration](https://docs.spring.io/spring-boot/docs/2.2.1.RELEASE/reference/htmlsingle/#boot-features-integration)
-
-### Guides
-The following guides illustrate how to use some features concretely:
-
-* [Integrating Data](https://spring.io/guides/gs/integration/)
-
+### Описание задания
+В Hw15Application.class в бесконечном цикле формируется информация о заказе для ресторана.
+В заказе можно указать еду и питье. 
+Поток обработки разделяется на несколько потоков (кухня или бар). В баре работает один поток(человек),
+на кухне - 2 потока. 
+В итоге заказ полностью собирается и отдается.
