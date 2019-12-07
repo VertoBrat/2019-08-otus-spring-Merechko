@@ -10,7 +10,6 @@ import lombok.NoArgsConstructor;
 public class DrinkItem extends OrderItem {
 
     private DrinkType type;
-    private int shots = 1;
     private boolean isIced = false;
 
     @Override
