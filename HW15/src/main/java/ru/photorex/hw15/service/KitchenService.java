@@ -2,13 +2,12 @@ package ru.photorex.hw15.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import ru.photorex.hw15.model.Drink;
 import ru.photorex.hw15.model.Food;
 import ru.photorex.hw15.model.FoodItem;
 
 import java.util.concurrent.TimeUnit;
 
-import static ru.photorex.hw15.IntegrationConfig.sleepWithoutTryCatch;
+import static ru.photorex.hw15.utils.SafetySleepHelper.sleepWithoutTryCatch;
 
 @Service
 @RequiredArgsConstructor

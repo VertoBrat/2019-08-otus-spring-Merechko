@@ -7,7 +7,7 @@ import ru.photorex.hw15.model.DrinkItem;
 
 import java.util.concurrent.TimeUnit;
 
-import static ru.photorex.hw15.IntegrationConfig.sleepWithoutTryCatch;
+import static ru.photorex.hw15.utils.SafetySleepHelper.sleepWithoutTryCatch;
 
 @Service
 @RequiredArgsConstructor
