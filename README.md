@@ -47,3 +47,6 @@ Each task is located in a separate folder called "HW N", where N - number of tas
 
 ### HW14
 >Create migration from mongo to postgres using Spring Batch
+
+### HW15
+>Operate with Domain object using Spring Integration

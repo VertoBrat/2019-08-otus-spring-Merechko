@@ -1,0 +1,7 @@
+logging:
+  level:
+    root: error
+
+fixedDelay:
+  in:
+    millis: 1000
