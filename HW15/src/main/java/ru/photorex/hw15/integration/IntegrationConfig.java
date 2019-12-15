@@ -50,7 +50,7 @@ public class IntegrationConfig {
 
     @Bean
     public IntegrationFlow barFlow() {
-        return f -> f.channel(c -> c.queue(10))
+        return f -> f.channel(c -> c.executor(Executors.newFixedThreadPool(1)))
                 .<DrinkItem, Boolean>route(DrinkItem::isIced, m -> m
                         .subFlowMapping(true, sub -> sub
                                 .handle("bartenderService", "cookColdDrink"))

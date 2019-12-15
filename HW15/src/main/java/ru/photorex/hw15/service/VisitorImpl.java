@@ -20,14 +20,12 @@ public class VisitorImpl implements Visitor {
     private final IOService ioService;
 
     @Override
-   // @Scheduled(fixedDelayString = "${fixedDelay.in.millis}", initialDelay = 1000)
+    @Scheduled(fixedDelayString = "${fixedDelay.in.millis}", initialDelay = 1000)
     public void makeOrder() {
-        while (true) {
-            Order order = generateOrder();
-            printNewOrderInformation(order);
-            CookedOrder cookedOrder = cooking(order);
-            printCookedOrderInformation(cookedOrder);
-        }
+        Order order = generateOrder();
+        printNewOrderInformation(order);
+        CookedOrder cookedOrder = cooking(order);
+        printCookedOrderInformation(cookedOrder);
     }
 
     private CookedOrder cooking(Order order) {
