@@ -1,5 +1,6 @@
 package ru.photorex.hw16.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
@@ -22,6 +23,7 @@ public class User implements UserDetails{
     @Field("userName")
     private String userName;
 
+    @JsonIgnore
     @Field("password")
     private String password;
 
@@ -55,7 +57,7 @@ public class User implements UserDetails{
     }
 
     public enum Role implements GrantedAuthority {
-        ROLE_ADMIN("ROLE_ADMIN"), ROLE_USER("ROLE_USER");
+        ROLE_ADMIN("ROLE_ADMIN"), ROLE_USER("ROLE_USER"), ROLE_ACTUATOR("ROLE_ACTUATOR");
 
         private final String authority;
 
@@ -73,6 +75,7 @@ public class User implements UserDetails{
         }
     }
 
+    @JsonIgnore
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return roles;
@@ -85,17 +88,17 @@ public class User implements UserDetails{
 
     @Override
     public boolean isAccountNonExpired() {
-        return true;
+        return isAccountNonExpired;
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return true;
+        return isAccountNonLocked;
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return true;
+        return isCredentialsNonExpired;
     }
 
     @Override
