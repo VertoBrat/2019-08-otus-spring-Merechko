@@ -5,3 +5,9 @@ spring:
       port: 27017
       database: library
       changeLogPackage: ru.photorex.hw16.changelog
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
