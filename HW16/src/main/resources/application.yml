@@ -10,4 +10,7 @@ management:
   endpoints:
     web:
       exposure:
-        include: '*'
+        include: metrics, health, logfile, users
+logging:
+  file:
+    name: target/logs/library.log
