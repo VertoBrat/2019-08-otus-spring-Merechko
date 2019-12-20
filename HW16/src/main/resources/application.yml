@@ -1,0 +1,16 @@
+spring:
+  data:
+    mongodb:
+      uri: mongodb://localhost
+      port: 27017
+      database: library
+      changeLogPackage: ru.photorex.hw16.changelog
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: metrics, health, logfile, users
+logging:
+  file:
+    name: target/logs/library.log
