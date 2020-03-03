@@ -41,7 +41,7 @@ public class BookController {
         CollectionModel<BookTo> filteredBooks = bookService.getFilteredBook(search, type);
         if (filteredBooks.getContent().isEmpty())
             return ResponseEntity.noContent().build();
-        return ResponseEntity.ok(bookService.getFilteredBook(search, type));
+        return ResponseEntity.ok(filteredBooks);
     }
 
     @GetMapping("/books/{id}")
