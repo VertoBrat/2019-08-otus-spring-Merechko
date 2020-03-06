@@ -1,7 +1,7 @@
 spring:
   data:
     mongodb:
-      uri: mongodb://localhost
+      uri: mongodb://mongodb
       port: 27017
       database: library
       changeLogPackage: ru.photorex.hw12.changelog
