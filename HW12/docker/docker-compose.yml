@@ -6,9 +6,9 @@ services:
     ports:
       - 27017:27017
   app:
-    image: hw12:latest
+    image: hw12:0.0.1
     container_name: "hw"
     ports:
     - 8080:8080
-    links:
+    depends_on:
       - mongodb
