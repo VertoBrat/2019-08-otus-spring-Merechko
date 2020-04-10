@@ -1,12 +1,12 @@
 version: "3"
 services:
   mongodb:
-    image: mongo:latest
+    build: ./mongo
     container_name: "mongodb"
     ports:
       - 27017:27017
   app:
-    image: hw12:0.0.1
+    build: .
     container_name: "hw"
     ports:
     - 8080:8080
