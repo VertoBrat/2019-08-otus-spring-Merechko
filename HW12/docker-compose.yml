@@ -1,12 +1,14 @@
 version: "3"
 services:
   mongodb:
-    build: ./mongo
+    build: ./docker/mongo
+    image: "mongo-hw"
     container_name: "mongodb"
     ports:
       - 27017:27017
   app:
     build: .
+    image: "hw:1.0"
     container_name: "hw"
     ports:
     - 8080:8080
