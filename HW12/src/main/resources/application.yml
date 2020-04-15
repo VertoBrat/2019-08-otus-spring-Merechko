@@ -1,7 +1,21 @@
 spring:
   data:
     mongodb:
-      uri: mongodb://mongodb
+      uri: mongodb://localhost
       port: 27017
       database: library
       changeLogPackage: ru.photorex.hw12.changelog
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: hystrix.stream
+
+hystrix:
+  command:
+    authors:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 3000
