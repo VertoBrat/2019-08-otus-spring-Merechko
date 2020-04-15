@@ -1,5 +1,6 @@
 package ru.photorex.hw12.service;
 
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -11,6 +12,9 @@ import ru.photorex.hw12.repository.BookRepository;
 import ru.photorex.hw12.repository.CommentRepository;
 import ru.photorex.hw12.to.CommentTo;
 import ru.photorex.hw12.to.mapper.CommentMapper;
+import ru.photorex.hw12.util.LibraryUtil;
+
+import java.util.concurrent.TimeUnit;
 
 @Service
 @RequiredArgsConstructor
@@ -22,9 +26,15 @@ public class LibraryWormCommentServiceImpl implements LibraryWormCommentService 
     private final CommentMapper mapper;
 
     @Override
+    @HystrixCommand(fallbackMethod = "findSomeComment", commandKey = "comments")
     public CommentTo findCommentById(String id) {
+        LibraryUtil.sleepRandomly(5, TimeUnit.SECONDS);
         Comment comment = commentRepository.findById(id).orElseThrow(() -> new NoDataWithThisIdException(id));
         return mapper.toTo(comment);
+    }
+
+    public CommentTo findSomeComment(String id) {
+        return new CommentTo();
     }
 
     @Override

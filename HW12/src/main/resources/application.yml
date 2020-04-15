@@ -19,3 +19,18 @@ hystrix:
         isolation:
           thread:
             timeoutInMilliseconds: 3000
+    books:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 1500
+    comments:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 3000
+    genres:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 2000
