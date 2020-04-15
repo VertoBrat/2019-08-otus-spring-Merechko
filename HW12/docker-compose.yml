@@ -1,0 +1,22 @@
+version: "3"
+services:
+  mongodb:
+    build: ./docker/mongo
+    image: "mongo-hw"
+    container_name: "mongodb"
+    ports:
+      - 27017:27017
+  app:
+    build: .
+    image: "hw:1.0"
+    container_name: "hw"
+    ports:
+    - 8080:8080
+    depends_on:
+      - mongodb
+    command: sh -c "/wait && java -Xms400m -Xmx400m -jar app.jar"
+    environment:
+      - WAIT_HOSTS=mongodb:27017
+      - WAIT_HOSTS_TIMEOUT=300
+      - WAIT_SLEEP_INTERVAL=30
+      - WAIT_HOST_CONNECT_TIMEOUT=30
