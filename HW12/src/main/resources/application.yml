@@ -5,3 +5,32 @@ spring:
       port: 27017
       database: library
       changeLogPackage: ru.photorex.hw12.changelog
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: hystrix.stream
+
+hystrix:
+  command:
+    authors:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 3000
+    books:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 1500
+    comments:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 3000
+    genres:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 2000
