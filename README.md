@@ -50,3 +50,12 @@ Each task is located in a separate folder called "HW N", where N - number of tas
 
 ### HW15
 >Operate with Domain object using Spring Integration
+
+### HW16
+>Create metrics for actuator and use them
+
+### HW17
+>Using Docker for application from HW12. All files inside
+
+### HW18
+>Create Hystrix Circuit Breaker, use them for dataSource. In HW12
